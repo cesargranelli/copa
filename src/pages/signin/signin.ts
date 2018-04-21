@@ -4,17 +4,19 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 
 import 'rxjs/add/operator/first';
 
+import { SignupPage } from './../signup/signup';
+
 import { AuthService } from './../../providers/auth.service';
 import { User } from './../../models/user.model';
 import { UserService } from './../../providers/user.service';
 
 @Component({
-  selector: 'page-signup',
-  templateUrl: 'signup.html',
+  selector: 'page-signin',
+  templateUrl: 'signin.html',
 })
-export class SignupPage {
+export class SigninPage {
 
-  signupForm: FormGroup;
+  signinForm: FormGroup;
 
   constructor(
     public alertCtrl: AlertController,
@@ -28,9 +30,7 @@ export class SignupPage {
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    this.signupForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
+    this.signinForm = this.formBuilder.group({
       email: ['', [Validators.compose([Validators.required, Validators.pattern(emailRegex)])]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -41,49 +41,12 @@ export class SignupPage {
 
   onSubmit(): void {
 
-    let formUser = this.signupForm.value;
-    let loading: Loading = this.showLoading();
-    let username: string = formUser.username;
+    console.log(this.signinForm.value);
 
-    this.userService.userExists(username)
-      .first()
-      .subscribe((userExists: boolean) => {
+  }
 
-        if(!userExists) {
-
-          this.authService.createAuthUser({
-            email: formUser.email,
-            password: formUser.password
-          }).then((authUser: User) => {
-
-            delete formUser.password;
-
-            formUser.uid = authUser.uid;
-
-            this.userService.create(formUser)
-              .then(() => {
-                console.log('Usuário cadastrado com sucesso!');
-                loading.dismiss();
-              }).catch((error: any) => {
-                console.log(error);
-                loading.dismiss();
-                this.showAlert(error);
-              });
-
-          }).catch((error: any) => {
-            console.log(error);
-            loading.dismiss();
-            this.showAlert(error);
-          });
-
-        } else {
-
-          this.showAlert(`O username ${username} já está sendo usado em outra conta!`);
-          loading.dismiss();
-
-        }
-
-      });
+  onSignup(): void {
+    this.navCtrl.push(SignupPage);
   }
 
   private showLoading(): Loading {
