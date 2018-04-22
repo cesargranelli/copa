@@ -17,6 +17,10 @@ export class HomePage {
     public navCtrl: NavController
   ) {}
 
+  ionViewCanEnter(): Promise<boolean> {
+    return this.authService.authenticated;
+  }
+
   onSignup(): void {
     this.navCtrl.push(SignupPage);
   }
@@ -25,7 +29,7 @@ export class HomePage {
     this.authService.signout()
       .then(() => {
         this.navCtrl.setRoot(SigninPage);
-        console.log(`Usuário deslogado com sucesso`);
+        console.log(`Usuário deslogado com sucesso!`);
       });
   }
 

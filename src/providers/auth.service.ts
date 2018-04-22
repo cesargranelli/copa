@@ -8,6 +8,8 @@ import { User } from '../models/user.model';
 import { BaseService } from './base.service';
 import { FirebaseAuth } from '@firebase/auth-types';
 
+import 'rxjs/add/operator/first';
+
 @Injectable()
 export class AuthService extends BaseService {
 
@@ -32,6 +34,16 @@ export class AuthService extends BaseService {
 
   signout(): Promise<void> {
     return this.angularFireAuth.auth.signOut();
+  }
+
+  get authenticated(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.angularFireAuth.authState
+        .first()
+        .subscribe(isAuthenticated => {
+          (isAuthenticated) ? resolve(true) : reject(false);
+        });
+    });
   }
 
 }
