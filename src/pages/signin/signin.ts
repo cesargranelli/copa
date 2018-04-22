@@ -4,6 +4,7 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 
 import 'rxjs/add/operator/first';
 
+import { HomePage } from './../home/home';
 import { SignupPage } from './../signup/signup';
 
 import { AuthService } from './../../providers/auth.service';
@@ -41,8 +42,24 @@ export class SigninPage {
 
   onSubmit(): void {
 
-    console.log(this.signinForm.value);
+    let loading: Loading = this.showLoading();
 
+    this.authService.signin(this.signinForm.value)
+      .then((isLogged: boolean) => {
+
+        if(isLogged) {
+          this.navCtrl.setRoot(HomePage);
+          loading.dismiss();
+          console.log(`Usuário logado com sucesso`);
+        }
+
+      }).catch((error: any) => {
+
+        console.log(error);
+        loading.dismiss();
+        this.showAlert(error);
+
+      });
   }
 
   onSignup(): void {

@@ -4,6 +4,8 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 
 import 'rxjs/add/operator/first';
 
+import { HomePage } from '../home/home';
+
 import { AuthService } from './../../providers/auth.service';
 import { User } from './../../models/user.model';
 import { UserService } from './../../providers/user.service';
@@ -63,6 +65,7 @@ export class SignupPage {
             this.userService.create(formUser)
               .then(() => {
                 console.log('Usuário cadastrado com sucesso!');
+                this.navCtrl.setRoot(HomePage);
                 loading.dismiss();
               }).catch((error: any) => {
                 console.log(error);
