@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
-import { SigninPage } from './../signin/signin';
-import { SignupPage } from './../signup/signup';
-
-import { AuthService } from './../../providers/auth.service';
+import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
+import { HttpClient } from '@angular/common/http';
+import { Player } from '../../models/player';
 
 @Component({
   selector: 'page-home',
@@ -12,24 +10,25 @@ import { AuthService } from './../../providers/auth.service';
 })
 export class HomePage {
 
+  public player: Player;
+
   constructor(
-    public authService: AuthService,
+    public fireBase: AngularFireDatabase,
+    public http: HttpClient,
     public navCtrl: NavController
-  ) {}
-
-  ionViewCanEnter(): Promise<boolean> {
-    return this.authService.authenticated;
+  ) {
+    this.fireBase.database.ref(`players/`).child(`cesar`).once('value')
+      .then((snapshot) => {
+        console.log(snapshot);
+        this.player = snapshot.val();
+      });
   }
 
-  onSignup(): void {
-    this.navCtrl.push(SignupPage);
-  }
+  getPlayer(): any {
+    this.fireBase.database.ref(`players/`).child(`cesar`).once('value')
+      .then((snapshot) => {
+        console.log(snapshot.val().nickname);
 
-  onSignOut(): void {
-    this.authService.signout()
-      .then(() => {
-        this.navCtrl.setRoot(SigninPage);
-        console.log(`Usuário deslogado com sucesso!`);
       });
   }
 
