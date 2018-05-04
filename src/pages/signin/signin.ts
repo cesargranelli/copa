@@ -48,7 +48,10 @@ export class SigninPage {
       .then((isLogged: boolean) => {
 
         if(isLogged) {
-          this.navCtrl.setRoot(HomePage);
+
+          this.navCtrl.setRoot(HomePage, {
+            userid: this.authService.userUid
+          });
           loading.dismiss();
           console.log(`Usuário logado com sucesso`);
         }

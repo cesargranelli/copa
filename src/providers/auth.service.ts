@@ -42,4 +42,8 @@ export class AuthService extends BaseService {
     });
   }
 
+  get userUid(): any {
+    return this.angularFireAuth.auth.currentUser.uid;
+  }
+
 }

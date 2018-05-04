@@ -65,7 +65,9 @@ export class SignupPage {
             this.userService.create(formUser)
               .then(() => {
                 console.log('Usuário cadastrado com sucesso!');
-                this.navCtrl.setRoot(HomePage);
+                this.navCtrl.setRoot(HomePage, {
+                  userid: authUser.uid
+                });
                 loading.dismiss();
               }).catch((error: any) => {
                 console.log(error);
