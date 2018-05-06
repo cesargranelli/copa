@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ErrorHandler } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 
 import 'rxjs/add/operator/first';
 
-import { HomePage } from './../home/home';
-import { SignupPage } from './../signup/signup';
+import { HomePage } from '../home/home';
+import { SignupPage } from '../signup/signup';
 
-import { AuthService } from './../../providers/auth.service';
-import { User } from './../../models/user.model';
-import { UserService } from './../../providers/user.service';
+import { AuthService } from '../../providers/auth.service';
+import { UserService } from '../../providers/user.service';
+
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'page-signin',
@@ -44,8 +45,7 @@ export class SigninPage {
 
     let loading: Loading = this.showLoading();
 
-    this.authService.signin(this.signinForm.value)
-      .then((isLogged: boolean) => {
+    this.authService.signin(this.signinForm.value).then((isLogged: boolean) => {
 
         if(isLogged) {
 
@@ -54,13 +54,19 @@ export class SigninPage {
           });
           loading.dismiss();
           console.log(`Usuário logado com sucesso`);
+
         }
 
       }).catch((error: any) => {
 
         console.log(error);
         loading.dismiss();
-        this.showAlert(error);
+
+        if (error.code == 'auth/user-not-found') {
+          this.navCtrl.push(SignupPage);
+        } else {
+          this.showAlert(error.message);
+        }
 
       });
   }
@@ -71,7 +77,7 @@ export class SigninPage {
 
   private showLoading(): Loading {
     let loading: Loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Por favor aguarde...'
     });
 
     loading.present();

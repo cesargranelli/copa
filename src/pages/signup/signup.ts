@@ -4,11 +4,12 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 
 import 'rxjs/add/operator/first';
 
-import { HomePage } from '../home/home';
+import { ProfilePage } from '../profile/profile';
 
-import { AuthService } from './../../providers/auth.service';
-import { User } from './../../models/user.model';
-import { UserService } from './../../providers/user.service';
+import { AuthService } from '../../providers/auth.service';
+import { UserService } from '../../providers/user.service';
+
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'page-signup',
@@ -47,9 +48,7 @@ export class SignupPage {
     let loading: Loading = this.showLoading();
     let username: string = formUser.username;
 
-    this.userService.userExists(username)
-      .first()
-      .subscribe((userExists: boolean) => {
+    this.userService.userExists(username).first().subscribe((userExists: boolean) => {
 
         if(!userExists) {
 
@@ -65,7 +64,7 @@ export class SignupPage {
             this.userService.create(formUser)
               .then(() => {
                 console.log('Usuário cadastrado com sucesso!');
-                this.navCtrl.setRoot(HomePage, {
+                this.navCtrl.setRoot(ProfilePage, {
                   userid: authUser.uid
                 });
                 loading.dismiss();
@@ -93,7 +92,7 @@ export class SignupPage {
 
   private showLoading(): Loading {
     let loading: Loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Por favor aguarde...'
     });
 
     loading.present();

@@ -16,16 +16,12 @@ export class AuthService extends BaseService {
     super();
   }
 
-  createAuthUser(user: {email: string, password: string}): Promise<any> {
-    return this.angularFireAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
-      .catch(this.handlePromiseError);
+  createAuthUser(user: { email: string, password: string }): Promise<any> {
+    return this.angularFireAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
   }
 
   signin(userLogin: { email: string, password: string }): Promise<any> {
-    return this.angularFireAuth.auth.signInWithEmailAndPassword(userLogin.email, userLogin.password)
-      .then((authUser: any) => {
-        return authUser != null;
-      }).catch(this.handlePromiseError);
+    return this.angularFireAuth.auth.signInWithEmailAndPassword(userLogin.email, userLogin.password);
   }
 
   signout(): Promise<void> {

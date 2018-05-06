@@ -16,6 +16,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './../providers/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './../providers/user.service';
+import { ProfilePage } from '../pages/profile/profile';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: "AIzaSyAkaxvKWCyJezIU5-0gyRJyJW0uJY9r-Ws",
@@ -29,6 +30,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
   declarations: [
     HomePage,
     MyApp,
+    ProfilePage,
     SigninPage,
     SignupPage
   ],
@@ -43,6 +45,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
   entryComponents: [
     HomePage,
     MyApp,
+    ProfilePage,
     SigninPage,
     SignupPage
   ],
