@@ -17,6 +17,7 @@ import { AuthService } from './../providers/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './../providers/user.service';
 import { ProfilePage } from '../pages/profile/profile';
+import { PalpitePage } from '../pages/palpite/palpite';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: "AIzaSyAkaxvKWCyJezIU5-0gyRJyJW0uJY9r-Ws",
@@ -30,6 +31,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
   declarations: [
     HomePage,
     MyApp,
+    PalpitePage,
     ProfilePage,
     SigninPage,
     SignupPage
@@ -45,6 +47,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
   entryComponents: [
     HomePage,
     MyApp,
+    PalpitePage,
     ProfilePage,
     SigninPage,
     SignupPage

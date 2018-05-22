@@ -1,4 +1,4 @@
-import { Component, ErrorHandler } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 
