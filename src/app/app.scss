@@ -1,4 +1,9 @@
 myapp {
+  ion-page {
+    max-width: 380px;
+    margin-left: 33%;
+  }
+
   #cabecalho-menu .item-inner {
       border: none;
   }

@@ -11,21 +11,21 @@
 
   <button ion-button full outline disabled="true" large>Rodada 1</button>
 
-  <ion-card *ngFor="let confronto of confrontos">
+  <ion-card>
     <ion-grid>
       <ion-row>
-        <ion-col text-center>SÁB 10/06/2018 LOCAL 16H</ion-col>
+      <ion-col text-center>SÁB 10/06/2018 LOCAL 16h</ion-col>
       </ion-row>
       <ion-row align-items-center>
         <ion-col>
           <img src="https://www.sofascore.com/images/team-logo/football_4748.png" />
         </ion-col>
         <ion-col text-center col-2>
-          <input class="ipt-gol" text-center type="text" value="{{ confronto.homeScore }}" />
+          <input class="ipt-gol" text-center type="text" value="" />
         </ion-col>
         <ion-col text-center col-1>X</ion-col>
         <ion-col text-center col-2>
-          <input class="ipt-gol" type="text" text-center value="{{ confronto.awayScore }}" />
+          <input class="ipt-gol" type="text" text-center value="" />
         </ion-col>
         <ion-col>
           <img src="https://www.sofascore.com/images/team-logo/football_4715.png" />

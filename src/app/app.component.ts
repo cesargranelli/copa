@@ -3,9 +3,10 @@ import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { SigninPage } from '../pages/signin/signin';
-import { ProfilePage } from '../pages/profile/profile';
 import { PalpitePage } from '../pages/palpite/palpite';
+import { ProfilePage } from '../pages/profile/profile';
+import { SigninPage } from '../pages/signin/signin';
+import { HunchPage } from '../pages/hunch/hunch';
 
 @Component({
   selector: 'myapp',
@@ -13,7 +14,7 @@ import { PalpitePage } from '../pages/palpite/palpite';
 })
 export class MyApp {
 
-  rootPage: any = SigninPage;
+  rootPage: any = HunchPage;
 
   @ViewChild(Nav) public nav: Nav;
 

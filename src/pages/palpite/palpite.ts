@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+//import { HunchesProvider } from '../../providers/hunches/hunches';
+
+//import { Matches } from '../../models/matches';
+//import { MatchesProvider } from '../../providers/matches/matches';
+
 @IonicPage()
 @Component({
   selector: 'page-palpite',
@@ -8,30 +13,25 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class PalpitePage {
 
-  private confrontos: any;
+  //public matches;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  public confrontos: any;
+
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    //private hunchesService: HunchesProvider
+    //public matchesService: MatchesProvider
+  ) { }
 
   ionViewDidLoad() {
-    this.confrontos = [
-      {
-        homeTeam: 'Brasil',
-        awayTeam: 'Croácia',
-        homeScore: 3,
-        awayScore: 1,
-        startTime: '20:00',
-        startTimestamp: 1402603200
-      },
-      {
-        homeTeam: 'Alemanhã',
-        awayTeam: 'Rússia',
-        homeScore: 2,
-        awayScore: 2,
-        startTime: '20:00',
-        startTimestamp: 1402603200
-      }
-    ]
+    //this.hunchesService.hunches.subscribe(hunches => {
+      //console.log('Test hunches');
+      //console.log(hunches);
+    //});
+    //this.hunchesService.add();
+    //this.matches = new Matches(this.matchesService);
+    //this.confrontos = this.matches.forDate();
   }
 
 }

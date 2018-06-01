@@ -1,0 +1,45 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Palpites</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="selectDefault" (ionChange)="matchesDate($event)">
+        <ion-label>Rodada</ion-label>
+          <ion-option *ngFor="let select of dates$ | async">{{ select.date }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card *ngFor="let match of matches$ | async">
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center>{{ match.formatedStartDate }} {{ match.startTime }}</ion-col>
+      </ion-row>
+      <ion-row align-items-center>
+        <ion-col>
+          <img [src]="match.homeLogo" />
+        </ion-col>
+        <ion-col text-center col-2>
+          <input class="ipt-gol" text-center type="text" [value]="match.homeScore" />
+        </ion-col>
+        <ion-col text-center col-1>X</ion-col>
+        <ion-col text-center col-2>
+          <input class="ipt-gol" type="text" text-center [value]="match.awayScore" />
+        </ion-col>
+        <ion-col>
+          <img [src]="match.awayLogo" />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</ion-content>
