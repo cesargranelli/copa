@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { HttpClient } from '@angular/common/http';
 import { Player } from '../../models/player';
 import { User } from '../../models/user.model';
@@ -12,20 +12,22 @@ import { User } from '../../models/user.model';
 export class HomePage {
 
   public userid;
+  public slug;
 
   public player: Player;
   public user: User;
 
   constructor(
-    public fireBase: AngularFireDatabase,
+    public db: AngularFirestore,
     public http: HttpClient,
     public navCtrl: NavController,
     private _navParams: NavParams,
     private _loadingCtrl: LoadingController
   ) {
     this.userid = this._navParams.get('userid');
+    this.slug = this._navParams.get('slug');
   }
-
+/*
   ionViewDidLoad() {
 
     let loading = this.showLoading();
@@ -40,7 +42,7 @@ export class HomePage {
           })
       });
   }
-
+*/
   private showLoading(): Loading {
     let loading: Loading = this._loadingCtrl.create({
       content: 'Por favor aguarde...'

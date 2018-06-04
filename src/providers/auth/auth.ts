@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { BaseService } from './base.service';
+import { BaseProvider } from './../base/base';
 
 import 'rxjs/add/operator/first';
 
 @Injectable()
-export class AuthService extends BaseService {
+export class AuthProvider extends BaseProvider {
 
   constructor(
     public angularFireAuth: AngularFireAuth,

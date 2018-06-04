@@ -7,10 +7,10 @@ import 'rxjs/add/operator/first';
 import { HomePage } from '../home/home';
 import { SignupPage } from '../signup/signup';
 
-import { AuthService } from '../../providers/auth.service';
-import { UserService } from '../../providers/user.service';
+import { AuthProvider } from '../../providers/auth/auth';
+import { UserProvider } from '../../providers/user/user';
 
-import { User } from '../../models/user.model';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'page-signin',
@@ -22,12 +22,12 @@ export class SigninPage {
 
   constructor(
     public alertCtrl: AlertController,
-    public authService: AuthService,
+    public authService: AuthProvider,
     public formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserService
+    public userService: UserProvider
   ) {
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -49,9 +49,18 @@ export class SigninPage {
 
         if(isLogged) {
 
-          this.navCtrl.setRoot(HomePage, {
-            userid: this.authService.userUid
-          });
+          this.userService.db
+            .collection("users")
+            .doc(this.authService.userUid)
+            .valueChanges()
+            .first()
+            .subscribe(user => {
+              this.navCtrl.setRoot(HomePage, {
+                userid: this.authService.userUid,
+                slug: user.slug
+              });
+            });
+
           loading.dismiss();
           console.log(`Usuário logado com sucesso`);
 

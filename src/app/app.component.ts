@@ -3,10 +3,10 @@ import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { HunchPage } from '../pages/hunch/hunch';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { SigninPage } from '../pages/signin/signin';
-import { HunchPage } from '../pages/hunch/hunch';
 
 @Component({
   selector: 'myapp',
@@ -14,13 +14,13 @@ import { HunchPage } from '../pages/hunch/hunch';
 })
 export class MyApp {
 
-  rootPage: any = HunchPage;
+  rootPage: any = SigninPage;
 
   @ViewChild(Nav) public nav: Nav;
 
   public paginas = [
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
-    { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' }
+    { titulo: 'Palpite', componente: HunchPage, icone: 'clipboard' }
   ];
 
   constructor(
@@ -36,7 +36,8 @@ export class MyApp {
 
   onPage(componente) {
     this.nav.push(componente, {
-      userid: this.nav._views[0].data.userid
+      userid: this.nav._views[0].data.userid,
+      slug: this.nav._views[0].data.slug
     });
   }
 

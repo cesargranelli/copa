@@ -1,4 +1,3 @@
-import { HunchPage } from './../pages/hunch/hunch';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -7,21 +6,20 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { HttpClientModule } from '@angular/common/http';
 
-//import { HomePage } from './../pages/home/home';
 import { MyApp } from './app.component';
-//import { SigninPage } from './../pages/signin/signin';
-//import { SignupPage } from './../pages/signup/signup';
+import { HunchPage } from '../pages/hunch/hunch';
+import { HomePage } from '../pages/home/home';
+import { SigninPage } from '../pages/signin/signin';
+import { SignupPage } from '../pages/signup/signup';
+import { ProfilePage } from '../pages/profile/profile';
+import { PalpitePage } from '../pages/palpite/palpite';
 
-//import { AngularFireAuth } from 'angularfire2/auth';
-//import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
-//import { ProfilePage } from '../pages/profile/profile';
-//import { PalpitePage } from '../pages/palpite/palpite';
 
-//import { AuthService } from './../providers/auth.service';
-//import { HunchesProvider } from '../providers/hunches/hunches';
-//import { MatchesProvider } from '../providers/matches/matches';
-//import { UserService } from './../providers/user.service';
+import { AuthProvider } from '../providers/auth/auth';
+import { UserProvider } from '../providers/user/user';
 
 import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -38,44 +36,41 @@ const firebaseAppConfig: FirebaseAppConfig = {
 
 @NgModule({
   declarations: [
-    //HomePage,
     MyApp,
-    HunchPage
+    HomePage,
+    HunchPage,
     //PalpitePage,
-    //ProfilePage,
-    //SigninPage,
-    //SignupPage
+    ProfilePage,
+    SigninPage,
+    SignupPage
   ],
   imports: [
+    IonicModule.forRoot(MyApp),
     BrowserModule,
     AngularFireModule.initializeApp(firebaseAppConfig),
     AngularFireStorageModule,
     AngularFirestoreModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [
     IonicApp
   ],
   entryComponents: [
-    //HomePage,
     MyApp,
-    HunchPage
+    HomePage,
+    HunchPage,
     //PalpitePage,
-    //ProfilePage,
-    //SigninPage,
-    //SignupPage
+    ProfilePage,
+    SigninPage,
+    SignupPage
   ],
   providers: [
-    //AngularFireAuth,
-    //AngularFirestore,
-    //AuthService,
-    //HunchesProvider,
+    AngularFireAuth,
+    AuthProvider,
     StatusBar,
     SplashScreen,
-    //UserService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    //MatchesProvider
+    UserProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

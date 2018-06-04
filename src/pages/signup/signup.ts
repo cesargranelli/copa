@@ -4,12 +4,12 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 
 import 'rxjs/add/operator/first';
 
-import { ProfilePage } from '../profile/profile';
+import { HomePage } from '../home/home';
 
-import { AuthService } from '../../providers/auth.service';
-import { UserService } from '../../providers/user.service';
+import { AuthProvider } from '../../providers/auth/auth';
+import { UserProvider } from '../../providers/user/user';
 
-import { User } from '../../models/user.model';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'page-signup',
@@ -21,19 +21,21 @@ export class SignupPage {
 
   constructor(
     public alertCtrl: AlertController,
-    public authService: AuthService,
+    public authService: AuthProvider,
     public formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserService
+    public userService: UserProvider
   ) {
+
+    let usernameRegex = /^[a-zA-Z ]+$/;
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     this.signupForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(usernameRegex)]],
       email: ['', [Validators.compose([Validators.required, Validators.pattern(emailRegex)])]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -47,8 +49,9 @@ export class SignupPage {
     let formUser = this.signupForm.value;
     let loading: Loading = this.showLoading();
     let username: string = formUser.username;
+    let slug: string = username.toLowerCase().replace(" ", "-");
 
-    this.userService.userExists(username).first().subscribe((userExists: boolean) => {
+    this.userService.userExists(slug).first().subscribe((userExists: boolean) => {
 
         if(!userExists) {
 
@@ -59,13 +62,15 @@ export class SignupPage {
 
             delete formUser.password;
 
-            formUser.uid = authUser.uid;
+            formUser.uid  = authUser.uid;
+            formUser.slug = slug;
 
             this.userService.create(formUser)
               .then(() => {
                 console.log('Usuário cadastrado com sucesso!');
-                this.navCtrl.setRoot(ProfilePage, {
-                  userid: authUser.uid
+                this.navCtrl.setRoot(HomePage, {
+                  userid: authUser.uid,
+                  slug: slug
                 });
                 loading.dismiss();
               }).catch((error: any) => {

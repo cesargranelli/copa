@@ -1,4 +1,4 @@
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, LoadingController, Loading } from "ionic-angular";
 
@@ -8,6 +8,7 @@ import { IonicPage, NavController, NavParams, LoadingController, Loading } from 
   templateUrl: "profile.html"
 })
 export class ProfilePage {
+
   public foto: string = "false";
   public nome: string;
   public email: string;
@@ -16,29 +17,31 @@ export class ProfilePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private fireBase: AngularFireDatabase,
-    private _loadingCtrl: LoadingController
+    public db: AngularFirestore,
+    public _loadingCtrl: LoadingController
   ) {}
 
   ionViewDidLoad() {
-    console.log(this.navParams);
 
-    let loading = this.showLoading();
+//    let loading = this.showLoading();
 
-    this.fireBase.database
-      .ref(`users/${this.navParams.get('userid')}`)
-      .once('value')
-      .then(snapshotUser => {
-        this.nome = snapshotUser.val().name;
-        this.email = snapshotUser.val().email;
-        this.fireBase.database
-          .ref(`players/${snapshotUser.val().username}`)
-          .once('value')
-          .then(snapshotPlayer => {
-            this.foto = snapshotPlayer.val().foto;
-            this.nick = snapshotPlayer.val().nickname;
-            loading.dismiss();
-          });
+    this.db
+      .collection("users")
+      .doc(this.navParams.get('userid'))
+      .valueChanges()
+      .first()
+      .subscribe(user => {
+        this.nome = user.name;
+        this.email = user.email;
+        console.log(user);
+//        this.db
+//          .ref(`players/${snapshotUser.val().username}`)
+//          .once('value')
+//          .then(snapshotPlayer => {
+//            this.foto = snapshotPlayer.val().foto;
+//            this.nick = snapshotPlayer.val().nickname;
+//            loading.dismiss();
+//          });
       });
   }
 
