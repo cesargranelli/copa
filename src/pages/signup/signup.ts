@@ -19,6 +19,9 @@ export class SignupPage {
 
   signupForm: FormGroup;
 
+  email: string = '';
+  password: string = '';
+
   constructor(
     public alertCtrl: AlertController,
     public authService: AuthProvider,
@@ -39,6 +42,9 @@ export class SignupPage {
       email: ['', [Validators.compose([Validators.required, Validators.pattern(emailRegex)])]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    this.email = this.navParams.get('email');
+    this.password = this.navParams.get('password');
 
   }
 
@@ -91,6 +97,8 @@ export class SignupPage {
           loading.dismiss();
 
         }
+
+        loading.dismiss();
 
       });
   }

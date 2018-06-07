@@ -35,7 +35,9 @@
               [value]="match.homeScore"
               [id]="match.homeSlug"
               required
-              pattern="^[0-9]" />
+              pattern="^[0-9]"
+              autocomplete="off"
+              [disabled]="dateHoje>dateFech">
           </ion-col>
           <ion-col text-center col-1>X</ion-col>
           <ion-col text-center col-2>
@@ -43,7 +45,9 @@
               [value]="match.awayScore"
               [id]="match.awaySlug"
               required
-              pattern="^[0-9]" />
+              pattern="^[0-9]"
+              autocomplete="off"
+              [disabled]="dateHoje>dateFech">
           </ion-col>
           <ion-col>
             <img [src]="match.awayLogo" />

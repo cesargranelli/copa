@@ -12,10 +12,8 @@ import { HomePage } from '../pages/home/home';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
-import { PalpitePage } from '../pages/palpite/palpite';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -39,14 +37,13 @@ const firebaseAppConfig: FirebaseAppConfig = {
     MyApp,
     HomePage,
     HunchPage,
-    //PalpitePage,
     ProfilePage,
     SigninPage,
     SignupPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
     BrowserModule,
+    IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseAppConfig),
     AngularFireStorageModule,
     AngularFirestoreModule,
@@ -59,7 +56,6 @@ const firebaseAppConfig: FirebaseAppConfig = {
     MyApp,
     HomePage,
     HunchPage,
-    //PalpitePage,
     ProfilePage,
     SigninPage,
     SignupPage

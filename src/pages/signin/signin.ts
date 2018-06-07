@@ -54,7 +54,7 @@ export class SigninPage {
             .doc(this.authService.userUid)
             .valueChanges()
             .first()
-            .subscribe(user => {
+            .subscribe((user: User) => {
               this.navCtrl.setRoot(HomePage, {
                 userid: this.authService.userUid,
                 slug: user.slug
@@ -72,7 +72,10 @@ export class SigninPage {
         loading.dismiss();
 
         if (error.code == 'auth/user-not-found') {
-          this.navCtrl.push(SignupPage);
+          this.navCtrl.push(SignupPage, {
+            email: this.signinForm.value.email,
+            password: this.signinForm.value.password
+          });
         } else {
           this.showAlert(error.message);
         }
@@ -81,7 +84,10 @@ export class SigninPage {
   }
 
   onSignup(): void {
-    this.navCtrl.push(SignupPage);
+    this.navCtrl.push(SignupPage, {
+      email: this.signinForm.value.email,
+      password: this.signinForm.value.password
+    });
   }
 
   private showLoading(): Loading {

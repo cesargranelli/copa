@@ -8,6 +8,8 @@ import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { SigninPage } from '../pages/signin/signin';
 
+import { UserProvider } from './../providers/user/user';
+
 @Component({
   selector: 'myapp',
   templateUrl: 'app.html'
@@ -26,7 +28,8 @@ export class MyApp {
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
+    public userService: UserProvider
   ) {
     platform.ready().then(() => {
       statusBar.styleDefault();

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertController, Loading, LoadingController, IonicPage, NavController, NavParams, Platform } from "ionic-angular";
 
 import { AngularFirestore } from "angularfire2/firestore";
@@ -29,6 +29,10 @@ export class HunchPage {
   public matches$: Observable<any>;
 
   hunchForm: FormGroup;
+
+  // Teste
+  dateHoje: number = new Date().getTime();
+  dateFech: number;
 
   constructor(
     private navCtrl: NavController,
@@ -63,7 +67,10 @@ export class HunchPage {
   }
 
   matchesDate(date) {
+    this.dateFech = new Date(Date.UTC(date.substr(0, 4), date.substr(5, 2), date.substr(8, 2))).getTime();
+
     let dateMathes = date.substr(8, 2) + date.substr(5, 2) + date.substr(0, 4);
+
     this.db
       .collection("hunches")
       .doc(this.slug)
@@ -83,6 +90,7 @@ export class HunchPage {
     let dateFim = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))+1).toString().substring(0, 10);
 
     this.matches$ = this.http.get(`${this.basepath}/u-tournament/16/season/7528/matches/week/${dateIni}/${dateFim}`);
+    //this.matches$ = this.http.get(`api_week.php?dateIni=${dateIni}&dateFim=${dateFim}`);
     this.matches$.subscribe(matches => {
       for (let tournament in matches.weekMatches.tournaments) {
         for (let event in matches.weekMatches.tournaments[tournament].events) {

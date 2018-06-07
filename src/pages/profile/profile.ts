@@ -1,6 +1,7 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, LoadingController, Loading } from "ionic-angular";
+import { User } from '../../models/user';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,7 @@ export class ProfilePage {
       .doc(this.navParams.get('userid'))
       .valueChanges()
       .first()
-      .subscribe(user => {
+      .subscribe((user: User) => {
         this.nome = user.name;
         this.email = user.email;
         console.log(user);
