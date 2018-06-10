@@ -6,32 +6,60 @@
 
 </ion-header>
 
-
 <ion-content>
 
-  <button ion-button full outline disabled="true" large>Rodada 1</button>
-
   <ion-card>
-    <ion-grid>
-      <ion-row>
-      <ion-col text-center>SÁB 10/06/2018 LOCAL 16h</ion-col>
-      </ion-row>
-      <ion-row align-items-center>
-        <ion-col>
-          <img src="https://www.sofascore.com/images/team-logo/football_4748.png" />
-        </ion-col>
-        <ion-col text-center col-2>
-          <input class="ipt-gol" text-center type="text" value="" />
-        </ion-col>
-        <ion-col text-center col-1>X</ion-col>
-        <ion-col text-center col-2>
-          <input class="ipt-gol" type="text" text-center value="" />
-        </ion-col>
-        <ion-col>
-          <img src="https://www.sofascore.com/images/team-logo/football_4715.png" />
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-list>
+      <ion-item>
+        <ion-select [(ngModel)]="selectDefault" (ionChange)="matchesDate($event)">
+          <ion-label>Escolha uma data...</ion-label>
+          <ion-option *ngFor="let select of dates$ | async">{{ select.date }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
   </ion-card>
+
+  <form #hunchForm="ngForm" (ngSubmit)="onSubmit()">
+
+    <ion-card *ngFor="let match of matches$ | async">
+      <ion-grid [id]="match.id">
+        <ion-row>
+          <ion-col text-center [id]="match.formatedStartDate">{{ match.formatedStartDate }} {{ match.startTime }}</ion-col>
+        </ion-row>
+        <ion-row align-items-center>
+          <ion-col>
+            <img [src]="match.homeLogo" />
+          </ion-col>
+          <ion-col text-center col-2>
+            <input class="ipt-gol" text-center type="text"
+              [value]="match.homeScore"
+              [id]="match.homeSlug"
+              required
+              pattern="^[0-9]"
+              autocomplete="off"
+              [disabled]="dateFech<=dateHoje">
+          </ion-col>
+          <ion-col text-center col-1>X</ion-col>
+          <ion-col text-center col-2>
+            <input class="ipt-gol" text-center type="text"
+              [value]="match.awayScore"
+              [id]="match.awaySlug"
+              required
+              pattern="^[0-9]"
+              autocomplete="off"
+              [disabled]="dateFech<=dateHoje">
+          </ion-col>
+          <ion-col>
+            <img [src]="match.awayLogo" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+
+    <div padding>
+      <button ion-button full large type="submit">Gravar</button>
+    </div>
+
+  </form>
 
 </ion-content>

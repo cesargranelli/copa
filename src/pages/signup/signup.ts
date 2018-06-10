@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 
 import 'rxjs/add/operator/first';
-
-import { HomePage } from '../home/home';
 
 import { AuthProvider } from '../../providers/auth/auth';
 import { UserProvider } from '../../providers/user/user';
 
 import { User } from '../../models/user';
+
+import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
   selector: 'page-signup',
@@ -32,13 +33,13 @@ export class SignupPage {
     public userService: UserProvider
   ) {
 
-    let usernameRegex = /^[a-zA-Z ]+$/;
+    let nicknameRegex = /^[a-zA-Z ]+$/;
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     this.signupForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(usernameRegex)]],
+      nickname: ['', [Validators.required, Validators.minLength(3), Validators.pattern(nicknameRegex)]],
       email: ['', [Validators.compose([Validators.required, Validators.pattern(emailRegex)])]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -54,8 +55,12 @@ export class SignupPage {
 
     let formUser = this.signupForm.value;
     let loading: Loading = this.showLoading();
-    let username: string = formUser.username;
-    let slug: string = username.toLowerCase().replace(" ", "-");
+    let nickname: string = formUser.nickname;
+    let slug: string = nickname.toLowerCase().replace(" ", "-");
+    let foto: string = null;
+    let position: number = null;
+    let total: number = null;
+    let round: number = null;
 
     this.userService.userExists(slug).first().subscribe((userExists: boolean) => {
 
@@ -70,11 +75,15 @@ export class SignupPage {
 
             formUser.uid  = authUser.uid;
             formUser.slug = slug;
+            formUser.foto = foto;
+            formUser.position = position;
+            formUser.total = total;
+            formUser.round = round;
 
             this.userService.create(formUser)
               .then(() => {
                 console.log('Usuário cadastrado com sucesso!');
-                this.navCtrl.setRoot(HomePage, {
+                this.navCtrl.setRoot(DashboardPage, {
                   userid: authUser.uid,
                   slug: slug
                 });
@@ -93,7 +102,7 @@ export class SignupPage {
 
         } else {
 
-          this.showAlert(`O username ${username} já está sendo usado em outra conta!`);
+          this.showAlert(`O time ${nickname} já está sendo usado em outra conta!`);
           loading.dismiss();
 
         }

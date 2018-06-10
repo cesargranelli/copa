@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 
 import 'rxjs/add/operator/first';
 
-import { HomePage } from '../home/home';
+import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
 import { AuthProvider } from '../../providers/auth/auth';
@@ -55,7 +56,7 @@ export class SigninPage {
             .valueChanges()
             .first()
             .subscribe((user: User) => {
-              this.navCtrl.setRoot(HomePage, {
+              this.navCtrl.setRoot(DashboardPage, {
                 userid: this.authService.userUid,
                 slug: user.slug
               });

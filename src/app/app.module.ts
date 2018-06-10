@@ -7,14 +7,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
-import { HunchPage } from '../pages/hunch/hunch';
-import { HomePage } from '../pages/home/home';
+import { ApostaPage } from '../pages/aposta/aposta';
+import { DashboardPage } from '../pages/dashboard/dashboard';
+import { PalpitePage } from '../pages/palpite/palpite';
+import { ProfilePage } from '../pages/profile/profile';
+import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
-import { ProfilePage } from '../pages/profile/profile';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-
 
 import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
@@ -35,9 +36,11 @@ const firebaseAppConfig: FirebaseAppConfig = {
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    HunchPage,
+    ApostaPage,
+    DashboardPage,
+    PalpitePage,
     ProfilePage,
+    ResultadoPage,
     SigninPage,
     SignupPage
   ],
@@ -54,9 +57,11 @@ const firebaseAppConfig: FirebaseAppConfig = {
   ],
   entryComponents: [
     MyApp,
-    HomePage,
-    HunchPage,
+    ApostaPage,
+    DashboardPage,
+    PalpitePage,
     ProfilePage,
+    ResultadoPage,
     SigninPage,
     SignupPage
   ],

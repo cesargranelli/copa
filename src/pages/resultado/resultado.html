@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Resultados</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="openNavDetailsPage(item)" icon-start>
+      <ion-icon [name]="'logo-' + item.icon" [ngStyle]="{'color': item.color}" item-start></ion-icon>
+      {{ item.title }}
+    </button>
+  </ion-list>
+
+</ion-content>

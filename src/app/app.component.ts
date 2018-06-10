@@ -3,9 +3,10 @@ import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HunchPage } from '../pages/hunch/hunch';
+import { ApostaPage } from '../pages/aposta/aposta';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
+import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
 
 import { UserProvider } from './../providers/user/user';
@@ -22,7 +23,9 @@ export class MyApp {
 
   public paginas = [
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
-    { titulo: 'Palpite', componente: HunchPage, icone: 'clipboard' }
+    { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
+    { titulo: 'Aposta', componente: ApostaPage, icone: 'eye' },
+    { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' }
   ];
 
   constructor(

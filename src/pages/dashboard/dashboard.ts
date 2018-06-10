@@ -1,31 +1,33 @@
 import { Component } from '@angular/core';
+
 import { NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+
 import { AngularFirestore } from 'angularfire2/firestore';
+
 import { HttpClient } from '@angular/common/http';
-import { Player } from '../../models/player';
+
 import { User } from '../../models/user';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-dashboard',
+  templateUrl: 'dashboard.html'
 })
-export class HomePage {
+export class DashboardPage {
 
   public userid;
   public slug;
 
-  public player: Player;
   public user: User;
 
   constructor(
     public db: AngularFirestore,
     public http: HttpClient,
     public navCtrl: NavController,
-    private _navParams: NavParams,
-    private _loadingCtrl: LoadingController
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController
   ) {
-    this.userid = this._navParams.get('userid');
-    this.slug = this._navParams.get('slug');
+    this.userid = this.navParams.get('userid');
+    this.slug = this.navParams.get('slug');
   }
 
   ionViewDidLoad() {
@@ -36,6 +38,7 @@ export class HomePage {
       .collection("users")
       .doc(this.userid)
       .valueChanges()
+      .first()
       .subscribe((user: User) => {
         this.user = user;
         loading.dismiss();
@@ -44,7 +47,7 @@ export class HomePage {
   }
 
   private showLoading(): Loading {
-    let loading: Loading = this._loadingCtrl.create({
+    let loading: Loading = this.loadingCtrl.create({
       content: 'Por favor aguarde...'
     });
 

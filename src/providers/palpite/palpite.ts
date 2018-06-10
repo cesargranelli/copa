@@ -7,7 +7,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class HunchProvider {
+export class PalpiteProvider {
 
   private basepath = "/api";
 
