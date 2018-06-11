@@ -19,7 +19,7 @@
     </ion-list>
   </ion-card>
 
-  <form #hunchForm="ngForm" (ngSubmit)="onSubmit()">
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
 
     <ion-card *ngFor="let match of matches$ | async">
       <ion-grid [id]="match.id">
@@ -53,6 +53,7 @@
             <img [src]="match.awayLogo" />
           </ion-col>
         </ion-row>
+        <ion-icon name="checkmark-circle" color="success" *ngIf="match.saved"></ion-icon>
       </ion-grid>
     </ion-card>
 

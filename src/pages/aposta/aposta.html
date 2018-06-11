@@ -6,7 +6,27 @@
 
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
+  <ion-card *ngFor="let aposta of apostas$ | async">
+    <button ion-item>
+      <ion-grid [id]="aposta.id">
+        <ion-row>
+          <ion-col text-center>{{ aposta.formatedStartDate }} {{ aposta.startTime }}</ion-col>
+        </ion-row>
+        <ion-row align-items-center>
+          <ion-col>
+            <img [src]="aposta.homeLogo" />
+          </ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="aposta.homeSlug">{{ aposta?.homeScore }}</ion-col>
+          <ion-col text-center col-1>X</ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="aposta.awaySlug">{{ aposta?.awayScore }}</ion-col>
+          <ion-col>
+            <img [src]="aposta.awayLogo" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </button>
+  </ion-card>
 
 </ion-content>

@@ -96,7 +96,7 @@ export class PalpitePage {
     let dateIni = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))).toString().substring(0, 10);
     let dateFim = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))+1).toString().substring(0, 10);
 
-    this.matches$ = this.http.get(`${this.basepath}/u-tournament/16/season/7528/matches/week/${dateIni}/${dateFim}`);
+    this.matches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/week/${dateIni}/${dateFim}`);
     //this.matches$ = this.http.get(`api_week.php?dateIni=${dateIni}&dateFim=${dateFim}`);
     this.matches$.subscribe(matches => {
       for (let tournament in matches.weekMatches.tournaments) {
@@ -161,27 +161,29 @@ export class PalpitePage {
       let awayScore = event.srcElement.children.item(i).getElementsByTagName("input").item(1).value;
       let update    = String(new Date().getTime());
 
-      this.db
-        .collection("hunches")
-        .doc(this.slug)
-        .collection(startDate.replace(/\./g, ""))
-        .doc(docId)
-        .update({
-          homeScore: homeScore,
-          awayScore: awayScore,
-          update: update
-        })
-        .catch(error => {
-          this.showAlert(error);
-          setTimeout(() => {
-            loading.dismiss();
-          }, 3000);
-        });
+      if (homeScore != "" && awayScore != "") {
+        this.db
+          .collection("hunches")
+          .doc(this.slug)
+          .collection(startDate.replace(/\./g, ""))
+          .doc(docId)
+          .update({
+            homeScore: homeScore,
+            awayScore: awayScore,
+            update: update,
+            saved: true
+          })
+          .catch(error => {
+            this.showAlert(error);
+            setTimeout(() => {
+              loading.dismiss();
+            }, 2000);
+          });
+      }
     }
 
     setTimeout(() => {
       loading.dismiss();
-      this.showAlert(`Os palpites foram gravados com sucesso!`);
     }, 2000);
 
   }

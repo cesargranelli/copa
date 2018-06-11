@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the ApostaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Observable } from 'rxjs/Observable';
+import { ApostaProvider } from '../../providers/aposta/aposta';
 
 @IonicPage()
 @Component({
@@ -15,11 +11,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ApostaPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  apostas$: Observable<any>;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public ap: ApostaProvider
+  ) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ApostaPage');
+    //this.apostas$ = this.ap.apostas();
+    this.ap.apostas();
   }
 
 }

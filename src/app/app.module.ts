@@ -23,6 +23,8 @@ import { UserProvider } from '../providers/user/user';
 import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
+import { ResultadoProvider } from '../providers/resultado/resultado';
+import { ApostaProvider } from '../providers/aposta/aposta';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
@@ -71,7 +73,9 @@ const firebaseAppConfig: FirebaseAppConfig = {
     StatusBar,
     SplashScreen,
     UserProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ResultadoProvider,
+    ApostaProvider
   ]
 })
 export class AppModule {}
