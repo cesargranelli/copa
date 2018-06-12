@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { AlertController, Loading, LoadingController, Platform } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 
+import { Aposta } from '../../models/aposta';
+import { map } from 'rxjs/operator/map';
+
 @Injectable()
 export class ApostaProvider {
+
+  apostaColecao: AngularFirestoreCollection<Aposta>;
+
+  aposta: Observable<Aposta[]>;
 
   constructor(
     public http: HttpClient,
@@ -20,9 +27,9 @@ export class ApostaProvider {
   }
 
   apostas()/*: Observable<any>*/ {
-    this.db.collection('hunches').valueChanges().subscribe(slug => {
-      console.log(slug);
-    });
+    this.apostaColecao = this.db.collection<Aposta>("hunches");
+    this.aposta = this.apostaColecao.snapshotChanges.arguments;
+    console.log(this.aposta);
   }
 
   private showLoading(): Loading {

@@ -18,7 +18,7 @@ export class ResultadoPage {
 
   selectDefault: string = "2018-06-14";
 
-  datas$: Observable<any>;
+  rounds$: Observable<any>;
   jogos$: Observable<any>;
 
   constructor(
@@ -29,12 +29,12 @@ export class ResultadoPage {
   ) { }
 
   ionViewDidLoad() {
-    this.datas$ = this.db.collection("dates").valueChanges();
+    this.rounds$ = this.db.collection("rounds").valueChanges();
     this.jogos$ = this.rs.resultados(this.selectDefault);
   }
 
-  partidas(date) {
-    this.jogos$ = this.rs.resultados(date);
+  partidas(id) {
+    this.jogos$ = this.rs.resultados(id);
   }
 
   apostas(jogo) {

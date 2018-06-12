@@ -16,19 +16,18 @@ import { Observable } from "rxjs";
 })
 export class PalpitePage {
 
+  public rounds$: Observable<any>;
   public userid;
   public slug;
 
-  public dateStart: String = "2018-06-14"; // Data início da copa
-  public dateEnd: String = "2018-07-15"; // Data fim da copa
-  public dateFrom: String = "2018-06-14";
-  public dateTo: String = "2018-06-15";
+  public idRound: string = "1";
 
   public basepath = "/api"; // Para teste em desenvolvimento
 
-  public selectDefault: string = "2018-06-14";
+  public selectDefault: string = "Rodada 1";
   public dates$: Observable<any>;
   public matches$: Observable<any>;
+  public roundMatches$: Observable<any>;
 
   hunchForm: FormGroup;
 
@@ -55,57 +54,52 @@ export class PalpitePage {
       this.basepath = "https://www.sofascore.com";
     }
 
-    if (new Date().getTime() >= new Date(this.dateEnd.toString()).getTime()) {
-      this.dateFrom = this.dateEnd;
-      this.dateTo = new Date(new Date(this.dateEnd.toString()).setHours(24)).toString();
-    } else if (new Date().getTime() >= new Date(this.dateStart.toString()).getTime()) {
-      this.dateFrom = new Date().toString();
-      this.dateTo = new Date(new Date().setHours(24)).toString();
-    }
   }
 
   ionViewDidLoad() {
-    this.matchesDate(this.dateFrom);
-    this.dates$ = this.db.collection("dates").valueChanges();
+    this.rounds$ = this.db.collection("rounds").valueChanges();
+    this.roundMatches(this.idRound);
   }
 
-  matchesDate(date) {
+  roundMatches(id?: string) {
 
-    this.dateFech = new Date(Date.UTC(date.substr(0, 4), date.substr(5, 2), date.substr(8, 2))).getTime();
-
-    let dateMathes = date.substr(8, 2) + date.substr(5, 2) + date.substr(0, 4);
+    (this.selectDefault == "Rodada 1") ? id = "1" : null;
+    (this.selectDefault == "Rodada 2") ? id = "2" : null;
+    (this.selectDefault == "Rodada 3") ? id = "3" : null;
+    (this.selectDefault == "Oitavas 1/8") ? id = "4" : null;
+    (this.selectDefault == "Quartas 1/4") ? id = "5" : null;
+    (this.selectDefault == "Semifinais") ? id = "6" : null;
+    (this.selectDefault == "Final") ? id = "7" : null;
 
     this.db
       .collection("hunches")
       .doc(this.slug)
-      .collection(dateMathes)
+      .collection(id)
       .valueChanges()
       .subscribe(matches => {
         if (!matches.length) {
-          this.matchesForDate(date);
+          this.addMatches(id);
         } else {
-          this.matches$ = this.matches(date);
+          this.matches$ = this.matches(id);
         }
       });
 
   }
 
-  matchesForDate(date) {
+  addMatches(idRound) {
 
     let loading: Loading = this.showLoading();
-    let dateIni = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))).toString().substring(0, 10);
-    let dateFim = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))+1).toString().substring(0, 10);
 
-    this.matches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/week/${dateIni}/${dateFim}`);
-    //this.matches$ = this.http.get(`api_week.php?dateIni=${dateIni}&dateFim=${dateFim}`);
-    this.matches$.subscribe(matches => {
-      for (let tournament in matches.weekMatches.tournaments) {
-        for (let event in matches.weekMatches.tournaments[tournament].events) {
-          let match = matches.weekMatches.tournaments[tournament].events[event];
+    this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
+    //this.matches$ = this.http.get(`api_round.php?id=${idRound}`);
+    this.roundMatches$.subscribe(matches => {
+      for (let tournament in matches.roundMatches.tournaments) {
+        for (let event in matches.roundMatches.tournaments[tournament].events) {
+          let match = matches.roundMatches.tournaments[tournament].events[event];
           this.db
             .collection("hunches")
             .doc(this.slug)
-            .collection(match.formatedStartDate.replace(/\./g, ""))
+            .collection(String(match.roundInfo.round))
             .doc(String(match.id))
             .set({
               id: match.id,
@@ -132,7 +126,7 @@ export class PalpitePage {
       }
     });
 
-    this.matches$ = this.matches(date);
+    this.matches$ = this.matches(idRound);
 
     setTimeout(() => {
       loading.dismiss();
@@ -140,13 +134,20 @@ export class PalpitePage {
 
   }
 
-  matches(date): Observable<any> {
-    let dateMathes = date.toString().substr(8, 2) + date.toString().substr(5, 2) + date.toString().substr(0, 4);
+  matches(idRound): Observable<any> {
+
+    this.db.collection("rounds", ref => ref.where("round", "==", Number(idRound)))
+           .valueChanges()
+           .subscribe(
+             (date: any) => {
+               this.dateFech = new Date(date[0].closed).getTime();
+              }
+            );
 
     return this.db
              .collection("hunches")
              .doc(this.slug)
-             .collection(dateMathes, ref => ref.orderBy("startTime"))
+             .collection(idRound, ref => ref.orderBy("startTimestamp"))
              .valueChanges();
   }
 
@@ -156,7 +157,7 @@ export class PalpitePage {
 
     for (let i = 0; i < event.srcElement.children.length -1; i++) {
       let docId     = event.srcElement.children.item(i).getElementsByTagName("ion-grid").item(0).id;
-      let startDate = event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id;
+      let idRound   = event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id;
       let homeScore = event.srcElement.children.item(i).getElementsByTagName("input").item(0).value;
       let awayScore = event.srcElement.children.item(i).getElementsByTagName("input").item(1).value;
       let update    = String(new Date().getTime());
@@ -165,7 +166,7 @@ export class PalpitePage {
         this.db
           .collection("hunches")
           .doc(this.slug)
-          .collection(startDate.replace(/\./g, ""))
+          .collection(idRound)
           .doc(docId)
           .update({
             homeScore: homeScore,
