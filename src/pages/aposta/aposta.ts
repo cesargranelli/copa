@@ -11,7 +11,7 @@ import { ApostaProvider } from '../../providers/aposta/aposta';
 })
 export class ApostaPage {
 
-  apostas$: Observable<any>;
+  apostas$;
 
   constructor(
     public navCtrl: NavController,

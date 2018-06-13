@@ -12,6 +12,7 @@ export interface Aposta {
   id: number,
   round: number,
   saved: true,
+  slug,
   startTime: string,
   startTimeStamp: number,
   update: string

@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-card *ngFor="let aposta of apostas$ | async">
+{{apostas$}}
+  <ion-card *ngFor="let aposta of apostas$">
     <button ion-item>
       <ion-grid [id]="aposta.id">
         <ion-row>
