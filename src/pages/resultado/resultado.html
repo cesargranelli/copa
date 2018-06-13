@@ -13,7 +13,7 @@
       <ion-item>
         <ion-select [(ngModel)]="selectDefault" (ionChange)="partidas($event)">
           <ion-label>Escolha uma data...</ion-label>
-          <ion-option *ngFor="let option of rounds$ | async">{{ option.name }}</ion-option>
+          <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.prev>dateNow">{{ option.name }}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -28,12 +28,14 @@
         <ion-row align-items-center>
           <ion-col>
             <img [src]="jogo.homeLogo" />
+            <p text-center>{{ jogo.homeTeam }}</p>
           </ion-col>
           <ion-col text-center col-2 style="font-size: 25px" [id]="jogo.homeSlug">{{ jogo.homeScore }}</ion-col>
           <ion-col text-center col-1>X</ion-col>
           <ion-col text-center col-2 style="font-size: 25px" [id]="jogo.awaySlug">{{ jogo.awayScore }}</ion-col>
           <ion-col>
             <img [src]="jogo.awayLogo" />
+            <p text-center>{{ jogo.awayTeam }}</p>
           </ion-col>
         </ion-row>
       </ion-grid>

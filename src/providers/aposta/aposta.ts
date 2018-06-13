@@ -22,14 +22,11 @@ export class ApostaProvider {
     public db: AngularFirestore,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController
-  ) {
-    console.log('Hello ApostaProvider Provider');
-  }
+  ) { }
 
-  apostas()/*: Observable<any>*/ {
-    this.apostaColecao = this.db.collection<Aposta>("hunches");
-    this.aposta = this.apostaColecao.snapshotChanges.arguments;
-    console.log(this.aposta);
+  apostas(jogo)/*: Observable<any>*/ {
+    console.log(this.db.collection("hunches").ref.get());
+    //console.log(jogo);
   }
 
   private showLoading(): Loading {

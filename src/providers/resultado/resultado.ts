@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
-import { AlertController, Loading, LoadingController, Platform } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -16,15 +16,13 @@ export class ResultadoProvider {
 
   jogos$: Observable<Partida[]>;
 
-  match$: Observable<any>;
+  roundMatches$: Observable<any>;
 
   basepath = "/api"; // Para teste em desenvolvimento
 
   constructor(
     public http: HttpClient,
     public db: AngularFirestore,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
     public platform: Platform
   ) {
     if (this.platform.is("cordova")) {
@@ -32,23 +30,41 @@ export class ResultadoProvider {
     }
   }
 
-  adicionarPartidas(date) {
-    console.log('Adicionar: ' + date);
+  resultados(round?: string): Observable<any> {
 
-    let loading: Loading = this.showLoading();
-    let dateIni = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))).toString().substring(0, 10);
-    let dateFim = Date.UTC(Number(date.substr(0, 4)), Number(date.substr(5, 2))-1, Number(date.substr(8, 2))+1).toString().substring(0, 10);
+    let id: string;
 
-    this.match$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/week/${dateIni}/${dateFim}`);
-    //this.match$ = this.http.get(`api_week.php?dateIni=${dateIni}&dateFim=${dateFim}`);
-    this.match$.subscribe(matches => {
-      for (let tournament in matches.weekMatches.tournaments) {
-        for (let event in matches.weekMatches.tournaments[tournament].events) {
-          let match = matches.weekMatches.tournaments[tournament].events[event];
+    (round == "Rodada 1") ? id = "1" : null;
+    (round == "Rodada 2") ? id = "2" : null;
+    (round == "Rodada 3") ? id = "3" : null;
+    (round == "Oitavas 1/8") ? id = "4" : null;
+    (round == "Quartas 1/4") ? id = "5" : null;
+    (round == "Semifinais") ? id = "6" : null;
+    (round == "Final") ? id = "7" : null;
+
+    this.db.collection("resultados").doc(id).collection(id).valueChanges()
+      .subscribe(partidas => {
+        if (!partidas.length) {
+          this.adicionarPartidas(id);
+        }
+      });
+
+      return this.partidas(id);
+
+  }
+
+  adicionarPartidas(idRound) {
+
+    this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
+    //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
+    this.roundMatches$.subscribe(matches => {
+      for (let tournament in matches.roundMatches.tournaments) {
+        for (let event in matches.roundMatches.tournaments[tournament].events) {
+          let match = matches.roundMatches.tournaments[tournament].events[event];
           this.db
             .collection("resultados")
-            .doc(match.formatedStartDate.replace(/\./g, ""))
-            .collection(match.formatedStartDate.replace(/\./g, ""))
+            .doc(String(match.roundInfo.round))
+            .collection(String(match.roundInfo.round))
             .doc(String(match.id))
             .set({
               awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
@@ -75,52 +91,16 @@ export class ResultadoProvider {
       }
     });
 
-    setTimeout(() => {
-      loading.dismiss();
-    }, 2000);
-
   }
 
-  resultados(date): Observable<any> {
-
-    let dataPartidas = date.substr(8, 2) + date.substr(5, 2) + date.substr(0, 4);
-
-    this.db.collection("resultados").doc(dataPartidas).collection(dataPartidas).valueChanges()
-      .subscribe(partidas => {
-        if (!partidas.length) {
-          this.adicionarPartidas(date);
-        }
-      });
-
-      return this.partidas(date);
-
-  }
-
-  partidas(date): Observable<any> {
-    let dateMathes = date.toString().substr(8, 2) + date.toString().substr(5, 2) + date.toString().substr(0, 4);
+  partidas(idRound): Observable<any> {
 
     return this.db
              .collection("resultados")
-             .doc(dateMathes)
-             .collection(dateMathes, ref => ref.orderBy("startTime"))
+             .doc(idRound)
+             .collection(idRound, ref => ref.orderBy("startTime"))
              .valueChanges();
-  }
 
-  private showLoading(): Loading {
-    let loading: Loading = this.loadingCtrl.create({
-      content: 'Por favor aguarde...'
-    });
-
-    loading.present();
-
-    return loading;
-  }
-
-  private showAlert(message: string): void {
-    this.alertCtrl.create({
-      message: message,
-      buttons: ['Ok']
-    }).present();
   }
 
 }

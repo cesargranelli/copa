@@ -21,7 +21,7 @@ export class ApostaPage {
 
   ionViewDidLoad() {
     //this.apostas$ = this.ap.apostas();
-    this.ap.apostas();
+    this.ap.apostas(this.navParams.get('jogo'));
   }
 
 }

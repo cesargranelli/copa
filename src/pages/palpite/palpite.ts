@@ -32,6 +32,7 @@ export class PalpitePage {
   hunchForm: FormGroup;
 
   // Teste
+  dateNow: string = new Date().toISOString();
   dateHoje: number = new Date().getTime();
   dateFech: number;
 
@@ -91,7 +92,7 @@ export class PalpitePage {
     let loading: Loading = this.showLoading();
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
-    //this.matches$ = this.http.get(`api_round.php?id=${idRound}`);
+    //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
     this.roundMatches$.subscribe(matches => {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
