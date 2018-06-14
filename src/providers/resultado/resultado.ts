@@ -1,11 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Platform } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/operator/first';
 
 import { Partida } from '../../models/partida';
 
@@ -43,9 +44,14 @@ export class ResultadoProvider {
     (round == "Final") ? id = "7" : null;
 
     this.db.collection("resultados").doc(id).collection(id).valueChanges()
-      .subscribe(partidas => {
-        if (!partidas.length) {
+      .first()
+      .subscribe((partidas: Partida[]) => {
+        if (partidas.length == 0) {
+          console.log("Adicionar resultados!");
           this.adicionarPartidas(id);
+        } else {
+          console.log(partidas);
+          this.atualizarPartidas(id, partidas);
         }
       });
 
@@ -57,7 +63,7 @@ export class ResultadoProvider {
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    this.roundMatches$.subscribe(matches => {
+    this.roundMatches$.first().subscribe(matches => {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
           let match = matches.roundMatches.tournaments[tournament].events[event];
@@ -79,7 +85,8 @@ export class ResultadoProvider {
               id: match.id,
               round: match.roundInfo.round,
               startTime: match.startTime,
-              startTimestamp: match.startTimestamp
+              startTimestamp: match.startTimestamp,
+              changeTimestamp: match.changes.changeTimestamp
             })
             .then(function() {
               console.log("Partidas adicionadas com sucesso!");
@@ -93,12 +100,48 @@ export class ResultadoProvider {
 
   }
 
+  atualizarPartidas(idRound, partidas: Partida[]) {
+
+    this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
+    //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
+    this.roundMatches$.first().subscribe(matches => {
+      for (let tournament in matches.roundMatches.tournaments) {
+        for (let event in matches.roundMatches.tournaments[tournament].events) {
+          let match = matches.roundMatches.tournaments[tournament].events[event];
+          for (let i = 0; i < partidas.length; i++) {
+            if (partidas[i].id == match.id &&
+                partidas[i].changeTimestamp != match.changes.changeTimestamp) {
+              console.log("Atualizar resultados!");
+              this.db
+              .collection("resultados")
+              .doc(String(match.roundInfo.round))
+              .collection(String(match.roundInfo.round))
+              .doc(String(match.id))
+              .update({
+                awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,
+                homeScore: (match.homeScore.current == undefined) ? null : match.homeScore.current,
+                changeTimestamp: match.changes.changeTimestamp
+              })
+              .then(function() {
+                console.log("Partidas atualizadas com sucesso!");
+              })
+              .catch(function(error) {
+                console.error("Falha ao atualizar partidas: ", error);
+              });
+            }
+          }
+        }
+      }
+    });
+
+  }
+
   partidas(idRound): Observable<any> {
 
     return this.db
              .collection("resultados")
              .doc(idRound)
-             .collection(idRound, ref => ref.orderBy("startTime"))
+             .collection(idRound, ref => ref.orderBy("startTimestamp", "asc"))
              .valueChanges();
 
   }

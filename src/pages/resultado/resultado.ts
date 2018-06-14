@@ -34,14 +34,14 @@ export class ResultadoPage {
 
   ionViewDidLoad() {
 
-    let loading: Loading = this.showLoading();
+//    let loading: Loading = this.showLoading();
 
     this.rounds$ = this.db.collection("rounds").valueChanges();
     this.jogos$ = this.rs.resultados(this.selectDefault);
 
-    setTimeout(() => {
-      loading.dismiss();
-    }, 2000);
+//    setTimeout(() => {
+//      loading.dismiss();
+//    }, 2000);
 
   }
 

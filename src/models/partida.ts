@@ -12,6 +12,7 @@ export interface Partida {
   id: number,
   round: number,
   startTime: string,
-  startTimeStamp: number
+  startTimeStamp: number,
+  changeTimestamp: number
 
 }
