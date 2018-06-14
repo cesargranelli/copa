@@ -1,6 +1,9 @@
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from "ionic-angular";
+
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+
+import { AngularFirestore } from 'angularfire2/firestore';
+
 import { User } from '../../models/user';
 
 @IonicPage()
@@ -18,13 +21,10 @@ export class ProfilePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public db: AngularFirestore,
-    public _loadingCtrl: LoadingController
-  ) {}
+    public db: AngularFirestore
+  ) { }
 
   ionViewDidLoad() {
-
-//    let loading = this.showLoading();
 
     this.db
       .collection("users")
@@ -34,25 +34,7 @@ export class ProfilePage {
       .subscribe((user: User) => {
         this.nome = user.name;
         this.email = user.email;
-        console.log(user);
-//        this.db
-//          .ref(`players/${snapshotUser.val().username}`)
-//          .once('value')
-//          .then(snapshotPlayer => {
-//            this.foto = snapshotPlayer.val().foto;
-//            this.nick = snapshotPlayer.val().nickname;
-//            loading.dismiss();
-//          });
       });
   }
 
-  private showLoading(): Loading {
-    let loading: Loading = this._loadingCtrl.create({
-      content: 'Por favor aguarde...'
-    });
-
-    loading.present();
-
-    return loading;
-  }
 }

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { isDefined } from 'ionic-angular/util/util';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 

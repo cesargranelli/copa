@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import { ApostaProvider } from '../../providers/aposta/aposta';
+import { Aposta } from '../../models/aposta';
+import { User } from '../../models/user';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @IonicPage()
 @Component({
@@ -11,17 +14,19 @@ import { ApostaProvider } from '../../providers/aposta/aposta';
 })
 export class ApostaPage {
 
-  apostas$;
+  apostas;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public ap: ApostaProvider
+    public ap: ApostaProvider,
+    public db: AngularFirestore
   ) { }
 
   ionViewDidLoad() {
     //this.apostas$ = this.ap.apostas();
-    this.ap.apostas(this.navParams.get('jogo'));
+    this.apostas = this.ap.apostas(this.navParams.get('jogo'));
+
   }
 
 }

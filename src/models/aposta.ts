@@ -11,8 +11,9 @@ export interface Aposta {
   homeTeam: string,
   id: number,
   round: number,
+  nickname: string,
   saved: true,
-  slug,
+  slug: string,
   startTime: string,
   startTimeStamp: number,
   update: string

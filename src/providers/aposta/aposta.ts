@@ -14,7 +14,7 @@ import { User } from '../../models/user';
 @Injectable()
 export class ApostaProvider {
 
-  apostas$: Aposta[];
+  apostas$ = [];
 
   constructor(
     public http: HttpClient,
@@ -25,19 +25,21 @@ export class ApostaProvider {
 
   apostas(jogo)/*: Observable<any>*/ {
 
+    let i = 0;
+
     this.db.collection("users").valueChanges().subscribe(users => {
       users.map((user: User) => {
         this.db.collection("hunches").doc(user.slug).collection(String(jogo.round)).doc(String(jogo.id))
         .valueChanges().subscribe((game: Aposta) => {
-          if (!user.slug) {
-            game.slug = user.slug;
+          if (game) {
+            game.nickname = user.nickname;
+            this.apostas$[i++] = game;
           }
-          this.apostas$.push(game);
         });
       });
     });
 
-    console.log(this.apostas$);
+    return this.apostas$;
 
   }
 
