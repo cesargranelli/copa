@@ -31,6 +31,30 @@ export class SigninPage {
     public userService: UserProvider
   ) {
 
+    if (this.navParams.get("out")) {
+      this.logout();
+    }
+
+    this.authService.authenticated.then(() => {
+      let loading: Loading = this.showLoading();
+
+      this.userService.db
+            .collection("users")
+            .doc(this.authService.userUid)
+            .valueChanges()
+            .first()
+            .subscribe((user: User) => {
+              this.navCtrl.setRoot(DashboardPage, {
+                userid: this.authService.userUid,
+                slug: user.slug
+              });
+            });
+
+            loading.dismiss();
+    }).catch(() => {
+      console.log('Não logado');
+    });
+
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     this.signinForm = this.formBuilder.group({
@@ -106,6 +130,10 @@ export class SigninPage {
       message: message,
       buttons: ['Ok']
     }).present();
+  }
+
+  logout() {
+    this.authService.signout();
   }
 
 }

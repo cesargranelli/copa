@@ -23,7 +23,8 @@ export class MyApp {
   public paginas = [
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
     { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
-    { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' }
+    { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
+    { titulo: 'Sair', componente: SigninPage, icone: 'log-out' }
   ];
 
   constructor(
@@ -38,10 +39,13 @@ export class MyApp {
     });
   }
 
-  onPage(componente) {
+  onPage(componente, titulo) {
+    let signout = false;
+    (titulo == "Sair") ? signout = true : null;
     this.nav.push(componente, {
       userid: this.nav._views[0].data.userid,
-      slug: this.nav._views[0].data.slug
+      slug: this.nav._views[0].data.slug,
+      out: signout
     });
   }
 
