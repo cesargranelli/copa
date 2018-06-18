@@ -50,7 +50,6 @@ export class ResultadoProvider {
           console.log("Adicionar resultados!");
           this.adicionarPartidas(id);
         } else {
-          console.log(partidas);
           this.atualizarPartidas(id, partidas);
         }
       });

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 
 import { Platform } from 'ionic-angular';
 
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -13,8 +12,7 @@ export class PalpiteProvider {
 
   constructor(
     private http: HttpClient,
-    private platform: Platform,
-    private db: AngularFirestore
+    private platform: Platform
   ) {
     if(this.platform.is("cordova")) {
       this.basepath = 'https://www.sofascore.com';

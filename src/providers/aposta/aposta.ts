@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
-import { AlertController, Loading, LoadingController, Platform } from 'ionic-angular';
-
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operator/map';
-
 import { Aposta } from '../../models/aposta';
 import { User } from '../../models/user';
 
@@ -18,12 +13,10 @@ export class ApostaProvider {
 
   constructor(
     public http: HttpClient,
-    public db: AngularFirestore,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController
+    public db: AngularFirestore
   ) { }
 
-  apostas(jogo)/*: Observable<any>*/ {
+  apostas(jogo) {
 
     let i = 0;
 
@@ -33,6 +26,7 @@ export class ApostaProvider {
         .valueChanges().subscribe((game: Aposta) => {
           if (game) {
             game.nickname = user.nickname;
+            game.update = new Date(Number(game.update)).toLocaleString();
             this.apostas$[i++] = game;
           }
         });
@@ -41,23 +35,6 @@ export class ApostaProvider {
 
     return this.apostas$;
 
-  }
-
-  private showLoading(): Loading {
-    let loading: Loading = this.loadingCtrl.create({
-      content: 'Por favor aguarde...'
-    });
-
-    loading.present();
-
-    return loading;
-  }
-
-  private showAlert(message: string): void {
-    this.alertCtrl.create({
-      message: message,
-      buttons: ['Ok']
-    }).present();
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AlertController, Loading, LoadingController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Loading, LoadingController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ApostaPage } from '../aposta/aposta';
 
@@ -27,21 +27,20 @@ export class ResultadoPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public db: AngularFirestore,
-    public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public rs: ResultadoProvider
   ) { }
 
   ionViewDidLoad() {
 
-//    let loading: Loading = this.showLoading();
+    let loading: Loading = this.showLoading();
 
     this.rounds$ = this.db.collection("rounds").valueChanges();
     this.jogos$ = this.rs.resultados(this.selectDefault);
 
-//    setTimeout(() => {
-//      loading.dismiss();
-//    }, 2000);
+    setTimeout(() => {
+      loading.dismiss();
+    }, 1000);
 
   }
 
@@ -71,13 +70,6 @@ export class ResultadoPage {
     loading.present();
 
     return loading;
-  }
-
-  private showAlert(message: string): void {
-    this.alertCtrl.create({
-      message: message,
-      buttons: ['Ok']
-    }).present();
   }
 
 }
