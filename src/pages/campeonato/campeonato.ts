@@ -19,7 +19,7 @@ export class CampeonatoPage {
   ) { }
 
   ionViewDidLoad() {
-    this.cam.resultados();
+    this.cam.rodadas();
   }
 
 }
