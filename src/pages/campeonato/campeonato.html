@@ -23,17 +23,17 @@
     </ion-grid>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngFor="let campeonato of campeonato$ | async; let i = index">
     <button ion-item>
       <ion-grid>
         <ion-row align-items-center>
           <ion-col col-1>
             <ion-icon name="podium" color="green"></ion-icon>
           </ion-col>
-          <ion-col text-left col-5>Rockman-DX</ion-col>
-          <ion-col text-right col-2>2</ion-col>
-          <ion-col text-right col-2>3</ion-col>
-          <ion-col text-right col-2>4</ion-col>
+          <ion-col text-left col-5>{{ campeonato.nick }}</ion-col>
+          <ion-col text-right col-2>{{ campeonato.rodada }}</ion-col>
+          <ion-col text-right col-2>{{ campeonato.total }}</ion-col>
+          <ion-col text-right col-2>{{ i + 1 }}</ion-col>
           <ion-col></ion-col>
         </ion-row>
       </ion-grid>

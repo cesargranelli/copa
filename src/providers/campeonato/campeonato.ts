@@ -1,20 +1,18 @@
-import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 
 import { AngularFirestore } from "angularfire2/firestore";
 
+import { Observable } from "rxjs/Observable";
 import "rxjs/operator/first";
 
 import { Partida } from "../../models/partida";
 import { Rodada } from "../../models/rodada";
 import { User } from "../../models/user";
 import { Aposta } from "../../models/aposta";
+import { Usuario } from './../../models/usuario';
 
 @Injectable()
 export class CampeonatoProvider {
-  private users: User[][];
-  partidas$: Observable<Partida[]>;
-  palpites$: Observable<Partida[]>;
 
   constructor(private db: AngularFirestore) { }
 
@@ -27,11 +25,12 @@ export class CampeonatoProvider {
       .first()
       .subscribe((rounds: Rodada[]) => {
         rounds.forEach(round => {
-          let hoje = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
+          let hoje = "20180618";//new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
           let fech = round.closed.replace(/[- ]/g, "");
           let next = round.next.replace(/[- ]/g, "");
 
           round.status = "campeonato";
+
           if (hoje >= fech) {
             rodadas[round.round] = round;
             if (hoje >= fech && hoje < next) {
@@ -40,10 +39,16 @@ export class CampeonatoProvider {
             }
             console.log("Atualizar pontuações...");
             this.pontuacoes(round);
-            console.log(this.users);
           }
         });
       });
+
+    this.db
+      .collection("status")
+      .add({
+        datetime: new Date().getTime()
+      });
+
   }
 
   pontuacoes(rodada: Rodada) {
@@ -52,14 +57,15 @@ export class CampeonatoProvider {
       .collection("users")
       .valueChanges()
       .subscribe(users => {
-        users.map((user: User) => {
+        users.map((user: Usuario) => {
+          console.log("users");
           this.usuarios(user, rodada);
         });
       });
 
   }
 
-  usuarios(usuario: User, rodada: Rodada) {
+  usuarios(usuario: Usuario, rodada: Rodada) {
 
     this.db
       .collection("users" , ref => ref.where("slug", "==", usuario.slug))
@@ -67,12 +73,13 @@ export class CampeonatoProvider {
       .first()
       .subscribe(users => {
         users.map((user: User) => {
+          console.log("user");
           this.palpites(rodada, usuario);
         });
       });
   }
 
-  palpites(rodada: Rodada, usuario: User) {
+  palpites(rodada: Rodada, usuario: Usuario) {
 
     this.db
       .collection("hunches")
@@ -82,14 +89,22 @@ export class CampeonatoProvider {
       .first()
       .subscribe(partidas => {
         partidas.map((partida: Partida) => {
+          console.log("partida");
           this.resultados(rodada, usuario, partida);
         });
       });
   }
 
-  resultados(rodada: Rodada, usuario: User, partida: Partida) {
+  resultados(rodada: Rodada, usuario: Usuario, partida: Partida) {
 
-    let pontos = 0;
+    if (usuario.rodada == undefined) {
+      usuario.rodada = 0;
+    }
+
+    if (usuario.total == undefined) {
+      usuario.total = 0;
+    }
+
     this.db
     .collection("resultados")
     .doc(String(rodada.round))
@@ -107,13 +122,26 @@ export class CampeonatoProvider {
         ) {
 
           if (rodada.status == "rodada") {
-            pontos = pontos + this.somarPontos(rodada, usuario, partida, resultado);
-          } else {
-            pontos = pontos + this.somarPontos(rodada, usuario, partida, resultado);
+            usuario.rodada = usuario.rodada + this.somarPontos(rodada, usuario, partida, resultado);
           }
+          usuario.total = usuario.total + this.somarPontos(rodada, usuario, partida, resultado);
         }
+
       });
+      this.db
+        .collection("campeonato")
+        .doc(usuario.uid)
+        .set({
+          slug: usuario.slug,
+          nick: usuario.nickname,
+          uid: usuario.uid,
+          idgame: partida.id,
+          rodada: usuario.rodada,
+          total: usuario.total,
+          datetime: new Date().getTime()
+        });
     });
+    /*
     if (rodada.status == "rodada") {
       this.db
         .collection("campeonato")
@@ -136,7 +164,7 @@ export class CampeonatoProvider {
         uid: usuario.uid,
         idgame: partida.id,
         campeonato: pontos
-      });
+      });*/
   }
 
   somarPontos(rodada: Rodada, usuario: User, partida: Partida, resultado: Aposta): number {
@@ -146,7 +174,7 @@ export class CampeonatoProvider {
       partida.homeScore == resultado.homeScore &&
       partida.awayScore == resultado.awayScore
     ) {
-      pontos = pontos + 25;
+      return 25;
     }
 
     // Score Vencedor
@@ -156,55 +184,51 @@ export class CampeonatoProvider {
       partida.homeScore == resultado.homeScore &&
       partida.awayScore != resultado.awayScore
     ) {
-      pontos = pontos + 18;
+      return 18;
     }
-    if (
+    else if (
       partida.awayScore > partida.homeScore &&
       resultado.awayScore > resultado.homeScore &&
       partida.awayScore == resultado.awayScore &&
       partida.homeScore != resultado.homeScore
     ) {
-      pontos = pontos + 18;
+      return 18;
     }
 
     // Diferença
     else if (
       partida.homeScore > partida.awayScore &&
-      partida.homeScore != resultado.homeScore
+      resultado.homeScore > resultado.homeScore &&
+      (partida.homeScore - partida.awayScore ==
+       resultado.homeScore - resultado.awayScore)
     ) {
-      if (
-        partida.homeScore - partida.awayScore ==
-        resultado.homeScore - resultado.awayScore
-      ) {
-        pontos = pontos + 15;
-      }
+      return 15;
     }
-    if (
+    else if (
       partida.awayScore > partida.homeScore &&
-      partida.awayScore != resultado.awayScore
+      resultado.awayScore > resultado.awayScore &&
+      (partida.awayScore - partida.homeScore ==
+       resultado.awayScore - resultado.homeScore)
     ) {
-      if (
-        partida.awayScore - partida.homeScore ==
-        resultado.awayScore - resultado.homeScore
-      ) {
-        pontos = pontos + 15;
-      }
+      return 15;
     }
 
     // Score Perdedor
     else if (
       partida.homeScore < partida.awayScore &&
+      resultado.homeScore < resultado.awayScore &&
       partida.homeScore == resultado.homeScore &&
       partida.awayScore != resultado.awayScore
     ) {
-      pontos = pontos + 12;
+      return 12;
     }
-    if (
+    else if (
       partida.awayScore < partida.homeScore &&
+      resultado.awayScore < resultado.homeScore &&
       partida.awayScore == resultado.awayScore &&
       partida.homeScore != resultado.homeScore
     ) {
-      pontos = pontos + 12;
+      return 12;
     }
 
     // Time Vencedor
@@ -214,23 +238,24 @@ export class CampeonatoProvider {
       partida.homeScore - partida.awayScore !=
         resultado.homeScore - resultado.awayScore
     ) {
-      pontos = pontos + 10;
+      return 10;
     }
-    if (
+    else if (
       partida.awayScore > partida.homeScore &&
-      partida.awayScore > resultado.homeScore &&
+      resultado.awayScore > resultado.homeScore &&
       partida.awayScore - partida.homeScore !=
         resultado.awayScore - resultado.homeScore
     ) {
-      pontos = pontos + 10;
+      return 10;
     }
 
     // Empate não exato
     else if (
       partida.homeScore == partida.awayScore &&
-      resultado.homeScore == resultado.awayScore
+      resultado.homeScore == resultado.awayScore &&
+      (partida.homeScore - resultado.homeScore) != 0
     ) {
-      pontos = pontos + 15;
+      return 15;
     }
 
     // Aposta empate e houver time vencedor
@@ -238,7 +263,13 @@ export class CampeonatoProvider {
       partida.homeScore == partida.awayScore &&
       resultado.homeScore != resultado.awayScore
     ) {
-      pontos = pontos + 2;
+      return 2;
+    }
+    else if (
+      resultado.homeScore == resultado.awayScore &&
+      partida.homeScore != partida.awayScore
+    ) {
+      return 2;
     }
 
     return pontos;

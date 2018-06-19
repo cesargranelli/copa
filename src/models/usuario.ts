@@ -1,4 +1,4 @@
-export interface User {
+export interface Usuario {
 
   email: string,
   foto: string,
@@ -8,6 +8,8 @@ export interface User {
   round: number
   slug: string,
   total: number,
-  uid: string
+  uid: string,
+  rodada: number,
+  datetime: string
 
 }
