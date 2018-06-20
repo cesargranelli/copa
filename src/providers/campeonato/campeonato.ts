@@ -54,7 +54,7 @@ export class CampeonatoProvider {
   pontuacoes(rodada: Rodada) {
 
     this.db
-      .collection("users"/*, ref => ref.where("slug", "==", "entubados")*/)
+      .collection("users", ref => ref.where("slug", "==", "pirararas"))
       .valueChanges()
       .subscribe(users => {
         users.map((user: Usuario) => {
@@ -126,21 +126,20 @@ export class CampeonatoProvider {
         ) {
 
           if (rodada.status == "rodada") {
-            usuario.rodada = usuario.rodada + this.somarPontos(rodada, usuario, partida, resultado);
+            usuario.rodada = /*usuario.rodada + */this.somarPontos(rodada, usuario, partida, resultado);
           }
-          usuario.total = usuario.total + this.somarPontos(rodada, usuario, partida, resultado);
+          usuario.total = /*usuario.total + */this.somarPontos(rodada, usuario, partida, resultado);
         }
-        //console.log(part);
-        if (part == 16) {
-        //  console.log(usuario.slug + ': ' +
-        //              partida.homeTeam + ' ' +
-        //              partida.homeScore + ' ' +
-        //              resultado.homeScore + ' x ' +
-        //              resultado.awayScore + ' ' +
-        //              partida.awayScore + ' ' +
-        //              partida.awayTeam + ' - ' +
-        //              usuario.total);
-          this.db
+        //if (part == 16) {
+          console.log(usuario.slug + ': ' +
+                      partida.homeTeam + ' ' +
+                      partida.homeScore + ' ' +
+                      resultado.homeScore + ' x ' +
+                      resultado.awayScore + ' ' +
+                      partida.awayScore + ' ' +
+                      partida.awayTeam + ' - ' +
+                      usuario.total);
+        /*  this.db
             .collection("campeonato")
             .doc(usuario.uid)
             .set({
@@ -151,8 +150,8 @@ export class CampeonatoProvider {
               rodada: usuario.rodada,
               total: usuario.total,
               datetime: new Date().getTime()
-            });
-        }
+            });*/
+        //}
 
       });
       /*

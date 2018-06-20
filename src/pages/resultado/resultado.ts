@@ -21,7 +21,7 @@ export class ResultadoPage {
   rounds$: Observable<any>;
   jogos$: Observable<any>;
 
-  dateNow: string = new Date().toISOString();
+  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
 
   constructor(
     public navCtrl: NavController,

@@ -16,7 +16,7 @@
       <ion-item>
         <ion-select [(ngModel)]="selectDefault" (ionChange)="partidas($event)">
           <ion-label>Escolha uma data...</ion-label>
-          <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.prev>dateNow">{{ option.name }}</ion-option>
+          <ion-option *ngFor="let option of rounds$ | async" [disabled]="option.nextId>=dateNow">{{ option.name }}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>

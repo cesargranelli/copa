@@ -40,7 +40,7 @@ export class CampeonatoPage {
   ionViewDidLoad() {
 
     //this._rod.rodadas.subscribe(rodadas => this._rodadas = rodadas);
-
+    this.cam.rodadas();
     //this.executar();
     let loading: Loading = this.showLoading();
 /*
@@ -54,11 +54,11 @@ export class CampeonatoPage {
         }
       });
 */
-    this.campeonato$ = this.db.collection("campeonato", ref => ref.orderBy("total", "desc")).valueChanges();
+    //this.campeonato$ = this.db.collection("campeonato", ref => ref.orderBy("total", "desc")).valueChanges();
 
     setTimeout(() => {
       loading.dismiss();
-    }, 2000);
+    }, 1000);
 
   }
 

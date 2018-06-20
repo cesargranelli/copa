@@ -32,8 +32,8 @@ export class PalpitePage {
   hunchForm: FormGroup;
 
   // Teste
-  dateNow: string = new Date().toISOString();
-  dateHoje: number = new Date().getTime();
+  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString();
+  dateHoje: number = new Date(new Date().setSeconds(-10800)).getTime();
   dateFech: number;
 
   constructor(
