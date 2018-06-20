@@ -54,7 +54,7 @@ export class CampeonatoProvider {
   pontuacoes(rodada: Rodada) {
 
     this.db
-      .collection("users")
+      .collection("users"/*, ref => ref.where("slug", "==", "entubados")*/)
       .valueChanges()
       .subscribe(users => {
         users.map((user: Usuario) => {
@@ -81,6 +81,8 @@ export class CampeonatoProvider {
 
   palpites(rodada: Rodada, usuario: Usuario) {
 
+    let r = 1;
+
     this.db
       .collection("hunches")
       .doc(usuario.slug)
@@ -90,12 +92,13 @@ export class CampeonatoProvider {
       .subscribe(partidas => {
         partidas.map((partida: Partida) => {
           console.log("partida");
-          this.resultados(rodada, usuario, partida);
+          this.resultados(rodada, usuario, partida, r);
+          r++;
         });
       });
   }
 
-  resultados(rodada: Rodada, usuario: Usuario, partida: Partida) {
+  resultados(rodada: Rodada, usuario: Usuario, partida: Partida, part?: number) {
 
     if (usuario.rodada == undefined) {
       usuario.rodada = 0;
@@ -114,6 +117,7 @@ export class CampeonatoProvider {
     .subscribe(resultados => {
 
       resultados.map((resultado: Aposta) => {
+
         if (
           partida.homeScore != null &&
           partida.awayScore != null &&
@@ -126,8 +130,32 @@ export class CampeonatoProvider {
           }
           usuario.total = usuario.total + this.somarPontos(rodada, usuario, partida, resultado);
         }
+        //console.log(part);
+        if (part == 16) {
+        //  console.log(usuario.slug + ': ' +
+        //              partida.homeTeam + ' ' +
+        //              partida.homeScore + ' ' +
+        //              resultado.homeScore + ' x ' +
+        //              resultado.awayScore + ' ' +
+        //              partida.awayScore + ' ' +
+        //              partida.awayTeam + ' - ' +
+        //              usuario.total);
+          this.db
+            .collection("campeonato")
+            .doc(usuario.uid)
+            .set({
+              slug: usuario.slug,
+              nick: usuario.nickname,
+              uid: usuario.uid,
+              idgame: partida.id,
+              rodada: usuario.rodada,
+              total: usuario.total,
+              datetime: new Date().getTime()
+            });
+        }
 
       });
+      /*
       this.db
         .collection("campeonato")
         .doc(usuario.uid)
@@ -139,7 +167,7 @@ export class CampeonatoProvider {
           rodada: usuario.rodada,
           total: usuario.total,
           datetime: new Date().getTime()
-        });
+        });*/
     });
     /*
     if (rodada.status == "rodada") {
@@ -198,7 +226,7 @@ export class CampeonatoProvider {
     // Diferença
     else if (
       partida.homeScore > partida.awayScore &&
-      resultado.homeScore > resultado.homeScore &&
+      resultado.homeScore > resultado.awayScore &&
       (partida.homeScore - partida.awayScore ==
        resultado.homeScore - resultado.awayScore)
     ) {
@@ -206,7 +234,7 @@ export class CampeonatoProvider {
     }
     else if (
       partida.awayScore > partida.homeScore &&
-      resultado.awayScore > resultado.awayScore &&
+      resultado.awayScore > resultado.homeScore &&
       (partida.awayScore - partida.homeScore ==
        resultado.awayScore - resultado.homeScore)
     ) {
@@ -262,12 +290,6 @@ export class CampeonatoProvider {
     else if (
       partida.homeScore == partida.awayScore &&
       resultado.homeScore != resultado.awayScore
-    ) {
-      return 2;
-    }
-    else if (
-      resultado.homeScore == resultado.awayScore &&
-      partida.homeScore != partida.awayScore
     ) {
       return 2;
     }

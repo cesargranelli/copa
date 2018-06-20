@@ -27,6 +27,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ResultadoProvider } from '../providers/resultado/resultado';
 import { ApostaProvider } from '../providers/aposta/aposta';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
+import { RodadaProvider } from '../providers/rodada/rodada';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
@@ -84,7 +85,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ResultadoProvider,
     ApostaProvider,
-    CampeonatoProvider
+    CampeonatoProvider,
+    RodadaProvider
   ]
 })
 export class AppModule {}

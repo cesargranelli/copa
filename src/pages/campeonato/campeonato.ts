@@ -4,9 +4,11 @@ import { IonicPage, NavController, NavParams, Loading, LoadingController } from 
 
 import { AngularFirestore } from "angularfire2/firestore";
 
+import { RodadaProvider } from './../../providers/rodada/rodada';
 import { CampeonatoProvider } from '../../providers/campeonato/campeonato';
 import { Observable } from 'rxjs/Observable';
 import { Usuario } from '../../models/usuario';
+import { Rodada } from '../../models/rodada';
 
 @Injectable()
 @IonicPage()
@@ -16,6 +18,8 @@ import { Usuario } from '../../models/usuario';
 })
 export class CampeonatoPage {
 
+  private _rodadas: Rodada[];
+
   campeonato$: Observable<any>;
 
   i: number = 1;
@@ -23,13 +27,21 @@ export class CampeonatoPage {
   constructor(
     public nav: NavController,
     public par: NavParams,
+    private _rod: RodadaProvider,
     public cam: CampeonatoProvider,
     public load: LoadingController,
     private db: AngularFirestore
   ) { }
 
+  executar() {
+    console.log('Rodadas: ' + this._rodadas);
+  }
+
   ionViewDidLoad() {
 
+    //this._rod.rodadas.subscribe(rodadas => this._rodadas = rodadas);
+
+    //this.executar();
     let loading: Loading = this.showLoading();
 /*
     this.db
