@@ -25,7 +25,7 @@ export class MyApp {
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
     { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
-    { titulo: 'Campeonato', componente: CampeonatoPage, icone: 'flag' },
+    { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
     { titulo: 'Sair', componente: SigninPage, icone: 'log-out' }
   ];
 

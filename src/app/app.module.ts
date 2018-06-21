@@ -27,6 +27,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ResultadoProvider } from '../providers/resultado/resultado';
 import { ApostaProvider } from '../providers/aposta/aposta';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
+import { PalpiteProvider } from './../providers/palpite/palpite';
 import { RodadaProvider } from '../providers/rodada/rodada';
 
 const firebaseAppConfig: FirebaseAppConfig = {
@@ -86,7 +87,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ResultadoProvider,
     ApostaProvider,
     CampeonatoProvider,
-    RodadaProvider
+    RodadaProvider,
+    PalpiteProvider
   ]
 })
 export class AppModule {}

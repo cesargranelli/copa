@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { NavParams, LoadingController, Loading } from 'ionic-angular';
 
 import { AngularFirestore } from 'angularfire2/firestore';
-
-import { HttpClient } from '@angular/common/http';
 
 import { User } from '../../models/user';
 
@@ -21,8 +19,6 @@ export class DashboardPage {
 
   constructor(
     public db: AngularFirestore,
-    public http: HttpClient,
-    public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController
   ) {

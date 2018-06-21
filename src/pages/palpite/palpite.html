@@ -19,6 +19,10 @@
     </ion-list>
   </ion-card>
 
+  <div padding>
+    <button ion-button full large (click)="adicionarPalpites()">Adicionar</button>
+  </div>
+
   <form #form="ngForm" (ngSubmit)="onSubmit()">
 
     <ion-card *ngFor="let match of matches$ | async">

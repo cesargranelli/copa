@@ -1,12 +1,15 @@
-import { HttpClient } from "@angular/common/http";
-import { Component, Injectable } from "@angular/core";
+import { Component, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from "ionic-angular";
+import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from 'ionic-angular';
 
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from 'angularfire2/firestore';
 
-import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { PalpiteProvider } from './../../providers/palpite/palpite';
+import { Observable } from 'rxjs/Observable';
+
+import { Palpite } from '../../models/palpite';
 
 @Injectable()
 @IonicPage()
@@ -43,7 +46,8 @@ export class PalpitePage {
     private http: HttpClient,
     public formBuilder: FormBuilder,
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private _palpiteService: PalpiteProvider
   ) {
 
     this.userid = this.navParams.get('userid');
@@ -60,6 +64,12 @@ export class PalpitePage {
   ionViewDidLoad() {
     this.rounds$ = this.db.collection("rounds").valueChanges();
     this.roundMatches(this.idRound);
+  }
+
+  adicionarPalpites() {
+
+    this._palpiteService.adicionaPalpites(1, this.slug);
+
   }
 
   roundMatches(id?: string) {
