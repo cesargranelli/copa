@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs/Observable';
-import { first } from 'rxjs/operator/first';
-import { map } from 'rxjs/operator/map';
+//import { first } from 'rxjs/operator/first';
+//import { map } from 'rxjs/operator/map';
 
 import { Rodada } from '../../models/rodada';
 

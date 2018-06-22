@@ -1,11 +1,10 @@
 import { Component, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from 'ionic-angular';
+import { Loading, LoadingController, IonicPage, NavParams, Platform } from 'ionic-angular';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
-import { HttpClient } from '@angular/common/http';
 import { PalpiteProvider } from './../../providers/palpite/palpite';
 import { Observable } from 'rxjs/Observable';
 
@@ -19,17 +18,16 @@ import { Palpite } from '../../models/palpite';
 })
 export class PalpitePage {
 
-  public rounds$: Observable<any>;
+  public rodadas$: Observable<any>;
+  public palpites$: Observable<any>;
   public userid;
   public slug;
 
-  public idRound: string = "1";
+  public codRodada: string = "1";
 
   public basepath = "/api"; // Para teste em desenvolvimento
 
   public selectDefault: string = "Rodada 1";
-  public dates$: Observable<any>;
-  public matches$: Observable<any>;
   public roundMatches$: Observable<any>;
 
   hunchForm: FormGroup;
@@ -42,10 +40,8 @@ export class PalpitePage {
   constructor(
     private navParams: NavParams,
     private platform: Platform,
-    private db: AngularFirestore,
-    private http: HttpClient,
+    private _afs: AngularFirestore,
     public formBuilder: FormBuilder,
-    public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private _palpiteService: PalpiteProvider
   ) {
@@ -53,7 +49,7 @@ export class PalpitePage {
     this.userid = this.navParams.get('userid');
     this.slug   = this.navParams.get('slug');
 
-    db.firestore.settings({ timestampsInSnapshots: true });
+    _afs.firestore.settings({ timestampsInSnapshots: true });
 
     if (this.platform.is("cordova")) {
       this.basepath = "https://www.sofascore.com";
@@ -62,141 +58,76 @@ export class PalpitePage {
   }
 
   ionViewDidLoad() {
-    this.rounds$ = this.db.collection("rounds").valueChanges();
-    this.roundMatches(this.idRound);
-  }
 
-  adicionarPalpites() {
-
-    this._palpiteService.adicionaPalpites(1, this.slug);
+    this.rodadas$ = this._afs.collection("rounds").valueChanges();
+    this.palpitesRodada(this.codRodada);
 
   }
 
-  roundMatches(id?: string) {
+  palpitesRodada(codRodada?: string) {
 
-    (this.selectDefault == "Rodada 1") ? id = "1" : null;
-    (this.selectDefault == "Rodada 2") ? id = "2" : null;
-    (this.selectDefault == "Rodada 3") ? id = "3" : null;
-    (this.selectDefault == "Oitavas 1/8") ? id = "4" : null;
-    (this.selectDefault == "Quartas 1/4") ? id = "5" : null;
-    (this.selectDefault == "Semifinais") ? id = "6" : null;
-    (this.selectDefault == "Final") ? id = "7" : null;
+    (this.selectDefault == "Rodada 1") ? codRodada = "1" : null;
+    (this.selectDefault == "Rodada 2") ? codRodada = "2" : null;
+    (this.selectDefault == "Rodada 3") ? codRodada = "3" : null;
+    (this.selectDefault == "Oitavas 1/8") ? codRodada = "4" : null;
+    (this.selectDefault == "Quartas 1/4") ? codRodada = "5" : null;
+    (this.selectDefault == "Semifinais") ? codRodada = "6" : null;
+    (this.selectDefault == "Final") ? codRodada = "7" : null;
 
-    this.db
-      .collection("hunches")
-      .doc(this.slug)
-      .collection(id)
-      .valueChanges()
-      .subscribe(matches => {
-        if (!matches.length) {
-          this.addMatches(id);
-        } else {
-          this.matches$ = this.matches(id);
-        }
-      });
-
-  }
-
-  addMatches(idRound) {
-
-    let loading: Loading = this.showLoading();
-
-    this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
-    //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    this.roundMatches$.subscribe(matches => {
-      for (let tournament in matches.roundMatches.tournaments) {
-        for (let event in matches.roundMatches.tournaments[tournament].events) {
-          let match = matches.roundMatches.tournaments[tournament].events[event];
-          this.db
-            .collection("hunches")
-            .doc(this.slug)
-            .collection(String(match.roundInfo.round))
-            .doc(String(match.id))
-            .set({
-              id: match.id,
-              round: match.roundInfo.round,
-              startTimestamp: match.startTimestamp,
-              formatedStartDate: match.formatedStartDate,
-              startTime: match.startTime,
-              homeTeam: match.homeTeam.name,
-              homeSlug: match.homeTeam.slug,
-              homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
-              homeScore: null,
-              awayTeam: match.awayTeam.name,
-              awaySlug: match.awayTeam.slug,
-              awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
-              awayScore: null
-            })
-            .then(function() {
-              console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-              console.error("Error writing document: ", error);
-            });
-        }
-      }
-    });
-
-    this.matches$ = this.matches(idRound);
-
-    setTimeout(() => {
-      loading.dismiss();
-    }, 2000);
-
-  }
-
-  matches(idRound): Observable<any> {
-
-    this.db.collection("rounds", ref => ref.where("round", "==", Number(idRound)))
+    this._afs.collection("palpites").doc("palpite")
+           .collection(this.slug, ref =>
+            ref.where("codRodada", "==", codRodada)
+               .orderBy("timestamp")
+            )
            .valueChanges()
-           .subscribe(
-             (date: any) => {
-               this.dateFech = new Date(date[0].closed).getTime();
-              }
-            );
+           .subscribe(partidas => {
+             if (!partidas.length) {
 
-    return this.db
-             .collection("hunches")
-             .doc(this.slug)
-             .collection(idRound, ref => ref.orderBy("startTimestamp"))
-             .valueChanges();
+              let loading: Loading = this.showLoading();
+              console.log('adicionaPalpites');
+              //this._palpiteService.adicionaPalpites(codRodada, this.slug);
+
+              setTimeout(() => {
+                loading.dismiss();
+              }, 1000);
+
+             } else {
+
+              let loading: Loading = this.showLoading();
+              console.log('buscaPalpites');
+              //this.palpites$ = this._palpiteService.buscaPalpites(codRodada, this.slug);
+
+              setTimeout(() => {
+                loading.dismiss();
+              }, 1000);
+
+             }
+           });
+
   }
 
   onSubmit(): void {
 
     let loading: Loading = this.showLoading();
 
-    for (let i = 0; i < event.srcElement.children.length -1; i++) {
-      let docId     = event.srcElement.children.item(i).getElementsByTagName("ion-grid").item(0).id;
-      let idRound   = event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id;
-      let homeScore = event.srcElement.children.item(i).getElementsByTagName("input").item(0).value;
-      let awayScore = event.srcElement.children.item(i).getElementsByTagName("input").item(1).value;
-      let update    = String(new Date().getTime());
+    let palpite: Palpite = new function(){};
 
-      if (homeScore != "" && awayScore != "") {
-        this.db
-          .collection("hunches")
-          .doc(this.slug)
-          .collection(idRound)
-          .doc(docId)
-          .update({
-            homeScore: homeScore,
-            awayScore: awayScore,
-            update: update,
-            saved: true
-          })
-          .catch(error => {
-            this.showAlert(error);
-            setTimeout(() => {
-              loading.dismiss();
-            }, 2000);
-          });
+    for (let i = 0; i < event.srcElement.children.length -1; i++) {
+      palpite.codConfronto     = Number(event.srcElement.children.item(i).getElementsByTagName("ion-grid").item(0).id);
+      palpite.codRodada        = Number(event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id);
+      palpite.palpiteMandante  = Number(event.srcElement.children.item(i).getElementsByTagName("input").item(0).value);
+      palpite.palpiteVisitante = Number(event.srcElement.children.item(i).getElementsByTagName("input").item(1).value);
+
+      if (palpite.palpiteMandante != null && palpite.palpiteMandante != null) {
+
+        this._palpiteService.atualizaPalpites(palpite);
+
       }
     }
 
     setTimeout(() => {
       loading.dismiss();
-    }, 2000);
+    }, 1000);
 
   }
 
@@ -208,13 +139,6 @@ export class PalpitePage {
     loading.present();
 
     return loading;
-  }
-
-  private showAlert(message: string): void {
-    this.alertCtrl.create({
-      message: message,
-      buttons: ['Ok']
-    }).present();
   }
 
 }

@@ -26,11 +26,9 @@ export class PalpiteProvider {
     }
   }
 
-  adicionaPalpites(idRodada: number, slugUsuario: string) {
+  adicionaPalpites(codRodada: string, slugUsuario: string) {
 
-    //let loading: Loading = this.showLoading();
-
-    this._palpites$ = this._http.get(`${this._basepath}/u-tournament/16/season/15586/matches/round/${idRodada}`);
+    this._palpites$ = this._http.get(`${this._basepath}/u-tournament/16/season/15586/matches/round/${codRodada}`);
     //this._palpites$ = this.http.get(`api_round.php?id=${idRound}`);
 
     this._palpites$.subscribe(matches => {
@@ -49,35 +47,48 @@ export class PalpiteProvider {
               timeMandante: match.homeTeam.name,
               slugMandante: match.homeTeam.slug,
               logoMandante: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
-              palpiteMandante: null,
+              //palpiteMandante: null,
               timeVisitante: match.awayTeam.name,
               slugVisitante: match.awayTeam.slug,
               logoVisitante: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
-              palpiteVisitante: null,
-              scoreMandante: null,
-              scoreVisitante: null,
-              pontos: null
+              dataFechamento: new Date(match.formatedStartDate.substr(6, 4) + '-' + match.formatedStartDate.substr(3, 2) + '-' + match.formatedStartDate.substr(0, 2)).setSeconds(-10800).toString()
+              //palpiteVisitante: null,
+              //scoreMandante: null,
+              //scoreVisitante: null,
+              //pontos: null
             })
             .then(function() {
               console.log("Palpites gravados com sucesso!");
             })
             .catch(function(error) {
               console.error("Erro ao tentar gravar palpites: ", error);
-            });
+          });
         }
       }
     });
 
-    //this.matches$ = this.matches(idRound);
+  }
 
-    //setTimeout(() => {
-    //  loading.dismiss();
-    //}, 1000);
+  atualizaPalpites(palpite: Palpite) {
+
+    this._afs.collection("palpites").doc("palpite")
+             .collection(palpite.slugUsuario).doc(String(palpite.codConfronto))
+             .update({
+               palpiteMandante: palpite.palpiteMandante,
+               palpiteVisitante: palpite.palpiteVisitante,
+               update: String(new Date().getTime()),
+               saved: true
+              }).catch(error => console.log(error));
 
   }
 
-  roundMatches(rodada): Observable<any> {
-    return this.http.get(`${this.basepath}/u-tournament/16/season/7528/matches/round/${rodada}`);
+  buscaPalpites(codRodada: string, slugUsuario: string): Observable<any> {
+
+    return this._afs.collection("palpites").doc("palpite")
+                    .collection(slugUsuario, ref =>
+                      ref.where("codRodada", "==", codRodada).orderBy("timestamp")
+                    )
+                    .valueChanges();
   }
 
 }

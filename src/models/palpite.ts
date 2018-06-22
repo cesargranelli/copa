@@ -4,6 +4,7 @@ export interface Palpite {
   codRodada: number,
   data: string,
   hora: string,
+  dataFechamento: string,
   timeMandante: string,
   slugMandante: string,
   logoMandante: string,

@@ -2,12 +2,12 @@ import { Component, Injectable } from '@angular/core';
 
 import { IonicPage, NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
 
-import { AngularFirestore } from "angularfire2/firestore";
+//import { AngularFirestore } from "angularfire2/firestore";
 
-import { RodadaProvider } from './../../providers/rodada/rodada';
+//import { RodadaProvider } from './../../providers/rodada/rodada';
 import { CampeonatoProvider } from '../../providers/campeonato/campeonato';
 import { Observable } from 'rxjs/Observable';
-import { Usuario } from '../../models/usuario';
+//import { Usuario } from '../../models/usuario';
 import { Rodada } from '../../models/rodada';
 
 @Injectable()
@@ -27,10 +27,10 @@ export class CampeonatoPage {
   constructor(
     public nav: NavController,
     public par: NavParams,
-    private _rod: RodadaProvider,
+    //private _rod: RodadaProvider,
     public cam: CampeonatoProvider,
     public load: LoadingController,
-    private db: AngularFirestore
+    //private db: AngularFirestore
   ) { }
 
   executar() {

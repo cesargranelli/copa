@@ -87,8 +87,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ResultadoProvider,
     ApostaProvider,
     CampeonatoProvider,
-    RodadaProvider,
-    PalpiteProvider
+    PalpiteProvider,
+    RodadaProvider
   ]
 })
 export class AppModule {}

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { AngularFirestore } from "angularfire2/firestore";
 
-import { Observable } from "rxjs/Observable";
+//import { Observable } from "rxjs/Observable";
 import "rxjs/operator/first";
 
 import { Partida } from "../../models/partida";
