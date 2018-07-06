@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Palpites da Aposta</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let palpite of palpites$ | async">
+    <ion-grid [id]="palpite.id">
+        <ion-row align-items-center>
+            <ion-col>
+              <img [src]="palpite.homeLogo" />
+              <p text-center>{{ palpite.homeTeam }}</p>
+            </ion-col>
+            <ion-col text-center col-2 style="font-size: 25px" [id]="palpite.homeSlug">{{ palpite.homeScore }}</ion-col>
+            <ion-col text-center col-1>X</ion-col>
+            <ion-col text-center col-2 style="font-size: 25px" [id]="palpite.awaySlug">{{ palpite.awayScore }}</ion-col>
+            <ion-col>
+              <img [src]="palpite.awayLogo" />
+              <p text-center>{{ palpite.awayTeam }}</p>
+            </ion-col>
+          </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</ion-content>

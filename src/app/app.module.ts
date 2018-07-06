@@ -29,6 +29,7 @@ import { ApostaProvider } from '../providers/aposta/aposta';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
 import { PalpiteProvider } from './../providers/palpite/palpite';
 import { RodadaProvider } from '../providers/rodada/rodada';
+import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
@@ -46,6 +47,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     CampeonatoPage,
     DashboardPage,
     PalpitePage,
+    ApostaPalpitesPage,
     ProfilePage,
     ResultadoPage,
     SigninPage,
@@ -68,6 +70,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     CampeonatoPage,
     DashboardPage,
     PalpitePage,
+    ApostaPalpitesPage,
     ProfilePage,
     ResultadoPage,
     SigninPage,

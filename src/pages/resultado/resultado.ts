@@ -56,10 +56,9 @@ export class ResultadoPage {
   }
 
   apostas(jogo) {
-    console.log('Apostas: ' + jogo.id);
     this.navCtrl.push(ApostaPage, {
       jogo: jogo
-    })
+    });
   }
 
   private showLoading(): Loading {

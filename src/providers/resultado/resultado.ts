@@ -9,6 +9,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/operator/first';
 
 import { Partida } from '../../models/partida';
+//import { Aposta } from '../../models/aposta';
+//import { User } from '../../models/user';
 
 @Injectable()
 export class ResultadoProvider {
@@ -47,7 +49,6 @@ export class ResultadoProvider {
       .first()
       .subscribe((partidas: Partida[]) => {
         if (partidas.length == 0) {
-          console.log("Adicionar resultados!");
           this.adicionarPartidas(id);
         } else {
           this.atualizarPartidas(id, partidas);
@@ -58,7 +59,17 @@ export class ResultadoProvider {
 
   }
 
-  adicionarPartidas(idRound) {
+  adicionarPartidas(id) {
+
+    let idRound;
+
+    (id == "1") ? idRound = "1" : null;
+    (id == "2") ? idRound = "2" : null;
+    (id == "3") ? idRound = "3" : null;
+    (id == "4") ? idRound = "4/1/8" : null;
+    (id == "5") ? idRound = "3/Quarterfinals" : null;
+    (id == "6") ? idRound = "2/Semifinals" : null;
+    (id == "7") ? idRound = "1/Final" : null;
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
@@ -68,8 +79,8 @@ export class ResultadoProvider {
           let match = matches.roundMatches.tournaments[tournament].events[event];
           this.db
             .collection("resultados")
-            .doc(String(match.roundInfo.round))
-            .collection(String(match.roundInfo.round))
+            .doc(id)
+            .collection(id)
             .doc(String(match.id))
             .set({
               awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
@@ -82,7 +93,7 @@ export class ResultadoProvider {
               homeTeam: match.homeTeam.name,
               formatedStartDate: match.formatedStartDate,
               id: match.id,
-              round: match.roundInfo.round,
+              round: id,
               startTime: match.startTime,
               startTimestamp: match.startTimestamp,
               changeTimestamp: match.changes.changeTimestamp
@@ -99,7 +110,17 @@ export class ResultadoProvider {
 
   }
 
-  atualizarPartidas(idRound, partidas: Partida[]) {
+  atualizarPartidas(id, partidas: Partida[]) {
+
+    let idRound;
+
+    (id == "1") ? idRound = "1" : null;
+    (id == "2") ? idRound = "2" : null;
+    (id == "3") ? idRound = "3" : null;
+    (id == "4") ? idRound = "4/1/8" : null;
+    (id == "5") ? idRound = "3/Quarterfinals" : null;
+    (id == "6") ? idRound = "2/Semifinals" : null;
+    (id == "7") ? idRound = "1/Final" : null;
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
@@ -109,12 +130,12 @@ export class ResultadoProvider {
           let match = matches.roundMatches.tournaments[tournament].events[event];
           for (let i = 0; i < partidas.length; i++) {
             if (partidas[i].id == match.id &&
-                partidas[i].changeTimestamp != match.changes.changeTimestamp) {
+            partidas[i].changeTimestamp != match.changes.changeTimestamp) {
               console.log("Atualizar resultados!");
               this.db
               .collection("resultados")
-              .doc(String(match.roundInfo.round))
-              .collection(String(match.roundInfo.round))
+              .doc(id)
+              .collection(id)
               .doc(String(match.id))
               .update({
                 awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,

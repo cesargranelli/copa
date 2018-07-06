@@ -41,4 +41,10 @@ export class UserProvider extends BaseProvider {
     return this.usuarioLogado = this.authService.userUid;
   }
 
+  infoUsuario(): Observable<User> {
+
+    return this.db.collection("users").doc<User>(this.authService.userUid).valueChanges();
+
+  }
+
 }

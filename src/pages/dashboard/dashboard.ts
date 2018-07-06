@@ -4,6 +4,8 @@ import { NavParams, LoadingController, Loading } from 'ionic-angular';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
+import { UserProvider } from './../../providers/user/user';
+
 import { User } from '../../models/user';
 
 @Component({
@@ -12,33 +14,25 @@ import { User } from '../../models/user';
 })
 export class DashboardPage {
 
-  public userid;
-  public slug;
-
   public user: User;
 
   constructor(
     public db: AngularFirestore,
     public navParams: NavParams,
-    public loadingCtrl: LoadingController
-  ) {
-    this.userid = this.navParams.get('userid');
-    this.slug = this.navParams.get('slug');
-  }
+    public loadingCtrl: LoadingController,
+    public userService: UserProvider
+  ) { }
 
   ionViewDidLoad() {
 
     let loading = this.showLoading();
 
-    this.db
-      .collection("users")
-      .doc(this.userid)
-      .valueChanges()
-      .first()
-      .subscribe((user: User) => {
-        this.user = user;
-        loading.dismiss();
-      });
+    this.userService.infoUsuario().subscribe((user: User) => {
+
+      this.user = user;
+      loading.dismiss();
+
+    });
 
   }
 

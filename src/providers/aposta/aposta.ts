@@ -37,4 +37,11 @@ export class ApostaProvider {
 
   }
 
+  palpites(aposta: Aposta) {
+
+    return this.db.collection("hunches").doc(aposta.slug).collection(String(aposta.round)).doc(String(aposta.id))
+        .valueChanges();
+
+  }
+
 }
