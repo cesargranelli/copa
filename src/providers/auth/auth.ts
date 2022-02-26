@@ -5,19 +5,28 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { BaseProvider } from './../base/base';
 
 import 'rxjs/add/operator/first';
+import { Platform } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { Token } from '../../models/token';
 
 @Injectable()
 export class AuthProvider extends BaseProvider {
 
+  private basepath = "/api";
+
   constructor(
     public angularFireAuth: AngularFireAuth,
-    public http: HttpClient
+    private http: HttpClient,
+    private platform: Platform
   ) {
     super();
+    if (this.platform.is("cordova")) {
+      this.basepath = 'http://localhost:5000';
+    }
   }
 
-  createAuthUser(user: { email: string, password: string }): Promise<any> {
-    return this.angularFireAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
+  signup(user: { email: string, password: string }): Observable<Token> {
+    return this.http.post<Token>(`${this.basepath}/auth/register`, user);
   }
 
   signin(userLogin: { email: string, password: string }): Promise<any> {

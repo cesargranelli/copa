@@ -1,6 +1,6 @@
 {
   "name": "Copa",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -43,7 +43,7 @@
     "zone.js": "0.8.26"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.1.8",
+    "@ionic/app-scripts": "^3.2.4",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",

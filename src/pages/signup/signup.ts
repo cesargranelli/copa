@@ -11,6 +11,8 @@ import { UserProvider } from '../../providers/user/user';
 import { User } from '../../models/user';
 
 import { DashboardPage } from '../dashboard/dashboard';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Token } from '../../models/token';
 
 @Component({
   selector: 'page-signup',
@@ -66,14 +68,14 @@ export class SignupPage {
 
         if(!userExists) {
 
-          this.authService.createAuthUser({
+          this.authService.signup({
             email: formUser.email,
             password: formUser.password
-          }).then((authUser: User) => {
+          }).subscribe((token: Token) => {
 
             delete formUser.password;
 
-            formUser.uid  = authUser.uid;
+            formUser.uid  = token.localId;
             formUser.slug = slug;
             formUser.foto = foto;
             formUser.position = position;
@@ -82,22 +84,19 @@ export class SignupPage {
 
             this.userService.create(formUser)
               .then(() => {
-                console.log('Usuário cadastrado com sucesso!');
                 this.navCtrl.setRoot(DashboardPage, {
-                  userid: authUser.uid,
+                  userid: token.localId,
                   slug: slug
                 });
                 loading.dismiss();
-              }).catch((error: any) => {
-                console.log(error);
+              }).catch((response: HttpErrorResponse) => {
                 loading.dismiss();
-                this.showAlert(error);
+                this.showAlert(response.error);
               });
 
-          }).catch((error: any) => {
-            console.log(error);
+          }, (response: HttpErrorResponse) => {
             loading.dismiss();
-            this.showAlert(error);
+            this.showAlert(response.error);
           });
 
         } else {

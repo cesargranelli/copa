@@ -26,6 +26,7 @@ export class UserProvider extends BaseProvider {
   }
 
   create(user: User): Promise<any> {
+    console.log(user);
     return this.db.collection("users").doc(user.uid).set(user);
   }
 

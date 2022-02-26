@@ -7,7 +7,7 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class MatchesProvider {
 
-  private basepath = "/api";
+  private basepath = "/service";
 
   constructor(
     private http: HttpClient,
