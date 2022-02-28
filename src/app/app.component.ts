@@ -1,21 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { StatusBar } from '@ionic-native/status-bar';
+import { Nav, Platform } from 'ionic-angular';
 import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
-
-import { UserProvider } from './../providers/user/user';
+import { UserProvider } from '../providers/user';
 
 @Component({
   selector: 'myapp',
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class CopaApp {
 
   rootPage: any = SigninPage;
 

@@ -1,12 +1,14 @@
+import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
-import { HttpClientModule } from '@angular/common/http';
-
-import { MyApp } from './app.component';
+import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
 import { ApostaPage } from '../pages/aposta/aposta';
 import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { DashboardPage } from '../pages/dashboard/dashboard';
@@ -15,21 +17,19 @@ import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
-
-import { AngularFireAuth } from 'angularfire2/auth';
-
-import { AuthProvider } from '../providers/auth/auth';
-import { UserProvider } from '../providers/user/user';
-
-import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { ResultadoProvider } from '../providers/resultado/resultado';
 import { ApostaProvider } from '../providers/aposta/aposta';
+import { AuthProvider } from '../providers/auth';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
-import { PalpiteProvider } from './../providers/palpite/palpite';
+import { ResultadoProvider } from '../providers/resultado/resultado';
 import { RodadaProvider } from '../providers/rodada/rodada';
-import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
+import { UserProvider } from '../providers/user';
+import { PalpiteProvider } from './../providers/palpite/palpite';
+import { CopaApp } from './app.component';
+
+
+
+
+
 
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
@@ -42,7 +42,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
 
 @NgModule({
   declarations: [
-    MyApp,
+    CopaApp,
     ApostaPage,
     CampeonatoPage,
     DashboardPage,
@@ -55,7 +55,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(CopaApp),
     AngularFireModule.initializeApp(firebaseAppConfig),
     AngularFireStorageModule,
     AngularFirestoreModule,
@@ -65,7 +65,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     IonicApp
   ],
   entryComponents: [
-    MyApp,
+    CopaApp,
     ApostaPage,
     CampeonatoPage,
     DashboardPage,
@@ -86,7 +86,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     StatusBar,
     SplashScreen,
     UserProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     ResultadoProvider,
     ApostaProvider,
     CampeonatoProvider,
@@ -94,4 +94,4 @@ const firebaseAppConfig: FirebaseAppConfig = {
     RodadaProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

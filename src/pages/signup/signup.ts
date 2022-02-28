@@ -1,18 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
-
 import 'rxjs/add/operator/first';
-
-import { AuthProvider } from '../../providers/auth/auth';
-import { UserProvider } from '../../providers/user/user';
-
-import { User } from '../../models/user';
-
+import { Register } from '../../models/register';
+import { Registered } from '../../models/registered';
+import { AuthProvider } from '../../providers/auth';
 import { DashboardPage } from '../dashboard/dashboard';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Token } from '../../models/token';
 
 @Component({
   selector: 'page-signup',
@@ -31,8 +25,7 @@ export class SignupPage {
     public formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
-    public navParams: NavParams,
-    public userService: UserProvider
+    public navParams: NavParams
   ) {
 
     let nicknameRegex = /^[a-zA-Z ]+$/;
@@ -51,63 +44,21 @@ export class SignupPage {
 
   }
 
-  public users: User[];
-
   onSubmit(): void {
-
-    let formUser = this.signupForm.value;
     let loading: Loading = this.showLoading();
-    let nickname: string = formUser.nickname;
-    let slug: string = nickname.toLowerCase().replace(" ", "-");
-    let foto: string = null;
-    let position: number = null;
-    let total: number = null;
-    let round: number = null;
 
-    this.userService.userExists(slug).first().subscribe((userExists: boolean) => {
-
-        if(!userExists) {
-
-          this.authService.signup({
-            email: formUser.email,
-            password: formUser.password
-          }).subscribe((token: Token) => {
-
-            delete formUser.password;
-
-            formUser.uid  = token.localId;
-            formUser.slug = slug;
-            formUser.foto = foto;
-            formUser.position = position;
-            formUser.total = total;
-            formUser.round = round;
-
-            this.userService.create(formUser)
-              .then(() => {
-                this.navCtrl.setRoot(DashboardPage, {
-                  userid: token.localId,
-                  slug: slug
-                });
-                loading.dismiss();
-              }).catch((response: HttpErrorResponse) => {
-                loading.dismiss();
-                this.showAlert(response.error);
-              });
-
-          }, (response: HttpErrorResponse) => {
-            loading.dismiss();
-            this.showAlert(response.error);
-          });
-
-        } else {
-
-          this.showAlert(`O time ${nickname} já está sendo usado em outra conta!`);
-          loading.dismiss();
-
-        }
-
+    this.authService.signup(new Register().convert(this.signupForm.value))
+      .subscribe((registered: Registered) => {
+        localStorage.clear();
+        localStorage.setItem(registered.slug, registered.uid);
+        this.navCtrl.setRoot(DashboardPage, {
+          userid: registered.uid,
+          slug: registered.slug
+        });
         loading.dismiss();
-
+      }, (response: HttpErrorResponse) => {
+        loading.dismiss();
+        this.showAlert(response.error.message);
       });
   }
 

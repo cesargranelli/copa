@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-
-import { NavParams, LoadingController, Loading } from 'ionic-angular';
-
 import { AngularFirestore } from 'angularfire2/firestore';
-
-import { UserProvider } from './../../providers/user/user';
-
+import { Loading, LoadingController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
+import { UserProvider } from '../../providers/user';
 
 @Component({
   selector: 'page-dashboard',
@@ -24,16 +20,13 @@ export class DashboardPage {
   ) { }
 
   ionViewDidLoad() {
-
     let loading = this.showLoading();
 
-    this.userService.infoUsuario().subscribe((user: User) => {
-
-      this.user = user;
-      loading.dismiss();
-
-    });
-
+    this.userService.infoUsuario(localStorage.getItem(localStorage.key(0)))
+      .subscribe((user: User) => {
+        this.user = user;
+        loading.dismiss();
+      });
   }
 
   private showLoading(): Loading {

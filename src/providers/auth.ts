@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { AngularFireAuth } from 'angularfire2/auth';
-import { BaseProvider } from './../base/base';
-
-import 'rxjs/add/operator/first';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { Token } from '../../models/token';
+import 'rxjs/add/operator/first';
+import { Register } from '../models/register';
+import { Registered } from '../models/registered';
+import { BaseProvider } from './base';
+
+
 
 @Injectable()
 export class AuthProvider extends BaseProvider {
@@ -25,8 +26,8 @@ export class AuthProvider extends BaseProvider {
     }
   }
 
-  signup(user: { email: string, password: string }): Observable<Token> {
-    return this.http.post<Token>(`${this.basepath}/auth/register`, user);
+  signup(register: Register): Observable<Registered> {
+    return this.http.post<Registered>(`${this.basepath}/auth/register`, register);
   }
 
   signin(userLogin: { email: string, password: string }): Promise<any> {
@@ -48,7 +49,7 @@ export class AuthProvider extends BaseProvider {
   }
 
   get userUid(): any {
-    return this.angularFireAuth.auth.currentUser.uid;
+    return localStorage.getItem(localStorage.key(0));
   }
 
 }

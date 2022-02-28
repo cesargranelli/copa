@@ -1,15 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { AngularFirestore } from 'angularfire2/firestore';
-
-import { User } from './../../models/user';
-
-import { AuthProvider } from './../auth/auth';
-import { BaseProvider } from './../base/base';
-
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
+import { User } from '../models/user';
+import { AuthProvider } from './auth';
+import { BaseProvider } from './base';
 
 @Injectable()
 export class UserProvider extends BaseProvider {
@@ -39,13 +35,11 @@ export class UserProvider extends BaseProvider {
   }
 
   obtemUserLogado() {
-    return this.usuarioLogado = this.authService.userUid;
+    // return this.usuarioLogado = localStorage.getItem(localStorage.key(0));
   }
 
-  infoUsuario(): Observable<User> {
-
-    return this.db.collection("users").doc<User>(this.authService.userUid).valueChanges();
-
+  infoUsuario(uid: string): Observable<User> {
+    return this.db.collection("users").doc<User>(uid).valueChanges();
   }
 
 }
