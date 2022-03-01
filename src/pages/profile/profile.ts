@@ -30,7 +30,7 @@ export class ProfilePage {
       .collection("users")
       .doc(this.navParams.get('userid'))
       .valueChanges()
-      .first()
+      // .first()
       .subscribe((user: User) => {
         this.nome = user.name;
         this.email = user.email;

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { AuthProvider } from './auth';
 import { BaseProvider } from './base';
@@ -29,9 +29,9 @@ export class UserProvider extends BaseProvider {
   userExists(slug: string): Observable<boolean> {
     return this.db.collection('/users', ref =>
       ref.where('slug', '==', slug)
-    ).valueChanges().map((users: User[]) => {
+    ).valueChanges((users: User[]) => {
       return users.length > 0;
-    }).catch(this.handleObservableError);
+    }).pipe(() => null);/*.catch(this.handleObservableError);*/
   }
 
   obtemUserLogado() {

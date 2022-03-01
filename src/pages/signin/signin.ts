@@ -4,6 +4,7 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 import 'rxjs/add/operator/first';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth';
+import { StorageProvider } from '../../providers/storage';
 import { UserProvider } from '../../providers/user';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
@@ -30,20 +31,18 @@ export class SigninPage {
       this.logout();
     }
 
-    console.log(this.authService.userUid)
-
-    this.authService.authenticated.then(() => {
+    StorageProvider.authenticated.then(() => {
       let loading: Loading = this.showLoading();
 
       this.userService.db
         .collection("users")
-        .doc(this.authService.userUid)
+        .doc(StorageProvider.get().uid)
         .valueChanges()
-        .first()
+        // .first()
         .subscribe((user: User) => {
           this.navCtrl.setRoot(DashboardPage, {
-            userid: this.authService.userUid,
-            slug: user.slug
+            userid: StorageProvider.get().uid,
+            slug: StorageProvider.get().slug
           });
         });
 
@@ -64,33 +63,29 @@ export class SigninPage {
   public users: User[];
 
   onSubmit(): void {
-
     let loading: Loading = this.showLoading();
 
-    this.authService.signin(this.signinForm.value).then((isLogged: boolean) => {
+    this.authService.signin(this.signinForm.value).then(userCredential => {
+      console.log(userCredential.user)
 
-      if (isLogged) {
-
+      if (userCredential.user) {
         this.userService.db
           .collection("users")
-          .doc(this.authService.userUid)
+          .doc(userCredential.user.uid)
           .valueChanges()
-          .first()
+          // .first()
           .subscribe((user: User) => {
+            StorageProvider.set({ uid: user.uid, slug: user.slug })
             this.navCtrl.setRoot(DashboardPage, {
-              userid: this.authService.userUid,
-              slug: user.slug
+              userid: StorageProvider.get().uid,
+              slug: StorageProvider.get().slug
             });
           });
 
         loading.dismiss();
         console.log(`Usuário logado com sucesso`);
-
       }
-
     }).catch((error: any) => {
-
-      console.log(error);
       loading.dismiss();
 
       if (error.code == 'auth/user-not-found') {
@@ -101,7 +96,6 @@ export class SigninPage {
       } else {
         this.showAlert(error.message);
       }
-
     });
   }
 

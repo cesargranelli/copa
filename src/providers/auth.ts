@@ -3,12 +3,10 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/first';
 import { Register } from '../models/register';
 import { Registered } from '../models/registered';
 import { BaseProvider } from './base';
-
-
+import { StorageProvider } from './storage';
 
 @Injectable()
 export class AuthProvider extends BaseProvider {
@@ -31,25 +29,11 @@ export class AuthProvider extends BaseProvider {
   }
 
   signin(userLogin: { email: string, password: string }): Promise<any> {
-    return this.angularFireAuth.auth.signInWithEmailAndPassword(userLogin.email, userLogin.password);
+    return this.angularFireAuth.auth.signInAndRetrieveDataWithEmailAndPassword(userLogin.email, userLogin.password);
   }
 
   signout(): Promise<void> {
-    return this.angularFireAuth.auth.signOut();
-  }
-
-  get authenticated(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.angularFireAuth.authState
-        .first()
-        .subscribe(isAuthenticated => {
-          (isAuthenticated) ? resolve(true) : reject(false);
-        });
-    });
-  }
-
-  get userUid(): any {
-    return localStorage.getItem(localStorage.key(0));
+    return StorageProvider.clear();
   }
 
 }

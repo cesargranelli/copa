@@ -7,7 +7,7 @@ import { AlertController, Loading, LoadingController, IonicPage, NavParams, Plat
 
 import { AngularFirestore } from "angularfire2/firestore";
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 @Injectable()
 @IonicPage()
@@ -166,33 +166,33 @@ export class PalpitePage {
 
     let loading: Loading = this.showLoading();
 
-    for (let i = 0; i < event.srcElement.children.length -1; i++) {
-      let docId     = event.srcElement.children.item(i).getElementsByTagName("ion-grid").item(0).id;
-      let idRound   = event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id;
-      let homeScore = event.srcElement.children.item(i).getElementsByTagName("input").item(0).value;
-      let awayScore = event.srcElement.children.item(i).getElementsByTagName("input").item(1).value;
-      let update    = String(new Date().getTime());
+    // for (let i = 0; i < event.srcElement.children.length -1; i++) {
+    //   let docId     = event.srcElement.children.item(i).getElementsByTagName("ion-grid").item(0).id;
+    //   let idRound   = event.srcElement.children.item(i).getElementsByTagName("ion-col").item(0).id;
+    //   let homeScore = event.srcElement.children.item(i).getElementsByTagName("input").item(0).value;
+    //   let awayScore = event.srcElement.children.item(i).getElementsByTagName("input").item(1).value;
+    //   let update    = String(new Date().getTime());
 
-      if (homeScore != "" && awayScore != "") {
-        this.db
-          .collection("hunches")
-          .doc(this.slug)
-          .collection(idRound)
-          .doc(docId)
-          .update({
-            homeScore: homeScore,
-            awayScore: awayScore,
-            update: update,
-            saved: true
-          })
-          .catch(error => {
-            this.showAlert(error);
-            setTimeout(() => {
-              loading.dismiss();
-            }, 2000);
-          });
-      }
-    }
+    //   if (homeScore != "" && awayScore != "") {
+    //     this.db
+    //       .collection("hunches")
+    //       .doc(this.slug)
+    //       .collection(idRound)
+    //       .doc(docId)
+    //       .update({
+    //         homeScore: homeScore,
+    //         awayScore: awayScore,
+    //         update: update,
+    //         saved: true
+    //       })
+    //       .catch(error => {
+    //         this.showAlert(error);
+    //         setTimeout(() => {
+    //           loading.dismiss();
+    //         }, 2000);
+    //       });
+    //   }
+    // }
 
     setTimeout(() => {
       loading.dismiss();

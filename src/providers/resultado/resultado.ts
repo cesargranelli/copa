@@ -5,8 +5,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Platform } from 'ionic-angular';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/operator/first';
+import { Observable } from 'rxjs';
+// import 'rxjs/operator/first';
 
 import { Partida } from '../../models/partida';
 //import { Aposta } from '../../models/aposta';
@@ -46,7 +46,7 @@ export class ResultadoProvider {
     (round == "Final") ? id = "7" : null;
 
     this.db.collection("resultados").doc(id).collection(id).valueChanges()
-      .first()
+      // .first()
       .subscribe((partidas: Partida[]) => {
         if (partidas.length == 0) {
           this.adicionarPartidas(id);
@@ -73,7 +73,7 @@ export class ResultadoProvider {
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    this.roundMatches$.first().subscribe(matches => {
+    this.roundMatches$.subscribe(matches => {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
           let match = matches.roundMatches.tournaments[tournament].events[event];
@@ -124,7 +124,7 @@ export class ResultadoProvider {
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    this.roundMatches$.first().subscribe(matches => {
+    this.roundMatches$.subscribe(matches => {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
           let match = matches.roundMatches.tournaments[tournament].events[event];

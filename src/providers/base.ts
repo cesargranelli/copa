@@ -1,4 +1,4 @@
-import { Response } from '@angular/http';
+// import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const extractError = (error: Response | any): string => {
@@ -6,7 +6,7 @@ const extractError = (error: Response | any): string => {
     let errMsg: string;
     if (error instanceof Response) {
         const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
+        const err = body || JSON.stringify(body);
         errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
         errMsg = error.message ? error.message : error.toString();

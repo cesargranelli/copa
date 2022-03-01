@@ -7,7 +7,7 @@ import { AngularFirestore } from "angularfire2/firestore";
 
 //import { RodadaProvider } from './../../providers/rodada/rodada';
 import { CampeonatoProvider } from '../../providers/campeonato/campeonato';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 //import { Usuario } from '../../models/usuario';
 import { Rodada } from '../../models/rodada';
 //import { User } from '../../models/user';

@@ -6,7 +6,7 @@ import { ApostaPage } from '../aposta/aposta';
 
 import { AngularFirestore } from "angularfire2/firestore";
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ResultadoProvider } from '../../providers/resultado/resultado';
 
 @IonicPage()

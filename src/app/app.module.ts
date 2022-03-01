@@ -26,11 +26,6 @@ import { UserProvider } from '../providers/user';
 import { PalpiteProvider } from './../providers/palpite/palpite';
 import { CopaApp } from './app.component';
 
-
-
-
-
-
 const firebaseAppConfig: FirebaseAppConfig = {
   apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
   authDomain: 'copa-app-9057a.firebaseapp.com',

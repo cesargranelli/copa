@@ -2,10 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
-import 'rxjs/add/operator/first';
+// import 'rxjs/add/operator/first';
 import { Register } from '../../models/register';
 import { Registered } from '../../models/registered';
 import { AuthProvider } from '../../providers/auth';
+import { StorageProvider } from '../../providers/storage';
 import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
@@ -49,8 +50,7 @@ export class SignupPage {
 
     this.authService.signup(new Register().convert(this.signupForm.value))
       .subscribe((registered: Registered) => {
-        localStorage.clear();
-        localStorage.setItem(registered.slug, registered.uid);
+        StorageProvider.set(registered);
         this.navCtrl.setRoot(DashboardPage, {
           userid: registered.uid,
           slug: registered.slug

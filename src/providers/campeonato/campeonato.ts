@@ -3,14 +3,14 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "angularfire2/firestore";
 
 //import { Observable } from "rxjs/Observable";
-import "rxjs/operator/first";
+// import "rxjs/operator/first";
 
 import { Partida } from "../../models/partida";
 import { Rodada } from "../../models/rodada";
 import { User } from "../../models/user";
 import { Aposta } from "../../models/aposta";
 import { Usuario } from "./../../models/usuario";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class CampeonatoProvider {
@@ -42,7 +42,7 @@ export class CampeonatoProvider {
     this.db
       .collection("rounds", ref => ref.orderBy("round", "desc"))
       .valueChanges()
-      .first()
+      // .first()
       .subscribe((rounds: Rodada[]) => {
         rounds.forEach(round => {
           let hoje = new Date(new Date().setSeconds(-10800)).toISOString().substr(0, 10).replace(/[- ]/g, "");
@@ -64,7 +64,7 @@ export class CampeonatoProvider {
     this.db
       .collection("users"/*, ref => ref.where("slug", "==", "rockman-dx")*/)
       .valueChanges()
-      .first()
+      // .first()
       .subscribe(users => {
         users.map((user: Usuario) => {
           if (rodada.status == "rodada") {
@@ -99,7 +99,7 @@ export class CampeonatoProvider {
     this.db
       .collection("users"/*, ref => ref.where("slug", "==", usuario.slug)*/)
       .valueChanges()
-      .first()
+      // .first()
       .subscribe(users => {
         users.map((user: User) => {
           //console.log("Usuário..." + user.slug);
@@ -116,7 +116,7 @@ export class CampeonatoProvider {
       .doc(usuario.slug)
       .collection(String(rodada.round))
       .valueChanges()
-      .first()
+      // .first()
       .subscribe(partidas => {
         partidas.map((partida: Partida) => {
           this.resultados(rodada, usuario, partida, r);
@@ -146,7 +146,7 @@ export class CampeonatoProvider {
         ref.where("id", "==", partida.id)
       )
       .valueChanges()
-      .first()
+      // .first()
       .subscribe(resultados => {
         resultados.map((resultado: Aposta) => {
           if (
@@ -179,7 +179,7 @@ export class CampeonatoProvider {
               .collection("ranking")
               .doc(usuario.uid)
               .valueChanges()
-              .first()
+              // .first()
               .subscribe((values: Usuario) => {
                 if (rodada.status == "rodada") {
                   this.db
