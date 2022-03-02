@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { AngularFirestore } from 'angularfire2/firestore';
+// import { AngularFirestore } from 'angularfire2/firestore';
 
 import { ApostaProvider } from '../../providers/aposta/aposta';
 //import { PalpitePage } from '../palpite/palpite';
@@ -20,7 +20,7 @@ export class ApostaPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public ap: ApostaProvider,
-    public db: AngularFirestore
+    // public db: AngularFirestore
   ) { }
 
   ionViewDidLoad() {

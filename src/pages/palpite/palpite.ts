@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from "ionic-angular";
 
-import { AngularFirestore } from "angularfire2/firestore";
+// import { AngularFirestore } from "angularfire2/firestore";
 
 import { Observable } from "rxjs";
 
@@ -39,7 +39,7 @@ export class PalpitePage {
   constructor(
     private navParams: NavParams,
     private platform: Platform,
-    private db: AngularFirestore,
+    // private db: AngularFirestore,
     private http: HttpClient,
     public formBuilder: FormBuilder,
     public alertCtrl: AlertController,
@@ -50,7 +50,7 @@ export class PalpitePage {
     this.userid = this.navParams.get('userid');
     this.slug   = this.navParams.get('slug');
 
-    db.firestore.settings({ timestampsInSnapshots: true });
+    // db.firestore.settings({ timestampsInSnapshots: true });
 
     if (this.platform.is("cordova")) {
       this.basepath = "https://www.sofascore.com";
@@ -72,18 +72,18 @@ export class PalpitePage {
 
   roundMatches(id?: string) {
 
-    this.db
-      .collection("hunches")
-      .doc(this.slug)
-      .collection(this.idRound)
-      .valueChanges()
-      .subscribe(matches => {
-        if (!matches.length) {
-          this.addMatches(this.idRound);
-        } else {
-          this.matches$ = this.matches(this.idRound);
-        }
-      });
+    // this.db
+    //   .collection("hunches")
+    //   .doc(this.slug)
+    //   .collection(this.idRound)
+    //   .valueChanges()
+    //   .subscribe(matches => {
+    //     if (!matches.length) {
+    //       this.addMatches(this.idRound);
+    //     } else {
+    //       this.matches$ = this.matches(this.idRound);
+    //     }
+    //   });
 
   }
 
@@ -103,39 +103,39 @@ export class PalpitePage {
 
     this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
     //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    this.roundMatches$.subscribe(matches => {
-      for (let tournament in matches.roundMatches.tournaments) {
-        for (let event in matches.roundMatches.tournaments[tournament].events) {
-          let match = matches.roundMatches.tournaments[tournament].events[event];
-          this.db
-            .collection("hunches")
-            .doc(this.slug)
-            .collection(id)
-            .doc(String(match.id))
-            .set({
-              id: match.id,
-              round: id,
-              startTimestamp: match.startTimestamp,
-              formatedStartDate: match.formatedStartDate,
-              startTime: match.startTime,
-              homeTeam: match.homeTeam.name,
-              homeSlug: match.homeTeam.slug,
-              homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
-              homeScore: null,
-              awayTeam: match.awayTeam.name,
-              awaySlug: match.awayTeam.slug,
-              awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
-              awayScore: null
-            })
-            .then(function() {
-              console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-              console.error("Error writing document: ", error);
-            });
-        }
-      }
-    });
+    // this.roundMatches$.subscribe(matches => {
+    //   for (let tournament in matches.roundMatches.tournaments) {
+    //     for (let event in matches.roundMatches.tournaments[tournament].events) {
+    //       let match = matches.roundMatches.tournaments[tournament].events[event];
+    //       this.db
+    //         .collection("hunches")
+    //         .doc(this.slug)
+    //         .collection(id)
+    //         .doc(String(match.id))
+    //         .set({
+    //           id: match.id,
+    //           round: id,
+    //           startTimestamp: match.startTimestamp,
+    //           formatedStartDate: match.formatedStartDate,
+    //           startTime: match.startTime,
+    //           homeTeam: match.homeTeam.name,
+    //           homeSlug: match.homeTeam.slug,
+    //           homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
+    //           homeScore: null,
+    //           awayTeam: match.awayTeam.name,
+    //           awaySlug: match.awayTeam.slug,
+    //           awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
+    //           awayScore: null
+    //         })
+    //         .then(function() {
+    //           console.log("Document successfully written!");
+    //         })
+    //         .catch(function(error) {
+    //           console.error("Error writing document: ", error);
+    //         });
+    //     }
+    //   }
+    // });
 
     this.matches$ = this.matches(id);
 
@@ -147,19 +147,19 @@ export class PalpitePage {
 
   matches(idRound): Observable<any> {
 
-    this.db.collection("rounds", ref => ref.where("round", "==", Number(idRound)))
-           .valueChanges()
-           .subscribe(
-             (date: any) => {
-               this.dateFech = new Date(date[0].closed).getTime();
-              }
-            );
+    // this.db.collection("rounds", ref => ref.where("round", "==", Number(idRound)))
+    //        .valueChanges()
+    //        .subscribe(
+    //          (date: any) => {
+    //            this.dateFech = new Date(date[0].closed).getTime();
+    //           }
+    //         );
 
-    return this.db
+    return null;/*this.db
              .collection("hunches")
              .doc(this.slug)
              .collection(idRound, ref => ref.orderBy("startTimestamp"))
-             .valueChanges();
+             .valueChanges();*/
   }
 
   onSubmit(): void {
@@ -210,11 +210,11 @@ export class PalpitePage {
     return loading;
   }
 
-  private showAlert(message: string): void {
-    this.alertCtrl.create({
-      message: message,
-      buttons: ['Ok']
-    }).present();
-  }
+  // private showAlert(message: string): void {
+  //   this.alertCtrl.create({
+  //     message: message,
+  //     buttons: ['Ok']
+  //   }).present();
+  // }
 
 }

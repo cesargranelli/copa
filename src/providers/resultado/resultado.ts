@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { AngularFirestore } from 'angularfire2/firestore';
+// import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Platform } from 'ionic-angular';
 
@@ -25,7 +25,7 @@ export class ResultadoProvider {
 
   constructor(
     public http: HttpClient,
-    public db: AngularFirestore,
+    // public db: AngularFirestore,
     public platform: Platform
   ) {
     if (this.platform.is("cordova")) {
@@ -45,15 +45,15 @@ export class ResultadoProvider {
     (round == "Semifinais") ? id = "6" : null;
     (round == "Final") ? id = "7" : null;
 
-    this.db.collection("resultados").doc(id).collection(id).valueChanges()
-      // .first()
-      .subscribe((partidas: Partida[]) => {
-        if (partidas.length == 0) {
-          this.adicionarPartidas(id);
-        } else {
-          this.atualizarPartidas(id, partidas);
-        }
-      });
+    // this.db.collection("resultados").doc(id).collection(id).valueChanges()
+    //   .first()
+    //   .subscribe((partidas: Partida[]) => {
+    //     if (partidas.length == 0) {
+    //       this.adicionarPartidas(id);
+    //     } else {
+    //       this.atualizarPartidas(id, partidas);
+    //     }
+    //   });
 
       return this.partidas(id);
 
@@ -77,33 +77,33 @@ export class ResultadoProvider {
       for (let tournament in matches.roundMatches.tournaments) {
         for (let event in matches.roundMatches.tournaments[tournament].events) {
           let match = matches.roundMatches.tournaments[tournament].events[event];
-          this.db
-            .collection("resultados")
-            .doc(id)
-            .collection(id)
-            .doc(String(match.id))
-            .set({
-              awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
-              awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,
-              awaySlug: match.awayTeam.slug,
-              awayTeam: match.awayTeam.name,
-              homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
-              homeScore: (match.homeScore.current == undefined) ? null : match.homeScore.current,
-              homeSlug: match.homeTeam.slug,
-              homeTeam: match.homeTeam.name,
-              formatedStartDate: match.formatedStartDate,
-              id: match.id,
-              round: id,
-              startTime: match.startTime,
-              startTimestamp: match.startTimestamp,
-              changeTimestamp: match.changes.changeTimestamp
-            })
-            .then(function() {
-              console.log("Partidas adicionadas com sucesso!");
-            })
-            .catch(function(error) {
-              console.error("Falha ao adicionar partidas: ", error);
-            });
+          // this.db
+          //   .collection("resultados")
+          //   .doc(id)
+          //   .collection(id)
+          //   .doc(String(match.id))
+          //   .set({
+          //     awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
+          //     awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,
+          //     awaySlug: match.awayTeam.slug,
+          //     awayTeam: match.awayTeam.name,
+          //     homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
+          //     homeScore: (match.homeScore.current == undefined) ? null : match.homeScore.current,
+          //     homeSlug: match.homeTeam.slug,
+          //     homeTeam: match.homeTeam.name,
+          //     formatedStartDate: match.formatedStartDate,
+          //     id: match.id,
+          //     round: id,
+          //     startTime: match.startTime,
+          //     startTimestamp: match.startTimestamp,
+          //     changeTimestamp: match.changes.changeTimestamp
+          //   })
+          //   .then(function() {
+          //     console.log("Partidas adicionadas com sucesso!");
+          //   })
+          //   .catch(function(error) {
+          //     console.error("Falha ao adicionar partidas: ", error);
+          //   });
         }
       }
     });
@@ -132,22 +132,22 @@ export class ResultadoProvider {
             if (partidas[i].id == match.id &&
             partidas[i].changeTimestamp != match.changes.changeTimestamp) {
               console.log("Atualizar resultados!");
-              this.db
-              .collection("resultados")
-              .doc(id)
-              .collection(id)
-              .doc(String(match.id))
-              .update({
-                awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,
-                homeScore: (match.homeScore.current == undefined) ? null : match.homeScore.current,
-                changeTimestamp: match.changes.changeTimestamp
-              })
-              .then(function() {
-                console.log("Partidas atualizadas com sucesso!");
-              })
-              .catch(function(error) {
-                console.error("Falha ao atualizar partidas: ", error);
-              });
+              // this.db
+              // .collection("resultados")
+              // .doc(id)
+              // .collection(id)
+              // .doc(String(match.id))
+              // .update({
+              //   awayScore: (match.awayScore.current == undefined) ? null : match.awayScore.current,
+              //   homeScore: (match.homeScore.current == undefined) ? null : match.homeScore.current,
+              //   changeTimestamp: match.changes.changeTimestamp
+              // })
+              // .then(function() {
+              //   console.log("Partidas atualizadas com sucesso!");
+              // })
+              // .catch(function(error) {
+              //   console.error("Falha ao atualizar partidas: ", error);
+              // });
             }
           }
         }
@@ -158,11 +158,11 @@ export class ResultadoProvider {
 
   partidas(idRound): Observable<any> {
 
-    return this.db
-             .collection("resultados")
-             .doc(idRound)
-             .collection(idRound, ref => ref.orderBy("startTimestamp", "asc"))
-             .valueChanges();
+    return null;//this.db
+            //  .collection("resultados")
+            //  .doc(idRound)
+            //  .collection(idRound, ref => ref.orderBy("startTimestamp", "asc"))
+            //  .valueChanges();
 
   }
 

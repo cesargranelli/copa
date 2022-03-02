@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore } from 'angularfire2/firestore';
+// import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Aposta } from '../../models/aposta';
 import { User } from '../../models/user';
@@ -13,25 +13,25 @@ export class ApostaProvider {
 
   constructor(
     public http: HttpClient,
-    public db: AngularFirestore
+    // public db: AngularFirestore
   ) { }
 
   apostas(jogo) {
 
     let i = 0;
 
-    this.db.collection("users").valueChanges().subscribe(users => {
-      users.map((user: User) => {
-        this.db.collection("hunches").doc(user.slug).collection(String(jogo.round)).doc(String(jogo.id))
-        .valueChanges().subscribe((game: Aposta) => {
-          if (game) {
-            game.nickname = user.nickname;
-            game.update = new Date(Number(game.update)).toLocaleString();
-            this.apostas$[i++] = game;
-          }
-        });
-      });
-    });
+    // this.db.collection("users").valueChanges().subscribe(users => {
+    //   users.map((user: User) => {
+    //     this.db.collection("hunches").doc(user.slug).collection(String(jogo.round)).doc(String(jogo.id))
+    //     .valueChanges().subscribe((game: Aposta) => {
+    //       if (game) {
+    //         game.nickname = user.nickname;
+    //         game.update = new Date(Number(game.update)).toLocaleString();
+    //         this.apostas$[i++] = game;
+    //       }
+    //     });
+    //   });
+    // });
 
     return this.apostas$;
 
@@ -39,8 +39,8 @@ export class ApostaProvider {
 
   palpites(aposta: Aposta) {
 
-    return this.db.collection("hunches").doc(aposta.slug).collection(String(aposta.round)).doc(String(aposta.id))
-        .valueChanges();
+    return null;//this.db.collection("hunches").doc(aposta.slug).collection(String(aposta.round)).doc(String(aposta.id))
+        // .valueChanges();
 
   }
 

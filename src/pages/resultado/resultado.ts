@@ -4,7 +4,7 @@ import { Loading, LoadingController, IonicPage, NavController, NavParams } from 
 
 import { ApostaPage } from '../aposta/aposta';
 
-import { AngularFirestore } from "angularfire2/firestore";
+// import { AngularFirestore } from "angularfire2/firestore";
 
 import { Observable } from 'rxjs';
 import { ResultadoProvider } from '../../providers/resultado/resultado';
@@ -26,7 +26,7 @@ export class ResultadoPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public db: AngularFirestore,
+    // public db: AngularFirestore,
     public loadingCtrl: LoadingController,
     public rs: ResultadoProvider
   ) { }
@@ -35,7 +35,7 @@ export class ResultadoPage {
 
     let loading: Loading = this.showLoading();
 
-    this.rounds$ = this.db.collection("rounds").valueChanges();
+    // this.rounds$ = this.db.collection("rounds").valueChanges();
     this.jogos$ = this.rs.resultados(this.selectDefault);
 
     setTimeout(() => {

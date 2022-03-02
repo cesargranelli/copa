@@ -6,7 +6,7 @@ import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth';
 import { StorageProvider } from '../../providers/storage';
 import { UserProvider } from '../../providers/user';
-import { DashboardPage } from '../dashboard/dashboard';
+// import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
 @Component({
@@ -34,17 +34,17 @@ export class SigninPage {
     StorageProvider.authenticated.then(() => {
       let loading: Loading = this.showLoading();
 
-      this.userService.db
-        .collection("users")
-        .doc(StorageProvider.get().uid)
-        .valueChanges()
+      // this.userService.db
+      //   .collection("users")
+      //   .doc(StorageProvider.get().uid)
+      //   .valueChanges()
         // .first()
-        .subscribe((user: User) => {
-          this.navCtrl.setRoot(DashboardPage, {
-            userid: StorageProvider.get().uid,
-            slug: StorageProvider.get().slug
-          });
-        });
+        // .subscribe((user: User) => {
+        //   this.navCtrl.setRoot(DashboardPage, {
+        //     userid: StorageProvider.get().uid,
+        //     slug: StorageProvider.get().slug
+        //   });
+        // });
 
       loading.dismiss();
     }).catch(() => {
@@ -69,18 +69,18 @@ export class SigninPage {
       console.log(userCredential.user)
 
       if (userCredential.user) {
-        this.userService.db
-          .collection("users")
-          .doc(userCredential.user.uid)
-          .valueChanges()
+        // this.userService.db
+        //   .collection("users")
+        //   .doc(userCredential.user.uid)
+        //   .valueChanges()
           // .first()
-          .subscribe((user: User) => {
-            StorageProvider.set({ uid: user.uid, slug: user.slug })
-            this.navCtrl.setRoot(DashboardPage, {
-              userid: StorageProvider.get().uid,
-              slug: StorageProvider.get().slug
-            });
-          });
+          // .subscribe((user: User) => {
+          //   StorageProvider.set({ uid: user.uid, slug: user.slug })
+          //   this.navCtrl.setRoot(DashboardPage, {
+          //     userid: StorageProvider.get().uid,
+          //     slug: StorageProvider.get().slug
+          //   });
+          // });
 
         loading.dismiss();
         console.log(`Usuário logado com sucesso`);

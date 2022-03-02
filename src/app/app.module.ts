@@ -3,10 +3,12 @@ import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
+// import { AngularFireModule, FirebaseAppConfig } from 'angularfire2';
+// import { AngularFireAuth } from 'angularfire2/auth';
+// import { AngularFirestoreModule } from 'angularfire2/firestore';
+// import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireModule, FirebaseAppConfig } from '@angular/fire/firebase.app.module';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
 import { ApostaPage } from '../pages/aposta/aposta';
@@ -52,8 +54,9 @@ const firebaseAppConfig: FirebaseAppConfig = {
     BrowserModule,
     IonicModule.forRoot(CopaApp),
     AngularFireModule.initializeApp(firebaseAppConfig),
-    AngularFireStorageModule,
-    AngularFirestoreModule,
+    AngularFireAuthModule,
+    // AngularFireStorageModule,
+    // AngularFirestoreModule,
     HttpClientModule,
   ],
   bootstrap: [
@@ -76,7 +79,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
       provide: LOCALE_ID,
       useValue: 'pt'
     },
-    AngularFireAuth,
+    // AngularFireAuth,
     AuthProvider,
     StatusBar,
     SplashScreen,

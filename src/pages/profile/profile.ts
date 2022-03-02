@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 
-import { AngularFirestore } from 'angularfire2/firestore';
+// import { AngularFirestore } from 'angularfire2/firestore';
 
 import { User } from '../../models/user';
 
@@ -21,20 +21,20 @@ export class ProfilePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public db: AngularFirestore
+    // public db: AngularFirestore
   ) { }
 
   ionViewDidLoad() {
 
-    this.db
-      .collection("users")
-      .doc(this.navParams.get('userid'))
-      .valueChanges()
+    // this.db
+    //   .collection("users")
+    //   .doc(this.navParams.get('userid'))
+    //   .valueChanges()
       // .first()
-      .subscribe((user: User) => {
-        this.nome = user.name;
-        this.email = user.email;
-      });
+      // .subscribe((user: User) => {
+      //   this.nome = user.name;
+      //   this.email = user.email;
+      // });
   }
 
 }

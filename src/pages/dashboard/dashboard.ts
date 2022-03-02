@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+// import { AngularFirestore } from 'angularfire2/firestore';
 import { Loading, LoadingController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
 import { UserProvider } from '../../providers/user';
@@ -13,7 +13,7 @@ export class DashboardPage {
   public user: User;
 
   constructor(
-    public db: AngularFirestore,
+    // public db: AngularFirestore,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public userService: UserProvider
