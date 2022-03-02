@@ -13,4 +13,4 @@ import { DashboardPage } from './dashboard';
     DashboardPageModule
   ]
 })
-export class DashboardPageModule {}
+export class DashboardPageModule { }

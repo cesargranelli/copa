@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
-import 'rxjs/add/operator/first';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth';
 import { StorageProvider } from '../../providers/storage';
 import { UserProvider } from '../../providers/user';
-// import { DashboardPage } from '../dashboard/dashboard';
+import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
 @Component({
@@ -31,25 +30,21 @@ export class SigninPage {
       this.logout();
     }
 
-    StorageProvider.authenticated.then(() => {
+    if (StorageProvider.get().uid) {
       let loading: Loading = this.showLoading();
 
-      // this.userService.db
-      //   .collection("users")
-      //   .doc(StorageProvider.get().uid)
-      //   .valueChanges()
-        // .first()
-        // .subscribe((user: User) => {
-        //   this.navCtrl.setRoot(DashboardPage, {
-        //     userid: StorageProvider.get().uid,
-        //     slug: StorageProvider.get().slug
-        //   });
-        // });
+      this.userService.infoUsuario(StorageProvider.get().uid)
+        .subscribe((user: User) => {
+          this.navCtrl.setRoot(DashboardPage, {
+            userid: user.uid,
+            slug: user.slug
+          });
+        });
 
       loading.dismiss();
-    }).catch(() => {
+    } else {
       console.log('Não logado');
-    });
+    }
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -66,21 +61,17 @@ export class SigninPage {
     let loading: Loading = this.showLoading();
 
     this.authService.signin(this.signinForm.value).then(userCredential => {
-      console.log(userCredential.user)
+      console.log(userCredential.user.uid)
 
-      if (userCredential.user) {
-        // this.userService.db
-        //   .collection("users")
-        //   .doc(userCredential.user.uid)
-        //   .valueChanges()
-          // .first()
-          // .subscribe((user: User) => {
-          //   StorageProvider.set({ uid: user.uid, slug: user.slug })
-          //   this.navCtrl.setRoot(DashboardPage, {
-          //     userid: StorageProvider.get().uid,
-          //     slug: StorageProvider.get().slug
-          //   });
-          // });
+      if (userCredential.user.uid) {
+        this.userService.infoUsuario(userCredential.user.uid)
+          .subscribe((user: User) => {
+            StorageProvider.set({ uid: user.uid, slug: user.slug })
+            this.navCtrl.setRoot(DashboardPage, {
+              userid: StorageProvider.get().uid,
+              slug: StorageProvider.get().slug
+            });
+          });
 
         loading.dismiss();
         console.log(`Usuário logado com sucesso`);

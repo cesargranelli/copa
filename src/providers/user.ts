@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular';
+import { Observable } from 'rxjs';
 // import { AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { AuthProvider } from './auth';
 import { BaseProvider } from './base';
@@ -10,19 +11,24 @@ import { BaseProvider } from './base';
 @Injectable()
 export class UserProvider extends BaseProvider {
 
+  private basepath = "/api";
+
   private usuarioLogado: User;
 
   constructor(
     // public db: AngularFirestore,
-    public http: HttpClient,
-    public authService: AuthProvider
+    private authService: AuthProvider,
+    private http: HttpClient,
+    private platform: Platform
   ) {
     super();
     // db.firestore.settings({ timestampsInSnapshots: true });
+    if (this.platform.is("cordova")) {
+      this.basepath = 'http://localhost:5000';
+    }
   }
 
   create(user: User): Promise<any> {
-    console.log(user);
     return null;//this.db.collection("users").doc(user.uid).set(user);
   }
 
@@ -39,7 +45,8 @@ export class UserProvider extends BaseProvider {
   }
 
   infoUsuario(uid: string): Observable<User> {
-    return null;//this.db.collection("users").doc<User>(uid).valueChanges();
+    let headers = new HttpHeaders().set('uid', uid);
+    return this.http.get<User>(`${this.basepath}/users/uid`, { headers });
   }
 
 }
