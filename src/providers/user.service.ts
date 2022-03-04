@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 // import { AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
 import { User } from '../models/user';
-import { AuthProvider } from './auth';
+import { AuthProvider } from './auth.service';
 import { BaseProvider } from './base';
 
 @Injectable()
 export class UserProvider extends BaseProvider {
 
-  private basepath = "/api";
+  private api = "/api";
 
   private usuarioLogado: User;
 
@@ -24,7 +24,7 @@ export class UserProvider extends BaseProvider {
     super();
     // db.firestore.settings({ timestampsInSnapshots: true });
     if (this.platform.is("cordova")) {
-      this.basepath = 'http://localhost:5000';
+      this.api = 'http://localhost:5000';
     }
   }
 
@@ -45,8 +45,7 @@ export class UserProvider extends BaseProvider {
   }
 
   infoUsuario(uid: string): Observable<User> {
-    let headers = new HttpHeaders().set('uid', uid);
-    return this.http.get<User>(`${this.basepath}/users/uid`, { headers });
+    return this.http.get<User>(`${this.api}/users/uid`, { headers: new HttpHeaders().set('uid', uid) });
   }
 
 }

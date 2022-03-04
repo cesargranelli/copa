@@ -1,13 +1,9 @@
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>Palpites</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 <ion-content>
-
   <ion-card>
     <ion-list>
       <ion-item>
@@ -18,9 +14,7 @@
       </ion-item>
     </ion-list>
   </ion-card>
-
   <form #form="ngForm" (ngSubmit)="onSubmit()">
-
     <ion-card *ngFor="let match of matches$ | async">
       <ion-grid [id]="match.id">
         <ion-row>
@@ -48,11 +42,8 @@
         <ion-icon name="checkmark-circle" color="success" *ngIf="match.saved"></ion-icon>
       </ion-grid>
     </ion-card>
-
     <div padding>
       <button ion-button full large type="submit" [disabled]="dateFech<=dateHoje">Gravar</button>
     </div>
-
   </form>
-
 </ion-content>

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-// import { AngularFirestore } from 'angularfire2/firestore';
-import { Loading, LoadingController, NavParams } from 'ionic-angular';
+import { Loading, LoadingController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { StorageProvider } from '../../providers/storage';
-import { UserProvider } from '../../providers/user';
+import { UserProvider } from '../../providers/user.service';
 
 @Component({
   selector: 'page-dashboard',
@@ -14,7 +13,6 @@ export class DashboardPage {
   public user: User;
 
   constructor(
-    private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private userService: UserProvider
   ) { }

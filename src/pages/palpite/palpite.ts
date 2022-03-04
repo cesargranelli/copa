@@ -1,13 +1,11 @@
-import { RodadaProvider } from './../../providers/rodada/rodada';
 import { HttpClient } from "@angular/common/http";
 import { Component, Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from '@angular/forms';
-
-import { AlertController, Loading, LoadingController, IonicPage, NavParams, Platform } from "ionic-angular";
-
+import { AlertController, IonicPage, Loading, LoadingController, NavParams, Platform } from "ionic-angular";
 // import { AngularFirestore } from "angularfire2/firestore";
-
 import { Observable } from "rxjs";
+import { PalpiteProvider } from "../../providers/palpite.service";
+import { RodadaProvider } from '../../providers/rodada.service';
 
 @Injectable()
 @IonicPage()
@@ -18,8 +16,8 @@ import { Observable } from "rxjs";
 export class PalpitePage {
 
   public rounds$: Observable<any>;
-  public userid;
-  public slug;
+  public userid: string;
+  public slug: string;
 
   public idRound: string = "1";
 
@@ -41,55 +39,49 @@ export class PalpitePage {
     private platform: Platform,
     // private db: AngularFirestore,
     private http: HttpClient,
-    public formBuilder: FormBuilder,
-    public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
-    public roundService: RodadaProvider
+    private formBuilder: FormBuilder,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private roundService: RodadaProvider,
+    private palpiteService: PalpiteProvider
   ) {
-
     this.userid = this.navParams.get('userid');
-    this.slug   = this.navParams.get('slug');
+    this.slug = 'aknauth';//this.navParams.get('slug');
 
     // db.firestore.settings({ timestampsInSnapshots: true });
 
     if (this.platform.is("cordova")) {
       this.basepath = "https://www.sofascore.com";
     }
-
   }
 
   ionViewDidLoad() {
+    let loading = this.showLoading();
 
-    this.rounds$ = this.roundService.rodadas;
-
-    this.roundMatches(this.idRound);
-
+    setTimeout(() => {
+      this.rounds$ = this.roundService.rodadas;
+      this.roundMatches(this.idRound);
+      loading.dismiss();
+    });
   }
 
-  setIdRound(idRound) {
+  setIdRound(idRound: string) {
     this.idRound = idRound;
   }
 
   roundMatches(id?: string) {
-
-    // this.db
-    //   .collection("hunches")
-    //   .doc(this.slug)
-    //   .collection(this.idRound)
-    //   .valueChanges()
-    //   .subscribe(matches => {
-    //     if (!matches.length) {
-    //       this.addMatches(this.idRound);
-    //     } else {
-    //       this.matches$ = this.matches(this.idRound);
-    //     }
-    //   });
-
+    this.palpiteService.palpites(this.slug, this.idRound)
+      .subscribe(matches => {
+        if (!matches.length) {
+          // this.addMatches(this.idRound);
+        } else {
+          this.matches$ = this.matches(this.idRound);
+        }
+      });
   }
 
-  addMatches(id) {
-
-    let idRound;
+  addMatches(id: string) {
+    let idRound: string;
 
     (id == "1") ? idRound = "1" : null;
     (id == "2") ? idRound = "2" : null;
@@ -145,21 +137,15 @@ export class PalpitePage {
 
   }
 
-  matches(idRound): Observable<any> {
+  matches(idRound: string): Observable<any> {
+    this.roundService.getRodada(idRound)
+      .subscribe(
+        (round: any) => {
+          this.dateFech = new Date(round.closed).getTime();
+        }
+      );
 
-    // this.db.collection("rounds", ref => ref.where("round", "==", Number(idRound)))
-    //        .valueChanges()
-    //        .subscribe(
-    //          (date: any) => {
-    //            this.dateFech = new Date(date[0].closed).getTime();
-    //           }
-    //         );
-
-    return null;/*this.db
-             .collection("hunches")
-             .doc(this.slug)
-             .collection(idRound, ref => ref.orderBy("startTimestamp"))
-             .valueChanges();*/
+    return this.palpiteService.palpites(this.slug, idRound);
   }
 
   onSubmit(): void {

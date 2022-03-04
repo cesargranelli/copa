@@ -16,12 +16,12 @@ import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
 import { ApostaProvider } from '../providers/aposta/aposta';
-import { AuthProvider } from '../providers/auth';
+import { AuthProvider } from '../providers/auth.service';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
+import { PalpiteProvider } from '../providers/palpite.service';
 import { ResultadoProvider } from '../providers/resultado/resultado';
-import { RodadaProvider } from '../providers/rodada/rodada';
-import { UserProvider } from '../providers/user';
-import { PalpiteProvider } from './../providers/palpite/palpite';
+import { RodadaProvider } from '../providers/rodada.service';
+import { UserProvider } from '../providers/user.service';
 import { CopaApp } from './app.component';
 
 const firebaseAppConfig: FirebaseAppConfig = {

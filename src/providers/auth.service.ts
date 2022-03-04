@@ -11,7 +11,7 @@ import { StorageProvider } from './storage';
 @Injectable()
 export class AuthProvider extends BaseProvider {
 
-  private basepath = "/api";
+  private api = "/api";
 
   constructor(
     public angularFireAuth: AngularFireAuth,
@@ -20,12 +20,12 @@ export class AuthProvider extends BaseProvider {
   ) {
     super();
     if (this.platform.is("cordova")) {
-      this.basepath = 'http://localhost:5000';
+      this.api = 'http://localhost:5000';
     }
   }
 
   signup(register: Register): Observable<Registered> {
-    return this.http.post<Registered>(`${this.basepath}/auth/register`, register);
+    return this.http.post<Registered>(`${this.api}/auth/register`, register);
   }
 
   signin(userLogin: { email: string, password: string }): Promise<any> {

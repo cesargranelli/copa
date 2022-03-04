@@ -2,12 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Nav, Platform } from 'ionic-angular';
+import { Page } from 'ionic-angular/umd/navigation/nav-util';
 import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
-import { UserProvider } from '../providers/user';
+import { UserProvider } from '../providers/user.service';
 
 @Component({
   selector: 'myapp',
@@ -39,7 +40,7 @@ export class CopaApp {
     });
   }
 
-  onPage(componente, titulo) {
+  onPage(componente: Page, titulo: string) {
     let signout = false;
     (titulo == "Sair") ? signout = true : null;
     this.nav.push(componente, {

@@ -1,10 +1,7 @@
 import { Component } from "@angular/core";
-
-import { IonicPage, NavController, NavParams } from "ionic-angular";
-
-// import { AngularFirestore } from 'angularfire2/firestore';
-
-import { User } from '../../models/user';
+import { IonicPage, Loading, LoadingController, NavParams } from "ionic-angular";
+import { User } from "../../models/user";
+import { UserProvider } from "../../providers/user.service";
 
 @IonicPage()
 @Component({
@@ -19,22 +16,30 @@ export class ProfilePage {
   public nick: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    // public db: AngularFirestore
+    private loadingCtrl: LoadingController,
+    private navParams: NavParams,
+    private userService: UserProvider
   ) { }
 
   ionViewDidLoad() {
+    let loading = this.showLoading();
 
-    // this.db
-    //   .collection("users")
-    //   .doc(this.navParams.get('userid'))
-    //   .valueChanges()
-      // .first()
-      // .subscribe((user: User) => {
-      //   this.nome = user.name;
-      //   this.email = user.email;
-      // });
+    this.userService.infoUsuario(this.navParams.get('userid'))
+      .subscribe((user: User) => {
+        this.nome = user.name;
+        this.email = user.email;
+        loading.dismiss();
+      });
+  }
+
+  private showLoading(): Loading {
+    let loading: Loading = this.loadingCtrl.create({
+      content: 'Por favor aguarde...'
+    });
+
+    loading.present();
+
+    return loading;
   }
 
 }

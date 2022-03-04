@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Register } from '../../models/register';
 import { Registered } from '../../models/registered';
-import { AuthProvider } from '../../providers/auth';
+import { AuthProvider } from '../../providers/auth.service';
 import { StorageProvider } from '../../providers/storage';
 import { DashboardPage } from '../dashboard/dashboard';
 

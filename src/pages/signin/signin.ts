@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
-import { AuthProvider } from '../../providers/auth';
+import { AuthProvider } from '../../providers/auth.service';
 import { StorageProvider } from '../../providers/storage';
-import { UserProvider } from '../../providers/user';
+import { UserProvider } from '../../providers/user.service';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
