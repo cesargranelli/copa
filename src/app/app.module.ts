@@ -14,6 +14,8 @@ import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
+import { SignonPage } from '../pages/signon/signon';
+import { SignoutPage } from '../pages/signout/signout';
 import { SignupPage } from '../pages/signup/signup';
 import { ApostaProvider } from '../providers/aposta/aposta';
 import { AuthProvider } from '../providers/auth.service';
@@ -44,7 +46,9 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ProfilePage,
     ResultadoPage,
     SigninPage,
-    SignupPage
+    SignonPage,
+    SignupPage,
+    SignoutPage
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,9 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ProfilePage,
     ResultadoPage,
     SigninPage,
-    SignupPage
+    SignonPage,
+    SignupPage,
+    SignoutPage
   ],
   providers: [
     {

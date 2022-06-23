@@ -6,7 +6,7 @@
   "type": "ionic-angular",
   "proxies": [
     {
-      "path": "/service",
+      "path": "/sofascore",
       "proxyUrl": "https://www.sofascore.com"
     },
     {

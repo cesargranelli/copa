@@ -19,7 +19,7 @@ export class RodadaProvider {
   }
 
   get rodadas(): Observable<Rodada[]> {
-    return this.http.get<Rodada[]>(`${this.api}/rounds`);
+    return this.http.get<Rodada[]>(`${this.api}/rodadas`);
   }
 
   getRodada(roundId: string): Observable<Rodada> {

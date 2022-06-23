@@ -21,7 +21,7 @@ export class PalpitePage {
 
   public idRound: string = "1";
 
-  public basepath = "/api"; // Para teste em desenvolvimento
+  public sofascore = "/sofascore"; // Para teste em desenvolvimento
   public selectDefault: string = "Rodada 1";
   public dates$: Observable<any>;
   public matches$: Observable<any>;
@@ -51,16 +51,18 @@ export class PalpitePage {
     // db.firestore.settings({ timestampsInSnapshots: true });
 
     if (this.platform.is("cordova")) {
-      this.basepath = "https://www.sofascore.com";
+      this.sofascore = "https://api.sofascore.com/api/v1";
     }
   }
 
   ionViewDidLoad() {
     let loading = this.showLoading();
 
+    console.log('Passou aqui')
+
     setTimeout(() => {
       this.rounds$ = this.roundService.rodadas;
-      this.roundMatches(this.idRound);
+      // this.roundMatches(this.idRound);
       loading.dismiss();
     });
   }
@@ -93,41 +95,41 @@ export class PalpitePage {
 
     let loading: Loading = this.showLoading();
 
-    this.roundMatches$ = this.http.get(`${this.basepath}/u-tournament/16/season/15586/matches/round/${idRound}`);
-    //this.roundMatches$ = this.http.get(`api_round.php?id=${idRound}`);
-    // this.roundMatches$.subscribe(matches => {
-    //   for (let tournament in matches.roundMatches.tournaments) {
-    //     for (let event in matches.roundMatches.tournaments[tournament].events) {
-    //       let match = matches.roundMatches.tournaments[tournament].events[event];
-    //       this.db
-    //         .collection("hunches")
-    //         .doc(this.slug)
-    //         .collection(id)
-    //         .doc(String(match.id))
-    //         .set({
-    //           id: match.id,
-    //           round: id,
-    //           startTimestamp: match.startTimestamp,
-    //           formatedStartDate: match.formatedStartDate,
-    //           startTime: match.startTime,
-    //           homeTeam: match.homeTeam.name,
-    //           homeSlug: match.homeTeam.slug,
-    //           homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
-    //           homeScore: null,
-    //           awayTeam: match.awayTeam.name,
-    //           awaySlug: match.awayTeam.slug,
-    //           awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
-    //           awayScore: null
-    //         })
-    //         .then(function() {
-    //           console.log("Document successfully written!");
-    //         })
-    //         .catch(function(error) {
-    //           console.error("Error writing document: ", error);
-    //         });
-    //     }
-    //   }
-    // });
+    this.roundMatches$ = this.http.get(`${this.sofascore}/unique-tournament/16/season/15586/events/round/${idRound}`);
+    this.roundMatches$.subscribe(matches => {
+      for (let tournament in matches.roundMatches.tournaments) {
+        for (let event in matches.roundMatches.tournaments[tournament].events) {
+          let match = matches.roundMatches.tournaments[tournament].events[event];
+          console.log(match)
+          // this.db
+          //   .collection("hunches")
+          //   .doc(this.slug)
+          //   .collection(id)
+          //   .doc(String(match.id))
+          //   .set({
+          //     id: match.id,
+          //     round: id,
+          //     startTimestamp: match.startTimestamp,
+          //     formatedStartDate: match.formatedStartDate,
+          //     startTime: match.startTime,
+          //     homeTeam: match.homeTeam.name,
+          //     homeSlug: match.homeTeam.slug,
+          //     homeLogo: `https://www.sofascore.com/images/team-logo/football_${match.homeTeam.id}.png`,
+          //     homeScore: null,
+          //     awayTeam: match.awayTeam.name,
+          //     awaySlug: match.awayTeam.slug,
+          //     awayLogo: `https://www.sofascore.com/images/team-logo/football_${match.awayTeam.id}.png`,
+          //     awayScore: null
+          //   })
+          //   .then(function() {
+          //     console.log("Document successfully written!");
+          //   })
+          //   .catch(function(error) {
+          //     console.error("Error writing document: ", error);
+          //   });
+        }
+      }
+    });
 
     this.matches$ = this.matches(id);
 

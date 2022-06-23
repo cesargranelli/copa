@@ -9,10 +9,10 @@ import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
 @Component({
-  selector: 'page-signin',
-  templateUrl: 'signin.html',
+  selector: 'page-signon',
+  templateUrl: 'signout.html',
 })
-export class SigninPage {
+export class SignoutPage {
 
   signinForm: FormGroup;
 
@@ -25,13 +25,14 @@ export class SigninPage {
     public navParams: NavParams,
     public userService: UserProvider
   ) {
-    let loading: Loading = this.showLoading();
 
     if (this.navParams.get("out")) {
-      this.authService.signout();
+      this.logout();
     }
 
-    if (StorageProvider.get()) {
+    if (StorageProvider.get().uid) {
+      let loading: Loading = this.showLoading();
+
       this.userService.infoUsuario(StorageProvider.get().uid)
         .subscribe((user: User) => {
           this.navCtrl.setRoot(DashboardPage, {
@@ -42,7 +43,6 @@ export class SigninPage {
 
       loading.dismiss();
     } else {
-      loading.dismiss();
       console.log('Não logado');
     }
 
@@ -61,6 +61,8 @@ export class SigninPage {
     let loading: Loading = this.showLoading();
 
     this.authService.signin(this.signinForm.value).then(userCredential => {
+      console.log(userCredential.user.uid)
+
       if (userCredential.user.uid) {
         this.userService.infoUsuario(userCredential.user.uid)
           .subscribe((user: User) => {
@@ -110,6 +112,10 @@ export class SigninPage {
       message: message,
       buttons: ['Ok']
     }).present();
+  }
+
+  public logout() {
+    this.authService.signout();
   }
 
 }

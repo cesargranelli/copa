@@ -45,7 +45,7 @@ export class UserProvider extends BaseProvider {
   }
 
   infoUsuario(uid: string): Observable<User> {
-    return this.http.get<User>(`${this.api}/users/uid`, { headers: new HttpHeaders().set('uid', uid) });
+    return this.http.get<User>(`${this.api}/usuarios/uid`, { headers: new HttpHeaders().set('uid', uid) });
   }
 
 }

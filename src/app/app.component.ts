@@ -7,7 +7,8 @@ import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
-import { SigninPage } from '../pages/signin/signin';
+import { SignonPage } from '../pages/signon/signon';
+import { SignoutPage } from '../pages/signout/signout';
 import { UserProvider } from '../providers/user.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { UserProvider } from '../providers/user.service';
 })
 export class CopaApp {
 
-  rootPage: any = SigninPage;
+  rootPage: any = SignonPage;
 
   @ViewChild(Nav) public nav: Nav;
 
@@ -25,7 +26,7 @@ export class CopaApp {
     { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
     { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
-    { titulo: 'Sair', componente: SigninPage, icone: 'log-out' }
+    { titulo: 'Sair', componente: SignoutPage, icone: 'log-out' }
   ];
 
   constructor(
