@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { AlertController, Loading, LoadingController, NavController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { AuthProvider } from '../../providers/auth.service';
 import { StorageProvider } from '../../providers/storage';
-import { UserProvider } from '../../providers/user.service';
 import { DashboardPage } from '../dashboard/dashboard';
 import { SignupPage } from '../signup/signup';
 
@@ -17,34 +16,13 @@ export class SigninPage {
   signinForm: FormGroup;
 
   constructor(
-    public alertCtrl: AlertController,
-    public authService: AuthProvider,
-    public formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userService: UserProvider
+    private alertCtrl: AlertController,
+    private authService: AuthProvider,
+    private formBuilder: FormBuilder,
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController
   ) {
     let loading: Loading = this.showLoading();
-
-    if (this.navParams.get("out")) {
-      this.authService.signout();
-    }
-
-    if (StorageProvider.get()) {
-      this.userService.infoUsuario(StorageProvider.get().uid)
-        .subscribe((user: User) => {
-          this.navCtrl.setRoot(DashboardPage, {
-            userid: user.uid,
-            slug: user.slug
-          });
-        });
-
-      loading.dismiss();
-    } else {
-      loading.dismiss();
-      console.log('Não logado');
-    }
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -53,6 +31,7 @@ export class SigninPage {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
+    loading.dismiss();
   }
 
   public users: User[];
@@ -60,21 +39,16 @@ export class SigninPage {
   onSubmit(): void {
     let loading: Loading = this.showLoading();
 
-    this.authService.signin(this.signinForm.value).then(userCredential => {
-      if (userCredential.user.uid) {
-        this.userService.infoUsuario(userCredential.user.uid)
-          .subscribe((user: User) => {
-            StorageProvider.set({ uid: user.uid, slug: user.slug })
-            this.navCtrl.setRoot(DashboardPage, {
-              userid: StorageProvider.get().uid,
-              slug: StorageProvider.get().slug
-            });
-          });
-
+    this.authService.signin(this.signinForm.value).subscribe(user => {
+      if (user.uid) {
+        StorageProvider.set({ uid: user.uid, slug: user.slug })
+        this.navCtrl.setRoot(DashboardPage, {
+          user: user
+        });
         loading.dismiss();
         console.log(`Usuário logado com sucesso`);
       }
-    }).catch((error: any) => {
+    }, (error: any) => {
       loading.dismiss();
 
       if (error.code == 'auth/user-not-found') {

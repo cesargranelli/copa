@@ -11,10 +11,10 @@
   <ion-item no-lines>
     <div class="avatar-wrapper">
       <ion-avatar>
-        <h1 text-center *ngIf="foto == 'false'">
+        <h1 text-center *ngIf="user?.foto == 'false'">
           <ion-icon name="contact" class="person-icon" color="primary"></ion-icon>
         </h1>
-        <img src="" *ngIf="foto != 'false'">
+        <img src="" *ngIf="user?.foto != 'false'">
       </ion-avatar>
       <button class="btn-tirar-foto" ion-button ion-only round>
         <ion-icon name="camera"></ion-icon>
@@ -26,17 +26,17 @@
 
     <ion-item>
       <ion-icon name="person" item-left color="primary"></ion-icon>
-      <ion-label>{{ nome }}</ion-label>
+      <ion-label>{{ user.name }}</ion-label>
     </ion-item>
 
     <ion-item>
       <ion-icon name="at" item-left color="primary"></ion-icon>
-      <ion-label>{{ email }}</ion-label>
+      <ion-label>{{ user.email }}</ion-label>
     </ion-item>
 
     <ion-item>
       <ion-icon name="ionitron" item-left color="primary"></ion-icon>
-      <ion-label>{{ nick }}</ion-label>
+      <ion-label>{{ user.nickname }}</ion-label>
     </ion-item>
 
   </ion-card>

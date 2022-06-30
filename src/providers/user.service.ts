@@ -28,8 +28,12 @@ export class UserProvider extends BaseProvider {
     }
   }
 
-  create(user: User): Promise<any> {
-    return null;//this.db.collection("users").doc(user.uid).set(user);
+  findByUid(uid: string): Observable<User> {
+    return this.http.get<User>(`${this.api}/users/uid`, { headers: new HttpHeaders().set('uid', uid) });
+  }
+
+  create(user: User): Observable<User> {
+    return this.http.post<User>(`${this.api}/users`, { user });
   }
 
   userExists(slug: string): Observable<boolean> {
@@ -42,10 +46,6 @@ export class UserProvider extends BaseProvider {
 
   obtemUserLogado() {
     // return this.usuarioLogado = localStorage.getItem(localStorage.key(0));
-  }
-
-  infoUsuario(uid: string): Observable<User> {
-    return this.http.get<User>(`${this.api}/usuarios/uid`, { headers: new HttpHeaders().set('uid', uid) });
   }
 
 }

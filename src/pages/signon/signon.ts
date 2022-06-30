@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Loading, LoadingController, NavController } from 'ionic-angular';
 import { User } from '../../models/user';
+import { AuthProvider } from '../../providers/auth.service';
 import { StorageProvider } from '../../providers/storage';
 import { UserProvider } from '../../providers/user.service';
 import { DashboardPage } from '../dashboard/dashboard';
@@ -13,20 +14,20 @@ import { SigninPage } from '../signin/signin';
 export class SignonPage {
 
   constructor(
-    public loadingCtrl: LoadingController,
-    public navCtrl: NavController,
-    public userService: UserProvider
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
+    private userService: UserProvider,
+    private authService: AuthProvider
   ) {
     let loading: Loading = this.showLoading();
 
     if (StorageProvider.get()) {
-      this.userService.infoUsuario(StorageProvider.get().uid)
+      this.userService.findByUid(StorageProvider.get().uid)
         .subscribe((user: User) => {
           this.navCtrl.setRoot(DashboardPage, {
-            userid: user.uid,
-            slug: user.slug
+            user: user
           }, null);
-        });
+        }, () => this.authService.signout());
 
       loading.dismiss();
     } else {

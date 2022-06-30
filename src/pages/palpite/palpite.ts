@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertController, IonicPage, Loading, LoadingController, NavParams, Platform } from "ionic-angular";
 // import { AngularFirestore } from "angularfire2/firestore";
 import { Observable } from "rxjs";
+import { User } from "../../models/user";
 import { PalpiteProvider } from "../../providers/palpite.service";
 import { RodadaProvider } from '../../providers/rodada.service';
 
@@ -16,6 +17,7 @@ import { RodadaProvider } from '../../providers/rodada.service';
 export class PalpitePage {
 
   public rounds$: Observable<any>;
+  public user: User;
   public userid: string;
   public slug: string;
 
@@ -45,6 +47,7 @@ export class PalpitePage {
     private roundService: RodadaProvider,
     private palpiteService: PalpiteProvider
   ) {
+    this.user = this.navParams.get('user');
     this.userid = this.navParams.get('userid');
     this.slug = 'aknauth';//this.navParams.get('slug');
 

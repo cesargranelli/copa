@@ -8,8 +8,7 @@ import { PalpitePage } from '../pages/palpite/palpite';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SignonPage } from '../pages/signon/signon';
-import { SignoutPage } from '../pages/signout/signout';
-import { UserProvider } from '../providers/user.service';
+import { AuthProvider } from '../providers/auth.service';
 
 @Component({
   selector: 'myapp',
@@ -26,28 +25,25 @@ export class CopaApp {
     { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
     { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
-    { titulo: 'Sair', componente: SignoutPage, icone: 'log-out' }
+    { titulo: 'Sair', componente: null, icone: 'log-out' }
   ];
 
   constructor(
-    public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    public userService: UserProvider
+    private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private authService: AuthProvider,
   ) {
-    platform.ready().then(() => {
-      statusBar.styleDefault();
-      splashScreen.hide();
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
   }
 
   onPage(componente: Page, titulo: string) {
-    let signout = false;
-    (titulo == "Sair") ? signout = true : null;
+    (titulo == "Sair") ? this.authService.signout() : null;
     this.nav.push(componente, {
-      userid: this.nav._views[0].data.userid,
-      slug: this.nav._views[0].data.slug,
-      out: signout
+      user: this.nav._views[0].data.user
     });
   }
 

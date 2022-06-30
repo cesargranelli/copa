@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Register } from '../models/register';
 import { Registered } from '../models/registered';
+import { User } from '../models/user';
 import { BaseProvider } from './base';
 import { StorageProvider } from './storage';
 
@@ -14,7 +14,6 @@ export class AuthProvider extends BaseProvider {
   private api = "/api";
 
   constructor(
-    public angularFireAuth: AngularFireAuth,
     private http: HttpClient,
     private platform: Platform
   ) {
@@ -25,11 +24,11 @@ export class AuthProvider extends BaseProvider {
   }
 
   signup(register: Register): Observable<Registered> {
-    return this.http.post<Registered>(`${this.api}/auth/register`, register);
+    return this.http.post<Registered>(`${this.api}/users/register`, register);
   }
 
-  signin(userLogin: { email: string, password: string }): Promise<any> {
-    return this.angularFireAuth.auth.signInAndRetrieveDataWithEmailAndPassword(userLogin.email, userLogin.password);
+  signin(login: { email: string, password: string }): Observable<any> {
+    return this.http.post<User>(`${this.api}/users/login`, login);
   }
 
   signout(): Promise<void> {
