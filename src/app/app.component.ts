@@ -41,10 +41,14 @@ export class CopaApp {
   }
 
   onPage(componente: Page, titulo: string) {
-    (titulo == "Sair") ? this.authService.signout() : null;
-    this.nav.push(componente, {
-      user: this.nav._views[0].data.user
-    });
+    if (titulo == "Sair") {
+      this.authService.signout();
+      this.nav.push(SignonPage);
+    } else {
+      this.nav.push(componente, {
+        user: this.nav._views[0].data.user
+      });
+    }
   }
 
 }

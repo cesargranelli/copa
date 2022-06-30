@@ -20,14 +20,13 @@ export class SignupPage {
   password: string = '';
 
   constructor(
-    public alertCtrl: AlertController,
-    public authService: AuthProvider,
-    public formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController,
-    public navCtrl: NavController,
-    public navParams: NavParams
+    private alertCtrl: AlertController,
+    private authService: AuthProvider,
+    private formBuilder: FormBuilder,
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
+    private navParams: NavParams
   ) {
-
     let nicknameRegex = /^[a-zA-Z ]+$/;
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -41,7 +40,6 @@ export class SignupPage {
 
     this.email = this.navParams.get('email');
     this.password = this.navParams.get('password');
-
   }
 
   onSubmit(): void {
@@ -51,13 +49,12 @@ export class SignupPage {
       .subscribe((registered: Registered) => {
         StorageProvider.set(registered);
         this.navCtrl.setRoot(DashboardPage, {
-          userid: registered.uid,
-          slug: registered.slug
+          user: registered
         });
         loading.dismiss();
-      }, (response: HttpErrorResponse) => {
+      }, (errorResponse: HttpErrorResponse) => {
         loading.dismiss();
-        this.showAlert(response.error.message);
+        this.showAlert(errorResponse.error.message);
       });
   }
 

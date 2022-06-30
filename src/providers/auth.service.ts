@@ -31,8 +31,8 @@ export class AuthProvider extends BaseProvider {
     return this.http.post<User>(`${this.api}/users/login`, login);
   }
 
-  signout(): Promise<void> {
-    return StorageProvider.clear();
+  signout() {
+    StorageProvider.clear();
   }
 
 }

@@ -26,7 +26,7 @@ export class SignonPage {
         .subscribe((user: User) => {
           this.navCtrl.setRoot(DashboardPage, {
             user: user
-          }, null);
+          });
         }, () => this.authService.signout());
 
       loading.dismiss();

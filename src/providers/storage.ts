@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Registered } from '../models/registered';
+import { User } from '../models/user';
 
 @Injectable()
 export class StorageProvider {
 
   constructor() { }
 
-  static set(registered: Registered) {
+  static set(user: User) {
     localStorage.clear();
-    localStorage.setItem(registered.slug, JSON.stringify({ uid: registered.uid, slug: registered.slug }));
+    localStorage.setItem(user.slug, JSON.stringify({ uid: user.uid, slug: user.slug }));
   }
 
-  static get(): Registered {
+  static get(): User {
     return JSON.parse(localStorage.getItem(localStorage.key(0)));
   }
 
-  static clear(): Promise<void> {
-    return new Promise(() => localStorage.clear());
+  static clear() {
+    localStorage.clear();
   }
 
 }
