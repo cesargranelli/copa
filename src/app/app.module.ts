@@ -1,7 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireModule, FirebaseAppConfig } from '@angular/fire/firebase.app.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -25,15 +23,6 @@ import { RoundProvider } from '../providers/round.service';
 import { UserProvider } from '../providers/user.service';
 import { CopaApp } from './app.component';
 
-const firebaseAppConfig: FirebaseAppConfig = {
-  apiKey: 'AIzaSyCVQjL7W-pp3xSXeXhcQEjF14zzEM11GO0',
-  authDomain: 'copa-app-9057a.firebaseapp.com',
-  databaseURL: 'https://copa-app-9057a.firebaseio.com',
-  projectId: 'copa-app-9057a',
-  storageBucket: 'copa-app-9057a.appspot.com',
-  messagingSenderId: '1091130500367'
-};
-
 @NgModule({
   declarations: [
     CopaApp,
@@ -51,8 +40,6 @@ const firebaseAppConfig: FirebaseAppConfig = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(CopaApp),
-    AngularFireModule.initializeApp(firebaseAppConfig),
-    AngularFireAuthModule,
     HttpClientModule,
   ],
   bootstrap: [

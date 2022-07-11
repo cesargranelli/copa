@@ -1,14 +1,10 @@
 {
-  "name": "Copa",
+  "name": "Futecopa",
   "integrations": {
     "cordova": {}
   },
   "type": "ionic-angular",
   "proxies": [
-    {
-      "path": "/sofascore",
-      "proxyUrl": "https://www.sofascore.com"
-    },
     {
       "path": "/api",
       "proxyUrl": "https://api-futecopa.herokuapp.com"
