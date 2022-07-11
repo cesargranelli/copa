@@ -24,7 +24,7 @@ export class UserProvider extends BaseProvider {
     super();
     // db.firestore.settings({ timestampsInSnapshots: true });
     if (this.platform.is("cordova")) {
-      this.api = 'http://localhost:5000';
+      this.api = 'https://api-futecopa.herokuapp.com';
     }
   }
 

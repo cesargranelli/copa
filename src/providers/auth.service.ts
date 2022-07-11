@@ -19,7 +19,7 @@ export class AuthProvider extends BaseProvider {
   ) {
     super();
     if (this.platform.is("cordova")) {
-      this.api = 'http://localhost:5000';
+      this.api = 'https://api-futecopa.herokuapp.com';
     }
   }
 
