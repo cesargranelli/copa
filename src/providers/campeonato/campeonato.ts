@@ -1,16 +1,14 @@
 import { Injectable } from "@angular/core";
-
+import { Observable } from "rxjs";
+import { Aposta } from "../../models/aposta";
 // import { AngularFirestore } from "angularfire2/firestore";
-
 //import { Observable } from "rxjs/Observable";
 // import "rxjs/operator/first";
-
 import { Partida } from "../../models/partida";
-import { Rodada } from "../../models/rodada";
+import { Round } from "../../models/round";
 import { User } from "../../models/user";
-import { Aposta } from "../../models/aposta";
 import { Usuario } from "./../../models/usuario";
-import { Observable } from "rxjs";
+
 
 @Injectable()
 export class CampeonatoProvider {
@@ -60,7 +58,7 @@ export class CampeonatoProvider {
     //   });
   }
 
-  pontuacoes(rodada: Rodada) {
+  pontuacoes(rodada: Round) {
     // this.db
     //   .collection("users"/*, ref => ref.where("slug", "==", "rockman-dx")*/)
     //   .valueChanges()
@@ -95,7 +93,7 @@ export class CampeonatoProvider {
       // });
   }
 
-  usuarios(usuario: Usuario, rodada: Rodada) {
+  usuarios(usuario: Usuario, rodada: Round) {
     // this.db
     //   .collection("users"/*, ref => ref.where("slug", "==", usuario.slug)*/)
     //   .valueChanges()
@@ -108,7 +106,7 @@ export class CampeonatoProvider {
       // });
   }
 
-  palpites(rodada: Rodada, usuario: Usuario) {
+  palpites(rodada: Round, usuario: Usuario) {
     let r = 1;
 
     // this.db
@@ -126,7 +124,7 @@ export class CampeonatoProvider {
   }
 
   resultados(
-    rodada: Rodada,
+    rodada: Round,
     usuario: Usuario,
     partida: Partida,
     part?: number
@@ -270,7 +268,7 @@ export class CampeonatoProvider {
   }
 
   somarPontos(
-    rodada: Rodada,
+    rodada: Round,
     usuario: User,
     partida: Partida,
     resultado: Aposta

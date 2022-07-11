@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { Rodada } from '../models/rodada';
+import { Round } from '../models/round';
 
 @Injectable()
-export class RodadaProvider {
+export class RoundProvider {
 
   private api = "/api";
 
@@ -18,12 +18,12 @@ export class RodadaProvider {
     }
   }
 
-  get rodadas(): Observable<Rodada[]> {
-    return this.http.get<Rodada[]>(`${this.api}/rodadas`);
+  rounds(): Observable<Round[]> {
+    return this.http.get<Round[]>(`${this.api}/rounds`);
   }
 
-  getRodada(roundId: string): Observable<Rodada> {
-    return this.http.get<Rodada>(`${this.api}/rounds/${roundId}`);
+  getRodada(roundId: string): Observable<Round> {
+    return this.http.get<Round>(`${this.api}/rounds/${roundId}`);
   }
 
 }

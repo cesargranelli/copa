@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Nav, Platform } from 'ionic-angular';
 import { Page } from 'ionic-angular/umd/navigation/nav-util';
 import { CampeonatoPage } from '../pages/campeonato/campeonato';
-import { PalpitePage } from '../pages/palpite/palpite';
+import { GuessPage } from '../pages/guess/guess';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SignonPage } from '../pages/signon/signon';
@@ -22,7 +22,7 @@ export class CopaApp {
 
   public paginas = [
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
-    { titulo: 'Palpite', componente: PalpitePage, icone: 'clipboard' },
+    { titulo: 'Palpite', componente: GuessPage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: ResultadoPage, icone: 'paper' },
     { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
     { titulo: 'Sair', componente: null, icone: 'log-out' }

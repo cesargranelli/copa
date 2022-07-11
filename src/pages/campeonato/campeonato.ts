@@ -1,15 +1,14 @@
 //import { map } from 'rxjs/operator/map';
 import { Component, Injectable } from '@angular/core';
-
-import { IonicPage, NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
-
-// import { AngularFirestore } from "angularfire2/firestore";
-
-//import { RodadaProvider } from './../../providers/rodada/rodada';
-import { CampeonatoProvider } from '../../providers/campeonato/campeonato';
+import { IonicPage, Loading, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs';
 //import { Usuario } from '../../models/usuario';
-import { Rodada } from '../../models/rodada';
+import { Round } from '../../models/round';
+// import { AngularFirestore } from "angularfire2/firestore";
+//import { RodadaProvider } from './../../providers/rodada/rodada';
+import { CampeonatoProvider } from '../../providers/campeonato/campeonato';
+
+
 //import { User } from '../../models/user';
 
 @Injectable()
@@ -20,7 +19,7 @@ import { Rodada } from '../../models/rodada';
 })
 export class CampeonatoPage {
 
-  private _rodadas: Rodada[];
+  private _rodadas: Round[];
 
   ranking$: Observable<any>;
 

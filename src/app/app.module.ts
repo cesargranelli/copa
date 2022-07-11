@@ -10,7 +10,7 @@ import { ApostaPalpitesPage } from '../pages/aposta-palpites/aposta-palpites';
 import { ApostaPage } from '../pages/aposta/aposta';
 import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { PalpitePage } from '../pages/palpite/palpite';
+import { GuessPage } from '../pages/guess/guess';
 import { ProfilePage } from '../pages/profile/profile';
 import { ResultadoPage } from '../pages/resultado/resultado';
 import { SigninPage } from '../pages/signin/signin';
@@ -19,9 +19,9 @@ import { SignupPage } from '../pages/signup/signup';
 import { ApostaProvider } from '../providers/aposta/aposta';
 import { AuthProvider } from '../providers/auth.service';
 import { CampeonatoProvider } from '../providers/campeonato/campeonato';
-import { PalpiteProvider } from '../providers/palpite.service';
+import { GuessProvider } from '../providers/guess.service';
 import { ResultadoProvider } from '../providers/resultado/resultado';
-import { RodadaProvider } from '../providers/rodada.service';
+import { RoundProvider } from '../providers/round.service';
 import { UserProvider } from '../providers/user.service';
 import { CopaApp } from './app.component';
 
@@ -40,7 +40,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ApostaPage,
     CampeonatoPage,
     DashboardPage,
-    PalpitePage,
+    GuessPage,
     ApostaPalpitesPage,
     ProfilePage,
     ResultadoPage,
@@ -63,7 +63,7 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ApostaPage,
     CampeonatoPage,
     DashboardPage,
-    PalpitePage,
+    GuessPage,
     ApostaPalpitesPage,
     ProfilePage,
     ResultadoPage,
@@ -84,8 +84,8 @@ const firebaseAppConfig: FirebaseAppConfig = {
     ResultadoProvider,
     ApostaProvider,
     CampeonatoProvider,
-    PalpiteProvider,
-    RodadaProvider
+    GuessProvider,
+    RoundProvider
   ]
 })
 export class AppModule { }
