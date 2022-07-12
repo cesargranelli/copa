@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Register } from '../models/register';
 import { Registered } from '../models/registered';
@@ -11,16 +10,8 @@ import { StorageProvider } from './storage';
 @Injectable()
 export class AuthProvider extends BaseProvider {
 
-  private api = "/api";
-
-  constructor(
-    private http: HttpClient,
-    private platform: Platform
-  ) {
+  constructor(private http: HttpClient) {
     super();
-    if (this.platform.is("cordova")) {
-      this.api = 'https://api-futecopa.herokuapp.com';
-    }
   }
 
   signup(register: Register): Observable<Registered> {

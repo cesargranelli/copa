@@ -1,31 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
-// import { AngularFirestore } from 'angularfire2/firestore';
 import 'rxjs/add/operator/map';
 import { User } from '../models/user';
-import { AuthProvider } from './auth.service';
 import { BaseProvider } from './base';
 
 @Injectable()
 export class UserProvider extends BaseProvider {
 
-  private api = "/api";
-
-  private usuarioLogado: User;
-
-  constructor(
-    // public db: AngularFirestore,
-    private authService: AuthProvider,
-    private http: HttpClient,
-    private platform: Platform
-  ) {
+  constructor(private http: HttpClient) {
     super();
-    // db.firestore.settings({ timestampsInSnapshots: true });
-    if (this.platform.is("cordova")) {
-      this.api = 'https://api-futecopa.herokuapp.com';
-    }
   }
 
   findByUid(uid: string): Observable<User> {
