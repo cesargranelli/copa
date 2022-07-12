@@ -1,22 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { Game } from '../models/game';
 import { Guess } from '../models/guess';
+import { BaseProvider } from './base';
 
 @Injectable()
-export class GuessProvider {
+export class GuessProvider extends BaseProvider {
 
-  private api = "/api";
-
-  constructor(
-    private http: HttpClient,
-    private platform: Platform
-  ) {
-    if (this.platform.is("cordova")) {
-      this.api = 'https://api-futecopa.herokuapp.com';
-    }
+  constructor(private http: HttpClient) {
+    super();
   }
 
   guesses(slug: string, matchDay: string): Observable<Game[]> {
