@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { User } from '../models/user';
-import { BaseProvider } from './base';
+import { BaseProvider } from './base.service';
 
 @Injectable()
 export class UserProvider extends BaseProvider {

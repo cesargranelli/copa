@@ -1,7 +1,6 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, Injectable } from "@angular/core";
-import { FormGroup } from '@angular/forms';
-import { AlertController, IonicPage, Loading, LoadingController, NavParams, Platform } from "ionic-angular";
-import { Observable } from "rxjs";
+import { AlertController, IonicPage, Loading, LoadingController, NavParams } from "ionic-angular";
 import { Game } from "../../models/game";
 import { Guess } from "../../models/guess";
 import { Round } from "../../models/round";
@@ -20,22 +19,13 @@ export class GuessPage {
   public rounds: Round[];
   public games: Game[];
   public user: User;
+  public blocked: boolean;
 
   public matchDay: number = 1;
-
-  public selectDefault: string = "Rodada 1";
-  public dates$: Observable<any>;
-
-  hunchForm: FormGroup;
-
-  // Teste
-  dateNow: string = new Date(new Date().setSeconds(-10800)).toISOString();
-  dateHoje: number = new Date(new Date().setSeconds(-10800)).getTime();
-  dateFech: number;
+  public utcDateNow: string = new Date(new Date().setSeconds(-10800)).toISOString();
 
   constructor(
     private navParams: NavParams,
-    private platform: Platform,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private roundService: RoundProvider,
@@ -47,18 +37,20 @@ export class GuessPage {
   ionViewDidLoad() {
     let loading = this.showLoading();
 
-    this.roundService.rounds().subscribe((rounds: Round[]) => this.rounds = rounds.sort(), null, () => loading.dismiss());
+    this.roundService.rounds().subscribe((rounds: Round[]) =>
+      this.rounds = rounds.sort((a: Round, b: Round) => a.matchDay - b.matchDay), (error: HttpErrorResponse) => this.showAlert(error.message), () => loading.dismiss());
   }
 
   setRound(round: Round) {
     this.matchDay = round.matchDay;
+    this.blocked = this.utcDateNow>=round.start;
   }
 
   matchDayGuesses() {
     let loading = this.showLoading();
 
     this.guessService.guesses(this.user.slug, String(this.matchDay))
-      .subscribe((games: Game[]) => this.games = games, null, () => loading.dismiss());
+      .subscribe((games: Game[]) => this.games = games, (error: HttpErrorResponse) => this.showAlert(error.message), () => loading.dismiss());
   }
 
   onSubmit(): void {

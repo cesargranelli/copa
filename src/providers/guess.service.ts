@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Game } from '../models/game';
 import { Guess } from '../models/guess';
-import { BaseProvider } from './base';
+import { BaseProvider } from './base.service';
 
 @Injectable()
 export class GuessProvider extends BaseProvider {

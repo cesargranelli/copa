@@ -5,7 +5,7 @@ import { AlertController, Loading, LoadingController, NavController, NavParams }
 import { Register } from '../../models/register';
 import { Registered } from '../../models/registered';
 import { AuthProvider } from '../../providers/auth.service';
-import { StorageProvider } from '../../providers/storage';
+import { StorageProvider } from '../../providers/storage.service';
 import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({

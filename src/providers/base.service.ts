@@ -18,7 +18,8 @@ const extractError = (error: Response | any): string => {
 
 export abstract class BaseProvider {
 
-    protected api = 'https://api-futecopa.herokuapp.com';
+    // protected api = 'https://api-futecopa.herokuapp.com';
+    protected api = 'http://localhost:5000';
 
     protected handlePromiseError(error: Response | any): Promise<any> {
         return Promise.reject(extractError(error));

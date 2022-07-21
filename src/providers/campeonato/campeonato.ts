@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Aposta } from "../../models/aposta";
+import { Bet } from "../../models/bet";
 // import { AngularFirestore } from "angularfire2/firestore";
 //import { Observable } from "rxjs/Observable";
 // import "rxjs/operator/first";
@@ -271,111 +271,111 @@ export class CampeonatoProvider {
     rodada: Round,
     usuario: User,
     partida: Partida,
-    resultado: Aposta
-  ): number {
-    if (
-      partida.homeScore === null ||
-      resultado.homeScore === null ||
-      partida.awayScore === null ||
-      resultado.awayScore === null
-    ) {
-      return 0;
-    }
+    resultado: Bet
+  ) {
+    // if (
+    //   partida.homeScore === null ||
+    //   resultado.homeScore === null ||
+    //   partida.awayScore === null ||
+    //   resultado.awayScore === null
+    // ) {
+    //   return 0;
+    // }
 
-    let pontos: number = 0;
-    // Placar
-    if (
-      partida.homeScore == resultado.homeScore &&
-      partida.awayScore == resultado.awayScore
-    ) {
-      return 25;
-    }
+    // let pontos: number = 0;
+    // // Placar
+    // if (
+    //   partida.homeScore == resultado.homeScore &&
+    //   partida.awayScore == resultado.awayScore
+    // ) {
+    //   return 25;
+    // }
 
-    // Score Vencedor
-    else if (
-      partida.homeScore > partida.awayScore &&
-      resultado.homeScore > resultado.awayScore &&
-      partida.homeScore == resultado.homeScore &&
-      partida.awayScore != resultado.awayScore
-    ) {
-      return 18;
-    } else if (
-      partida.awayScore > partida.homeScore &&
-      resultado.awayScore > resultado.homeScore &&
-      partida.awayScore == resultado.awayScore &&
-      partida.homeScore != resultado.homeScore
-    ) {
-      return 18;
-    }
+    // // Score Vencedor
+    // else if (
+    //   partida.homeScore > partida.awayScore &&
+    //   resultado.homeScore > resultado.awayScore &&
+    //   partida.homeScore == resultado.homeScore &&
+    //   partida.awayScore != resultado.awayScore
+    // ) {
+    //   return 18;
+    // } else if (
+    //   partida.awayScore > partida.homeScore &&
+    //   resultado.awayScore > resultado.homeScore &&
+    //   partida.awayScore == resultado.awayScore &&
+    //   partida.homeScore != resultado.homeScore
+    // ) {
+    //   return 18;
+    // }
 
-    // Diferença
-    else if (
-      partida.homeScore > partida.awayScore &&
-      resultado.homeScore > resultado.awayScore &&
-      partida.homeScore - partida.awayScore ==
-        resultado.homeScore - resultado.awayScore
-    ) {
-      return 15;
-    } else if (
-      partida.awayScore > partida.homeScore &&
-      resultado.awayScore > resultado.homeScore &&
-      partida.awayScore - partida.homeScore ==
-        resultado.awayScore - resultado.homeScore
-    ) {
-      return 15;
-    }
+    // // Diferença
+    // else if (
+    //   partida.homeScore > partida.awayScore &&
+    //   resultado.homeScore > resultado.awayScore &&
+    //   partida.homeScore - partida.awayScore ==
+    //     resultado.homeScore - resultado.awayScore
+    // ) {
+    //   return 15;
+    // } else if (
+    //   partida.awayScore > partida.homeScore &&
+    //   resultado.awayScore > resultado.homeScore &&
+    //   partida.awayScore - partida.homeScore ==
+    //     resultado.awayScore - resultado.homeScore
+    // ) {
+    //   return 15;
+    // }
 
-    // Score Perdedor
-    else if (
-      partida.homeScore < partida.awayScore &&
-      resultado.homeScore < resultado.awayScore &&
-      partida.homeScore == resultado.homeScore &&
-      partida.awayScore != resultado.awayScore
-    ) {
-      return 12;
-    } else if (
-      partida.awayScore < partida.homeScore &&
-      resultado.awayScore < resultado.homeScore &&
-      partida.awayScore == resultado.awayScore &&
-      partida.homeScore != resultado.homeScore
-    ) {
-      return 12;
-    }
+    // // Score Perdedor
+    // else if (
+    //   partida.homeScore < partida.awayScore &&
+    //   resultado.homeScore < resultado.awayScore &&
+    //   partida.homeScore == resultado.homeScore &&
+    //   partida.awayScore != resultado.awayScore
+    // ) {
+    //   return 12;
+    // } else if (
+    //   partida.awayScore < partida.homeScore &&
+    //   resultado.awayScore < resultado.homeScore &&
+    //   partida.awayScore == resultado.awayScore &&
+    //   partida.homeScore != resultado.homeScore
+    // ) {
+    //   return 12;
+    // }
 
-    // Time Vencedor
-    else if (
-      partida.homeScore > partida.awayScore &&
-      resultado.homeScore > resultado.awayScore &&
-      partida.homeScore - partida.awayScore !=
-        resultado.homeScore - resultado.awayScore
-    ) {
-      return 10;
-    } else if (
-      partida.awayScore > partida.homeScore &&
-      resultado.awayScore > resultado.homeScore &&
-      partida.awayScore - partida.homeScore !=
-        resultado.awayScore - resultado.homeScore
-    ) {
-      return 10;
-    }
+    // // Time Vencedor
+    // else if (
+    //   partida.homeScore > partida.awayScore &&
+    //   resultado.homeScore > resultado.awayScore &&
+    //   partida.homeScore - partida.awayScore !=
+    //     resultado.homeScore - resultado.awayScore
+    // ) {
+    //   return 10;
+    // } else if (
+    //   partida.awayScore > partida.homeScore &&
+    //   resultado.awayScore > resultado.homeScore &&
+    //   partida.awayScore - partida.homeScore !=
+    //     resultado.awayScore - resultado.homeScore
+    // ) {
+    //   return 10;
+    // }
 
-    // Empate não exato
-    else if (
-      partida.homeScore == partida.awayScore &&
-      resultado.homeScore == resultado.awayScore &&
-      partida.homeScore - resultado.homeScore != 0
-    ) {
-      return 15;
-    }
+    // // Empate não exato
+    // else if (
+    //   partida.homeScore == partida.awayScore &&
+    //   resultado.homeScore == resultado.awayScore &&
+    //   partida.homeScore - resultado.homeScore != 0
+    // ) {
+    //   return 15;
+    // }
 
-    // Aposta empate e houver time vencedor
-    else if (
-      partida.homeScore == partida.awayScore &&
-      resultado.homeScore != resultado.awayScore
-    ) {
-      return 2;
-    }
+    // // Aposta empate e houver time vencedor
+    // else if (
+    //   partida.homeScore == partida.awayScore &&
+    //   resultado.homeScore != resultado.awayScore
+    // ) {
+    //   return 2;
+    // }
 
-    return pontos;
+    // return pontos;
   }
 }

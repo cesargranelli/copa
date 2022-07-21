@@ -7,15 +7,14 @@
   <ion-card>
     <ion-list>
       <ion-item>
-        <ion-select (ionChange)="matchDayGuesses()">
-          <ion-label>Escolha a rodada...</ion-label>
+        <ion-select placeholder="Escolha a rodada..." (ionChange)="matchDayGuesses()">
           <ion-option *ngFor="let round of rounds" (ionSelect)="setRound(round)">{{ round.name }}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
   </ion-card>
   <form #form="ngForm" (ngSubmit)="onSubmit()">
-    <ion-card *ngFor="let game of games" [color]="game.score.home && game.score.away ? 'light' : ''">
+    <ion-card *ngFor="let game of games" [color]="game.score.home != null && game.score.away != null ? 'light' : ''">
       <ion-grid [id]="game.id">
         <ion-row>
           <ion-col text-center [id]="game.matchDay">{{ game.utcDate }}</ion-col>
@@ -27,12 +26,12 @@
           </ion-col>
           <ion-col text-center col-2>
             <input class="ipt-gol" text-center type="text" [value]="game.score.home" [id]="game.homeTeam.id" required pattern="^[0-9]"
-              autocomplete="off" [disabled]="dateFech<=dateHoje">
+              autocomplete="off" [disabled]="blocked">
           </ion-col>
           <ion-col text-center col-1>X</ion-col>
           <ion-col text-center col-2>
             <input class="ipt-gol" text-center type="text" [value]="game.score.away" [id]="game.awayTeam.id" required pattern="^[0-9]"
-              autocomplete="off" [disabled]="dateFech<=dateHoje">
+              autocomplete="off" [disabled]="blocked">
           </ion-col>
           <ion-col>
             <img [src]="game.awayTeam.crest" />
@@ -42,7 +41,7 @@
       </ion-grid>
     </ion-card>
     <div padding>
-      <button ion-button full large type="submit" [disabled]="dateFech<=dateHoje">Gravar</button>
+      <button ion-button full large type="submit" [disabled]="blocked">Gravar</button>
     </div>
   </form>
 </ion-content>

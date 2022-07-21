@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Register } from '../models/register';
 import { Registered } from '../models/registered';
 import { User } from '../models/user';
-import { BaseProvider } from './base';
-import { StorageProvider } from './storage';
+import { BaseProvider } from './base.service';
+import { StorageProvider } from './storage.service';
 
 @Injectable()
 export class AuthProvider extends BaseProvider {

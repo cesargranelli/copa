@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Round } from '../models/round';
-import { BaseProvider } from './base';
+import { BaseProvider } from './base.service';
 
 @Injectable()
 export class RoundProvider extends BaseProvider {

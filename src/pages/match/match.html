@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Resultados</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-select placeholder="Escolha a rodada..." (ionChange)="findMatches($event)">
+          <ion-label>Escolha uma data...</ion-label>
+          <ion-option *ngFor="let round of rounds" [value]="round">{{ round.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card *ngFor="let match of matches">
+    <button ion-item (click)="findBets(match)">
+      <!-- <button ion-item (click)="bets(match)" [disabled]="match.utcDate>utcDateNow"> -->
+      <ion-grid [id]="match.id">
+        <ion-row>
+          <ion-col text-center>{{ match.utcDate }}</ion-col>
+        </ion-row>
+        <ion-row align-items-center>
+          <ion-col>
+            <img [src]="match.homeTeam.crest" />
+            <p text-center>{{ match.homeTeam.name }}</p>
+          </ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="match.homeTeam.id">
+            <input class="ipt-gol" text-center type="text" [value]="match.score?.home" disabled>
+          </ion-col>
+          <ion-col text-center col-1>X</ion-col>
+          <ion-col text-center col-2 style="font-size: 25px" [id]="match.awayTeam.id">
+            <input class="ipt-gol" text-center type="text" [value]="match.score?.away" disabled>
+          </ion-col>
+          <ion-col>
+            <img [src]="match.awayTeam.crest" />
+            <p text-center>{{ match.awayTeam.name }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </button>
+  </ion-card>
+</ion-content>

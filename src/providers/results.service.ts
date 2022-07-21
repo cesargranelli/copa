@@ -1,19 +1,17 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Injectable } from '@angular/core';
 // import { AngularFirestore } from 'angularfire2/firestore';
-
 import { Platform } from 'ionic-angular';
-
 import { Observable } from 'rxjs';
 // import 'rxjs/operator/first';
+import { Partida } from '../models/partida';
 
-import { Partida } from '../../models/partida';
+
 //import { Aposta } from '../../models/aposta';
 //import { User } from '../../models/user';
 
 @Injectable()
-export class ResultadoProvider {
+export class ResultsProvider {
 
   partida: Partida[];
 
