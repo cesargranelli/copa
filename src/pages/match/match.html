@@ -22,8 +22,8 @@
   </ion-card>
 
   <ion-card *ngFor="let match of matches">
-    <button ion-item (click)="findBets(match)">
-      <!-- <button ion-item (click)="bets(match)" [disabled]="match.utcDate>utcDateNow"> -->
+    <!-- <button ion-item (click)="findBets(match)"> -->
+      <button ion-item (click)="findBets(match)" [disabled]="match.utcDate>utcDateNow">
       <ion-grid [id]="match.id">
         <ion-row>
           <ion-col text-center>{{ match.utcDate }}</ion-col>
