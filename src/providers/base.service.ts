@@ -1,8 +1,6 @@
-// import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const extractError = (error: Response | any): string => {
-    // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {
         const body = error.json() || '';
@@ -18,8 +16,8 @@ const extractError = (error: Response | any): string => {
 
 export abstract class BaseProvider {
 
-    // protected api = 'https://api-futecopa.herokuapp.com';
-    protected api = 'http://localhost:5000';
+    protected api = 'https://api-futecopa.herokuapp.com';
+    //protected api = 'http://localhost:5000';
 
     protected handlePromiseError(error: Response | any): Promise<any> {
         return Promise.reject(extractError(error));

@@ -5,19 +5,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { BetPage } from '../pages/bet/bet';
-import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { DashboardPage } from '../pages/dashboard/dashboard';
 import { GuessPage } from '../pages/guess/guess';
 import { MatchPage } from '../pages/match/match';
 import { ProfilePage } from '../pages/profile/profile';
+import { RankingPage } from '../pages/ranking/ranking';
 import { SigninPage } from '../pages/signin/signin';
 import { SignonPage } from '../pages/signon/signon';
 import { SignupPage } from '../pages/signup/signup';
 import { AuthProvider } from '../providers/auth.service';
 import { BetProvider } from '../providers/bet.service';
-import { CampeonatoProvider } from '../providers/campeonato/campeonato';
 import { GuessProvider } from '../providers/guess.service';
 import { MatchProvider } from '../providers/match.service';
+import { RankingProvider } from '../providers/ranking.service';
 import { RoundProvider } from '../providers/round.service';
 import { UserProvider } from '../providers/user.service';
 import { CopaApp } from './app.component';
@@ -26,7 +26,7 @@ import { CopaApp } from './app.component';
   declarations: [
     CopaApp,
     BetPage,
-    CampeonatoPage,
+    RankingPage,
     DashboardPage,
     GuessPage,
     ProfilePage,
@@ -46,7 +46,7 @@ import { CopaApp } from './app.component';
   entryComponents: [
     CopaApp,
     BetPage,
-    CampeonatoPage,
+    RankingPage,
     DashboardPage,
     GuessPage,
     ProfilePage,
@@ -67,7 +67,7 @@ import { CopaApp } from './app.component';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     MatchProvider,
     BetProvider,
-    CampeonatoProvider,
+    RankingProvider,
     GuessProvider,
     RoundProvider
   ]

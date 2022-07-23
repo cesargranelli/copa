@@ -3,10 +3,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Nav, Platform } from 'ionic-angular';
 import { Page } from 'ionic-angular/umd/navigation/nav-util';
-import { CampeonatoPage } from '../pages/campeonato/campeonato';
 import { GuessPage } from '../pages/guess/guess';
 import { MatchPage } from '../pages/match/match';
 import { ProfilePage } from '../pages/profile/profile';
+import { RankingPage } from '../pages/ranking/ranking';
 import { SignonPage } from '../pages/signon/signon';
 import { AuthProvider } from '../providers/auth.service';
 
@@ -24,7 +24,7 @@ export class CopaApp {
     { titulo: 'Perfil', componente: ProfilePage, icone: 'person' },
     { titulo: 'Palpite', componente: GuessPage, icone: 'clipboard' },
     { titulo: 'Resultado', componente: MatchPage, icone: 'paper' },
-    { titulo: 'Ranking', componente: CampeonatoPage, icone: 'flag' },
+    { titulo: 'Ranking', componente: RankingPage, icone: 'flag' },
     { titulo: 'Sair', componente: null, icone: 'log-out' }
   ];
 
