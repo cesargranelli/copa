@@ -1,4 +1,4 @@
-export interface Score {
+export class Score {
   id: number;
   whinner: string;
   duration: number;

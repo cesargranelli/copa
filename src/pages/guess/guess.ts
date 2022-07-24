@@ -4,6 +4,7 @@ import { AlertController, IonicPage, Loading, LoadingController, NavParams } fro
 import { Game } from "../../models/game";
 import { Guess } from "../../models/guess";
 import { Round } from "../../models/round";
+import { Score } from "../../models/score";
 import { User } from "../../models/user";
 import { GuessProvider } from "../../providers/guess.service";
 import { RoundProvider } from '../../providers/round.service';
@@ -62,6 +63,8 @@ export class GuessPage {
       let gameId    = children.item(i).getElementsByTagName("ion-grid").item(0).id;
       let scoreHome = children.item(i).getElementsByTagName("input").item(0).value;
       let scoreAway = children.item(i).getElementsByTagName("input").item(1).value;
+
+      this.games.filter(game => game.id == Number(gameId))[0].score = new Score();
       
       this.games.filter(game => game.id == Number(gameId))[0].score.home = scoreHome ? Number(scoreHome) : null;
       this.games.filter(game => game.id == Number(gameId))[0].score.away = scoreAway ? Number(scoreAway) : null;
